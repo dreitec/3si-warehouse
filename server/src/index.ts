@@ -1,8 +1,5 @@
 import cors from 'cors';
 import express from 'express';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 import { initDb } from './data';
 import { routes } from './routes';

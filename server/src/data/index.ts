@@ -7,9 +7,12 @@ const dbConfig = {
   username: getConfig('dbUser'),
   password: getConfig('dbPassword'),
   database: getConfig('dbName'),
+  role: getConfig('dbRole'),
   schema: getConfig('dbSchema'),
   warehouse: getConfig('dbWarehouse'),
 };
+
+console.log({ dbConfig });
 
 const db = { connection: null };
 

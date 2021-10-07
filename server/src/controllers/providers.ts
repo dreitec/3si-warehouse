@@ -7,7 +7,7 @@ export const getProviders = () => {
   }
   return new Promise((resolve, reject) => {
     (db as any).execute({
-      sqlText: 'select * from PROVIDERS',
+      sqlText: 'select * from elds_test.elds.providers',
       complete: (err, statement, rows) => {
         if (err) {
           throw new Error(err);
