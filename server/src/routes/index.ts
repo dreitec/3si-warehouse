@@ -1,10 +1,22 @@
 import { Router } from 'express';
 
 import { ping } from '../controllers/test';
+import { getOneChild } from '../controllers/children';
+import { getProviders } from '../controllers/providers';
 
 export const routes = new Router();
 
-routes.get('/ping', (req, res) => {
-  console.log('ping!');
-  res.status(200).json(ping());
-});
+const addRoute = (path, handler) => {
+  routes.get(path, (req, res) => {
+    const result = handler();
+    if (result.then) {
+      result.then((fulfilled) => res.status(200).json(fulfilled));
+    } else {
+      res.status(200).json(result);
+    }
+  })
+}
+
+addRoute('/ping', ping);
+addRoute('/providers', getProviders);
+addRoute('/children/test', getOneChild);

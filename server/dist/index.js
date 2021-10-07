@@ -5,10 +5,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const data_1 = require("./data");
 const routes_1 = require("./routes");
 const errors_1 = require("./utils/errors");
 const PORT = 5000;
 const SERVER_VERSION = '0';
+data_1.initDb();
 const app = express_1.default();
 app.use(cors_1.default());
 app.use(`/v${SERVER_VERSION}`, (req, res, next) => {

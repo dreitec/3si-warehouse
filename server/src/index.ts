@@ -1,11 +1,17 @@
 import cors from 'cors';
 import express from 'express';
+import dotenv from 'dotenv';
 
+dotenv.config();
+
+import { initDb } from './data';
 import { routes } from './routes';
 import { errorHandler, notFoundHandler } from './utils/errors';
 
 const PORT = 5000;
 const SERVER_VERSION = '0';
+
+initDb();
 
 const app = express();
 
