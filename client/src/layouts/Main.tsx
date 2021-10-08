@@ -1,12 +1,22 @@
 import React from "react";
 
-import { Container } from "@material-ui/core";
+import { Container, styled } from "@mui/material";
+import { Navbar } from "../components";
 
-const MainLayout = () => {
+const StyledMain = styled("main")(({ theme }) => ({
+  marginTop: theme.spacing(8),
+}));
+interface Props {
+  children: any;
+}
+
+const MainLayout = (props: Props) => {
   return (
     <Container>
-      <header>Header</header>
-      <main>Content</main>
+      <Navbar />
+      <StyledMain>
+        <Container maxWidth="md">{props.children}</Container>
+      </StyledMain>
     </Container>
   );
 };
