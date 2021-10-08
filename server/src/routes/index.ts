@@ -4,6 +4,8 @@ import { ping } from '../controllers/test';
 import { getOneChild } from '../controllers/children';
 import { getProviders } from '../controllers/providers';
 
+import childrenRoutes from './children.router'
+
 export const routes = new Router();
 
 const addRoute = (path, handler) => {
@@ -20,3 +22,4 @@ const addRoute = (path, handler) => {
 addRoute('/ping', ping);
 addRoute('/providers', getProviders);
 addRoute('/children/test', getOneChild);
+routes.use('/children', childrenRoutes)

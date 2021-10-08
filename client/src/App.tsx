@@ -6,7 +6,7 @@ import { ThemeProvider } from "@material-ui/styles";
 
 import { MainLayout } from './layouts';
 import { theme } from "./theme";
-import { RootStoreContext, rootStore } from './state/rootStore';
+import { RootStoreContext, rootStore } from './state/rootContext';
 
 
 const App = () => {

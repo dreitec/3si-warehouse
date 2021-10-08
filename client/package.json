@@ -12,7 +12,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
-    "recharts": "^2.0.10"
+    "recharts": "^2.0.10",
+    "typescript": "^4.4.3"
   },
   "devDependencies": {
     "@types/jest": "24.0.13",
@@ -20,12 +21,12 @@
     "@types/material-ui-phone-number": "^2.2.1",
     "@types/node": "12.0.2",
     "@types/prop-types": "^15.7.3",
-    "@types/react": "16.8.18",
-    "@types/react-dom": "16.8.4",
+    "@types/react": "^17.0.27",
+    "@types/react-dom": "^17.0.9",
     "prettier": "2.2.1"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "react-scripts start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
