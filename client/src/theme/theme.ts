@@ -1,8 +1,8 @@
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme } from '@mui/material/styles';
+import palette from './colors';
 
 export const theme = createTheme({
-  palette: {},
-  typography: {},
-  overrides: {},
+	palette
 });
+
 
