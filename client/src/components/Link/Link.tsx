@@ -12,13 +12,14 @@ const StyledLink = styled(Link)(({ theme }) => ({
 interface Props {
   href: string;
   children: any;
+  align: "right" | "inherit" | "left" | "center" | "justify";
 }
 
 const LinkComponent = (props: Props) => {
-  const { href, children } = props;
+  const { href, children, align } = props;
 
   return (
-    <Typography variant="h6" component="p" align="right">
+    <Typography variant="h6" component="p" align={align}>
       <StyledLink href={href}>{children}</StyledLink>
     </Typography>
   );
