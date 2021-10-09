@@ -12,7 +12,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
 interface Props {
   href: string;
   children: any;
-  align: "right" | "inherit" | "left" | "center" | "justify";
+  align: "right" | "inherit" | "left" | "center" | "justify" | undefined;
 }
 
 const LinkComponent = (props: Props) => {
