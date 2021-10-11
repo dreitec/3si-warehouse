@@ -38,7 +38,7 @@ const ButtonContainer = styled("div")(({ theme }) => ({
 const Description = (props: Props) => {
   //todo: handle image
   const { heading, children, Icon, button, margin = 0 } = props;
-  console.log(Icon, button);
+
   return (
     <Grid
       container

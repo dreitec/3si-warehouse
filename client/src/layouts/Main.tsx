@@ -15,7 +15,7 @@ const MainLayout = (props: Props) => {
     <Container>
       <Navbar />
       <StyledMain>
-        <Container maxWidth="md">{props.children}</Container>
+        <Container>{props.children}</Container>
       </StyledMain>
     </Container>
   );
