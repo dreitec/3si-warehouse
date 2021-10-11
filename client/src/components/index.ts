@@ -6,3 +6,5 @@ export { default as Button } from "./Button/Button";
 export { default as ChartContainer } from "./ChartContainer/ChartContainer";
 export { default as LineChart } from "./Charts/LineChart";
 export { default as Switch } from "./Switch/Switch";
+export { default as FilterRadioGroup } from "./FilterRadioGroup/FilterRadioGroup";
+export { default as FilterCheckboxes } from "./FilterCheckboxes/FilterCheckboxes";

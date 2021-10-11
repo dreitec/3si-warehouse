@@ -1,0 +1,30 @@
+input[type="radio"] {
+  position: absolute;
+  visibility: hidden;
+  display: none;
+}
+
+label {
+  width: 50%;
+  color: #9a929e;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 20px;
+  background-color: #eceef2;
+  font-size: 1rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  text-align: center;
+}
+
+input[type="radio"]:checked + label {
+  color: #080808;
+  background: white;
+}
+
+.radio-group {
+  border: solid 2px #c3c7d5;
+  display: inline-block;
+  overflow: hidden;
+  width: 100%;
+}

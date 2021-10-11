@@ -1,5 +1,5 @@
 import { Grid, styled, GridProps, Typography } from "@mui/material";
-import { Switch } from "../";
+import { Switch, FilterRadioGroup, FilterCheckboxes } from "../";
 
 const StyledMainContainer = styled(Grid)(({ theme }) => ({
   margin: `${theme.spacing(6)} 0px`,
@@ -9,6 +9,11 @@ const StyledChartItemContainer = styled(Grid)(({ theme }) => ({
   backgroundColor: "white",
   minHeight: "500px",
   boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+}));
+
+const StyledCheckBoxesContainer = styled(Grid)(({ theme }) => ({
+  marginTop: "-60px",
+  padding: `${theme.spacing(2)}  0px ${theme.spacing(2)}  ${theme.spacing(2)}`,
 }));
 
 const StyledHeadingContainer = styled(Grid)(({ theme }) => ({
@@ -32,7 +37,7 @@ const ChartContainer = (props: ContainerProps) => {
   return (
     <StyledMainContainer container>
       <Grid container>
-        <StyledHeadingContainer item xs={9}>
+        <StyledHeadingContainer item xs={8}>
           <Grid container>
             <Grid item xs={6}>
               <Typography variant="h4">Eligibility Over Time</Typography>
@@ -48,10 +53,13 @@ const ChartContainer = (props: ContainerProps) => {
         </StyledHeadingContainer>
       </Grid>
       <Grid container>
-        <StyledChartItemContainer item xs={9}>
+        <StyledChartItemContainer item xs={8}>
           {children}
         </StyledChartItemContainer>
-        <Grid item xs={3}></Grid>
+        <StyledCheckBoxesContainer item xs={4}>
+          <FilterRadioGroup />
+          <FilterCheckboxes />
+        </StyledCheckBoxesContainer>
       </Grid>
     </StyledMainContainer>
   );
