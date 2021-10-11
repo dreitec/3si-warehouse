@@ -1,6 +1,12 @@
 import React from "react";
 
-import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
+import {
+  PeopleOutline as PeopleOutlineIcon,
+  PieChart as PieChartIcon,
+  Map as MapIcon,
+  Height as HeightIcon,
+  SaveAlt as SaveAltIcon,
+} from "@mui/icons-material";
 import { Grid, Typography, styled, Theme } from "@material-ui/core";
 
 interface StyledDivProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -71,7 +77,7 @@ const TabBox = (props: Props) => {
         <Grid item xs={12} sm={5} md={2}>
           {
             <StyledDiv active={activeTab === 2} onClick={() => changeTab(2)}>
-              <PeopleOutlineIcon fontSize="large" />
+              <PieChartIcon fontSize="large" />
               <StyledHeading variant="h6">Service</StyledHeading>
             </StyledDiv>
           }
@@ -79,20 +85,23 @@ const TabBox = (props: Props) => {
         <Grid item xs={12} sm={5} md={2}>
           {
             <StyledDiv active={activeTab === 3} onClick={() => changeTab(3)}>
-              <PeopleOutlineIcon fontSize="large" />
+              <MapIcon fontSize="large" />
               <StyledHeading variant="h6">Provider</StyledHeading>
             </StyledDiv>
           }
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
           <StyledDiv active={activeTab === 4} onClick={() => changeTab(4)}>
-            <PeopleOutlineIcon fontSize="large" />
+            <HeightIcon
+              fontSize="large"
+              style={{ transform: "rotate(90deg)" }}
+            />
             <StyledHeading variant="h6">Gaps</StyledHeading>
           </StyledDiv>
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
           <StyledDiv active={activeTab === 5} onClick={() => changeTab(5)}>
-            <PeopleOutlineIcon fontSize="large" />
+            <SaveAltIcon fontSize="large" />
             <StyledHeading variant="h6">Export</StyledHeading>
           </StyledDiv>
         </Grid>
