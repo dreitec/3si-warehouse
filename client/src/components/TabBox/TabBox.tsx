@@ -26,7 +26,7 @@ const StyledDiv = styled("div")((props: StyledDivProps) => {
     textAlign: "center",
     padding: theme.spacing(4),
     "& > svg": {
-      fontSize: "4rem",
+      fontSize: "3rem",
     },
     "&:hover": {
       color: "#376EFF",
@@ -70,14 +70,14 @@ const TabBox = (props: Props) => {
       <StyledGrid container>
         <Grid item xs={12} sm={5} md={2}>
           <StyledDiv active={activeTab === 1} onClick={() => changeTab(1)}>
-            <PeopleOutlineIcon fontSize="large" />
+            <PeopleOutlineIcon />
             <StyledHeading variant="h6">Eligibility</StyledHeading>
           </StyledDiv>
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
           {
             <StyledDiv active={activeTab === 2} onClick={() => changeTab(2)}>
-              <PieChartIcon fontSize="large" />
+              <PieChartIcon />
               <StyledHeading variant="h6">Service</StyledHeading>
             </StyledDiv>
           }
@@ -85,23 +85,20 @@ const TabBox = (props: Props) => {
         <Grid item xs={12} sm={5} md={2}>
           {
             <StyledDiv active={activeTab === 3} onClick={() => changeTab(3)}>
-              <MapIcon fontSize="large" />
+              <MapIcon />
               <StyledHeading variant="h6">Provider</StyledHeading>
             </StyledDiv>
           }
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
           <StyledDiv active={activeTab === 4} onClick={() => changeTab(4)}>
-            <HeightIcon
-              fontSize="large"
-              style={{ transform: "rotate(90deg)" }}
-            />
+            <HeightIcon style={{ transform: "rotate(90deg)" }} />
             <StyledHeading variant="h6">Gaps</StyledHeading>
           </StyledDiv>
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
           <StyledDiv active={activeTab === 5} onClick={() => changeTab(5)}>
-            <SaveAltIcon fontSize="large" />
+            <SaveAltIcon />
             <StyledHeading variant="h6">Export</StyledHeading>
           </StyledDiv>
         </Grid>
