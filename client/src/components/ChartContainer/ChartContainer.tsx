@@ -2,7 +2,7 @@ import { Grid, styled, GridProps, Typography } from "@mui/material";
 import { Switch, FilterRadioGroup, FilterCheckboxes } from "../";
 
 const StyledMainContainer = styled(Grid)(({ theme }) => ({
-  margin: `${theme.spacing(6)} 0px`,
+  margin: `${theme.spacing(6)} 0px `,
 }));
 
 const StyledChartItemContainer = styled(Grid)(({ theme }) => ({
@@ -40,7 +40,7 @@ const ChartContainer = (props: ContainerProps) => {
         <StyledHeadingContainer item xs={8}>
           <Grid container>
             <Grid item xs={6}>
-              <Typography variant="h4">Eligibility Over Time</Typography>
+              <Typography variant="h4">Eligibility Geographically</Typography>
             </Grid>
             <SwitchContainer item xs={6}>
               <Switch

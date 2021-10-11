@@ -61,6 +61,34 @@ const Homepage = (props: Props) => {
       >
         <LineChart keyName={eligibility ? "percentage" : "number"} />
       </ChartContainer>
+      <ChartContainer
+        checked={eligibility}
+        setChecked={setEligibility}
+        labels={["Percent", "Number"]}
+      >
+        <LineChart keyName={eligibility ? "percentage" : "number"} />
+      </ChartContainer>
+      <Container maxWidth="md">
+        <Description
+          heading="Service"
+          Icon={PieChartIcon}
+          button={true}
+          margin={20}
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+          auctor consequat mauris. Vestibulum ornare vel odio ac hendrerit.
+          Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit amet
+          sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum dolor sit
+          amet, consectetur adipiscing elit. Quisque auctor consequat mauris.
+          Vestibulum ornare vel odio ac hendrerit. Curabitur lacinia sem id
+          pharetra hendrerit. Nam quis lacus sit amet sapien dapibus eleifend.
+          Nunc quis augue nulla.Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Quisque auctor consequat mauris. Vestibulum ornare
+          vel odio ac hendrerit. Curabitur lacinia sem id pharetra hendrerit.
+          Nam quis lacus sit amet sapien dapibus eleifend. Nunc quis augue
+          nulla.
+        </Description>
+      </Container>
     </div>
   );
 };
