@@ -1,23 +1,26 @@
-require('dotenv').config()
+require("dotenv").config();
 
-import cors from 'cors';
-import express from 'express';
+import cors from "cors";
+import express from "express";
 
-import { initDb } from './data';
-import { routes } from './routes';
-import { errorHandler, notFoundHandler } from './utils/errors';
-
+import { initDb } from "./data";
+import { routes } from "./routes";
+import { errorHandler, notFoundHandler } from "./utils/errors";
 
 const PORT = 5000;
-const SERVER_VERSION = '0';
+const SERVER_VERSION = "0";
 
 initDb();
 
 const app = express();
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
-app.use(cors());
 app.use(`/v${SERVER_VERSION}`, (req, res, next) => {
-  console.log('BARK');
+  console.log("BARK");
   next();
 });
 app.use(`/v${SERVER_VERSION}`, routes);
