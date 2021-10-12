@@ -1,3 +1,4 @@
+import React from "react";
 import {
   LineChart,
   Line,
@@ -11,36 +12,24 @@ import {
 
 interface Props {
   keyName: string;
+  dataFunction: Function;
 }
-const data = [
-  {
-    name: "June 2021",
-    number: 1000,
-    percentage: 20,
-  },
-  {
-    name: "June 2021",
-    number: 3000,
-    percentage: 60,
-  },
-  {
-    name: "June 2021",
-    number: 2000,
-    percentage: 40,
-  },
-  {
-    name: "June 2021",
-    number: 4000,
-    percentage: 80,
-  },
-  {
-    name: "June 2021",
-    number: 2000,
-    percentage: 40,
-  },
-];
+
 const LineChartComponent = (props: Props) => {
-  const { keyName } = props;
+  const { keyName, dataFunction } = props;
+
+  const [data, setData] = React.useState();
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const {
+          data: { data: response },
+        } = await dataFunction();
+        setData(response);
+      } catch (error) {}
+    }
+    fetchData();
+  }, []);
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart
@@ -55,7 +44,8 @@ const LineChartComponent = (props: Props) => {
         }}
       >
         <CartesianGrid vertical={false} />
-        <XAxis dataKey={keyName} padding={{ left: 60, right: 60 }} />
+        <XAxis dataKey={"group"} padding={{ left: 60, right: 60 }} />
+
         <YAxis type="number" axisLine={false}>
           <Label
             value={

@@ -8,11 +8,12 @@ import {
   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
 import { Container } from "@material-ui/core";
+import { getOneYearChildData } from "../api";
 
 interface Props {}
 
 const Homepage = (props: Props) => {
-  const [eligibility, setEligibility] = React.useState(true);
+  const [eligibility, setEligibility] = React.useState(false);
 
   return (
     <div>
@@ -59,15 +60,21 @@ const Homepage = (props: Props) => {
         setChecked={setEligibility}
         labels={["Percent", "Number"]}
       >
-        <LineChart keyName={eligibility ? "percentage" : "number"} />
+        <LineChart
+          keyName={eligibility ? "number" : "percentage"}
+          dataFunction={getOneYearChildData}
+        />
       </ChartContainer>
-      <ChartContainer
+      {/* <ChartContainer
         checked={eligibility}
         setChecked={setEligibility}
         labels={["Percent", "Number"]}
       >
-        <LineChart keyName={eligibility ? "percentage" : "number"} />
-      </ChartContainer>
+        <LineChart
+          keyName={eligibility ? "percentage" : "number"}
+          dataFunction={getOneYearChildData}
+        />
+      </ChartContainer> */}
       <Container maxWidth="md">
         <Description
           heading="Service"
