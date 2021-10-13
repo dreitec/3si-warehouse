@@ -1,3 +1,3 @@
 export const ping = () => {
-  return { ping: 'pong' };
+  return { ping: "pong" };
 };
