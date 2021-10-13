@@ -10,6 +10,7 @@ const dbConfig = {
   role: getConfig("dbRole"),
   schema: getConfig("dbSchema"),
   warehouse: getConfig("dbWarehouse"),
+  clientSessionKeepAlive: true,
 };
 
 console.log({ dbConfig });
