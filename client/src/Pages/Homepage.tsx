@@ -8,7 +8,7 @@ import {
   //   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
 import { Container } from "@material-ui/core";
-import { getOneYearChildData } from "../api";
+import { getEligibilityData } from "../api";
 
 interface Props {}
 
@@ -62,7 +62,7 @@ const Homepage = (props: Props) => {
       >
         <LineChart
           keyName={eligibility ? "number" : "percentage"}
-          dataFunction={getOneYearChildData}
+          dataFunction={getEligibilityData}
         />
       </ChartContainer>
       {/* <ChartContainer
@@ -72,7 +72,7 @@ const Homepage = (props: Props) => {
       >
         <LineChart
           keyName={eligibility ? "percentage" : "number"}
-          dataFunction={getOneYearChildData}
+          dataFunction={getEligibilityData}
         />
       </ChartContainer> */}
       <Container maxWidth="md">

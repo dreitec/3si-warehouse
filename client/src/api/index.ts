@@ -6,8 +6,8 @@ const baseUrl = process.env.REACT_APP_SERVER_URL || "http://localhost:5000/v0";
 // export const apiPing = () => getJSON(`${baseUrl}/ping`);
 // export const getProviders = () => getJSON(`${baseUrl}/providers`);
 // export const getOneChild = () => getJSON(`${baseUrl}/children/test`);
-export const getOneYearChildData = async () => {
-  const data = await axios.get(`${baseUrl}/children/year`, {
+export const getEligibilityData = async () => {
+  const data = await axios.get(`${baseUrl}/children/eligibility`, {
     headers: {
       "Content-Type": "application/json",
     },
