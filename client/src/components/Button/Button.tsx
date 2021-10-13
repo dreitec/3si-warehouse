@@ -1,10 +1,6 @@
 import React from "react";
 import { Button, ButtonProps, styled } from "@mui/material";
 
-interface Props {
-  children: React.ReactNode;
-}
-
 const StyledPrimaryLightButton = styled(Button)(({ theme }) => ({
   color: theme.palette.primary.light,
   borderColor: theme.palette.border,

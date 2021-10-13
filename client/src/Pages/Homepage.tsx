@@ -3,9 +3,9 @@ import { Description, TabBox, ChartContainer, LineChart } from "../components";
 import {
   PeopleOutline as PeopleOutlineIcon,
   PieChart as PieChartIcon,
-  Map as MapIcon,
-  Height as HeightIcon,
-  SaveAlt as SaveAltIcon,
+  //   Map as MapIcon,
+  //   Height as HeightIcon,
+  //   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
 import { Container } from "@material-ui/core";
 import { getOneYearChildData } from "../api";

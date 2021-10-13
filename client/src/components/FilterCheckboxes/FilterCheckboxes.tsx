@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, FormControlLabel, styled, Checkbox } from "@mui/material";
-import { element } from "prop-types";
 
 interface SelectValueProps {
   value: string;
