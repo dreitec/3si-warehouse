@@ -75,6 +75,7 @@ const makeState = (checkBoxData: any[]) => {
   });
   return stateData;
 };
+
 function flat(array: any) {
   let result: child[] = [];
   array.forEach(function (a: any) {
@@ -93,18 +94,12 @@ export default function IndeterminateCheckbox() {
     setChecked({ ...checked, [key]: !checked[key] });
   };
 
-  //   const checkIfChecked = (key: string){
-
-  //   }
-
   const renderChilds = (child: any, indent: number) => {
-    // console.log(child, "check 3");
     return (
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         {child.map((elem: any) => {
-          //   console.log(elem.value, elem.children, "'check 1'");
           return (
-            <>
+            <div key={elem.value}>
               <FormControlLabel
                 label={elem.value}
                 control={
@@ -116,7 +111,7 @@ export default function IndeterminateCheckbox() {
                 sx={{ pl: indent }}
               />
               {elem.children && renderChilds(elem.children, indent + 2)}
-            </>
+            </div>
           );
         })}
       </Box>
@@ -136,6 +131,7 @@ export default function IndeterminateCheckbox() {
           control={
             <Checkbox
               //   indeterminate={checked[0] !== checked[1]}
+              key={parent.value}
               checked={checked[parent.key]}
               onChange={() => handleChange(parent.key)}
             />

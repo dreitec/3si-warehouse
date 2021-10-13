@@ -10,7 +10,7 @@ interface Props {
   margin?: number;
 }
 interface StyleProps extends GridProps {
-  marginValue: number;
+  marginvalue: number;
 }
 
 const StyledHeading = styled(Typography)(({ theme }) => ({
@@ -19,11 +19,11 @@ const StyledHeading = styled(Typography)(({ theme }) => ({
 }));
 
 const HeadingContainer = styled(Grid)((props: StyleProps) => {
-  const { marginValue } = props;
+  const { marginvalue } = props;
   return {
     color: theme.palette.primary.main,
     justifyContent: "center",
-    marginTop: theme.spacing(marginValue | 0),
+    marginTop: theme.spacing(marginvalue | 0),
     "& svg": {
       fontSize: "4rem",
       marginBottom: theme.spacing(1),
@@ -47,7 +47,7 @@ const Description = (props: Props) => {
         justifyContent: "center",
       }}
     >
-      <HeadingContainer container alignItems="center" marginValue={margin}>
+      <HeadingContainer container alignItems="center" marginvalue={margin}>
         {Icon && <Icon />}
         <StyledHeading textAlign="center" variant="h6">
           {heading}

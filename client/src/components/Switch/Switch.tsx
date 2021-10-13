@@ -92,6 +92,7 @@ interface SwitchProps {
 export default function UnstyledSwitches(props: SwitchProps) {
   const label = { componentsProps: { input: { "aria-label": "Demo switch" } } };
   const { labels, setChecked, checked } = props;
+
   return (
     <div>
       <StyledLabel variant="body1" highlight={!checked}>
