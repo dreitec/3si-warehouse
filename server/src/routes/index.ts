@@ -5,6 +5,7 @@ import {
   getOneChild,
   getAllChildren,
   getChildrenEligibility,
+  getChildrenServed,
 } from "../controllers/children";
 import { getProviders } from "../controllers/providers";
 
@@ -29,4 +30,4 @@ addRoute("/children", getAllChildren);
 addRoute("/child", getOneChild);
 
 addRoute("/children/eligibility", getChildrenEligibility);
-addRoute("/children/served", getChildrenEligibility);
+addRoute("/children/served", getChildrenServed);

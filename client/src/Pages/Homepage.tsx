@@ -8,12 +8,13 @@ import {
   //   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
 import { Container } from "@material-ui/core";
-import { getEligibilityData } from "../api";
+import { getEligibilityData, getServedData } from "../api";
 
 interface Props {}
 
 const Homepage = (props: Props) => {
-  const [eligibility, setEligibility] = React.useState(false);
+  const [eligibilityNotation, setEligibilityNotation] = React.useState(false);
+  const [servedNotation, setservedNotation] = React.useState(false);
 
   return (
     <div>
@@ -56,25 +57,16 @@ const Homepage = (props: Props) => {
         </Description>
       </Container>
       <ChartContainer
-        checked={eligibility}
-        setChecked={setEligibility}
+        checked={eligibilityNotation}
+        setChecked={setEligibilityNotation}
         labels={["Percent", "Number"]}
       >
         <LineChart
-          keyName={eligibility ? "number" : "percentage"}
+          keyName={eligibilityNotation ? "number" : "percentage"}
           dataFunction={getEligibilityData}
         />
       </ChartContainer>
-      {/* <ChartContainer
-        checked={eligibility}
-        setChecked={setEligibility}
-        labels={["Percent", "Number"]}
-      >
-        <LineChart
-          keyName={eligibility ? "percentage" : "number"}
-          dataFunction={getEligibilityData}
-        />
-      </ChartContainer> */}
+
       <Container maxWidth="md">
         <Description
           heading="Service"
@@ -96,6 +88,16 @@ const Homepage = (props: Props) => {
           nulla.
         </Description>
       </Container>
+      <ChartContainer
+        checked={servedNotation}
+        setChecked={setservedNotation}
+        labels={["Percent", "Number"]}
+      >
+        <LineChart
+          keyName={servedNotation ? "number" : "percentage"}
+          dataFunction={getServedData}
+        />
+      </ChartContainer>
     </div>
   );
 };

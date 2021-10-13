@@ -14,3 +14,12 @@ export const getEligibilityData = async () => {
   });
   return data;
 };
+
+export const getServedData = async () => {
+  const data = await axios.get(`${baseUrl}/children/served`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return data;
+};
