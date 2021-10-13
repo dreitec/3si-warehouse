@@ -65,6 +65,7 @@ const data = [
 interface child {
   value: string;
   key: string;
+  children?: any;
 }
 
 const makeState = (checkBoxData: any[]) => {
@@ -88,10 +89,54 @@ function flat(array: any) {
 }
 
 export default function IndeterminateCheckbox() {
-  const [checked, setChecked] = React.useState(makeState(data));
+  const [state, setState] = React.useState(makeState(data));
 
-  const handleChange = (key: string) => {
-    setChecked({ ...checked, [key]: !checked[key] });
+  const handleChange = (obj: any) => {
+    const { children }: any = obj || {};
+    const allChildren: any = {};
+    if (children) {
+      children.forEach((elem: child) => {
+        allChildren[elem.key] = !state[obj.key];
+        if (elem.children) {
+          elem.children.forEach((elem: child) => {
+            allChildren[elem.key] = !state[obj.key];
+            if (elem.children) {
+            }
+          });
+        }
+      });
+    }
+    setState({ ...state, [obj.key]: !state[obj.key], ...allChildren });
+  };
+
+  const checkIfChildrenChecked = (obj: any) => {
+    const { children }: any = obj || {};
+    let isChecked: boolean = true;
+    if (children) {
+      for (const child of children) {
+        if (state[child.key] === false) {
+          isChecked = false;
+          break;
+        }
+      }
+    } else {
+      isChecked = state[obj.key];
+    }
+    return isChecked;
+  };
+
+  const intermediateCheck = (obj: any) => {
+    const { children }: any = obj || {};
+    const allChildConditions: boolean[] = [];
+    if (children) {
+      for (const child of children) {
+        if (!allChildConditions.includes(state[child.key])) {
+          allChildConditions.push(state[child.key]);
+        }
+      }
+    }
+
+    return allChildConditions.length === 2;
   };
 
   const renderChilds = (child: any, indent: number) => {
@@ -104,8 +149,10 @@ export default function IndeterminateCheckbox() {
                 label={elem.value}
                 control={
                   <Checkbox
-                    checked={checked[elem.key]}
-                    onChange={() => handleChange(elem.key)}
+                    key={elem.value}
+                    indeterminate={intermediateCheck(elem)}
+                    checked={checkIfChildrenChecked(elem)}
+                    onChange={() => handleChange(elem)}
                   />
                 }
                 sx={{ pl: indent }}
@@ -130,10 +177,10 @@ export default function IndeterminateCheckbox() {
           sx={{ pl: indent }}
           control={
             <Checkbox
-              //   indeterminate={checked[0] !== checked[1]}
               key={parent.value}
-              checked={checked[parent.key]}
-              onChange={() => handleChange(parent.key)}
+              indeterminate={intermediateCheck(parent)}
+              checked={checkIfChildrenChecked(parent)}
+              onChange={() => handleChange(parent)}
             />
           }
         />
