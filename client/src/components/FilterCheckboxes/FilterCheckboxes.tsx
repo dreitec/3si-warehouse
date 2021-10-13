@@ -1,8 +1,10 @@
 import React from "react";
 import { Box, FormControlLabel, styled, Checkbox } from "@mui/material";
+import { element } from "prop-types";
 
 interface SelectValueProps {
   value: string;
+  key: string;
   children?: any[];
 }
 
@@ -14,92 +16,103 @@ const StyledContainer = styled("div")(({ theme }) => ({
   },
 }));
 
+const data = [
+  {
+    value: "All programs",
+    key: "all",
+    children: [
+      {
+        value: "Subsidized Programs",
+        key: "sp",
+        children: [
+          {
+            value: "Early Head Start",
+            key: "ehs",
+          },
+          {
+            value: "Head Start",
+            key: "hs",
+          },
+          {
+            value: "State Subsidy (0-5)",
+            key: "ss",
+          },
+          {
+            value: "State Subsidy (School Age)",
+            key: "sssa",
+          },
+          {
+            value: "Public Preschool",
+            key: "pps",
+          },
+          {
+            value: "CPPI",
+            key: "cppi",
+          },
+          {
+            value: "Boston UPK",
+            key: "bupk",
+          },
+        ],
+      },
+      {
+        value: "Private Pay",
+        key: "pp",
+      },
+    ],
+  },
+];
+
+interface child {
+  value: string;
+  key: string;
+}
+
+const makeState = (checkBoxData: any[]) => {
+  const flattened: child[] = flat(checkBoxData);
+  const stateData: any = {};
+  flattened.forEach((elem: child) => {
+    stateData[elem.key] = false;
+  });
+  return stateData;
+};
+function flat(array: any) {
+  let result: child[] = [];
+  array.forEach(function (a: any) {
+    result.push(a);
+    if (Array.isArray(a.children)) {
+      result = result.concat(flat(a.children));
+    }
+  });
+  return result;
+}
+
 export default function IndeterminateCheckbox() {
-  const data = [
-    {
-      value: "All programs",
-      key: "all",
-      children: [
-        {
-          value: "Subsidized Programs",
-          key: "sp",
-          children: [
-            {
-              value: "Early Head Start",
-              key: "ehs",
-            },
-            {
-              value: "Head Start",
-              key: "hs",
-            },
-            {
-              value: "State Subsidy (0-5)",
-              key: "ss",
-            },
-            {
-              value: "State Subsidy (School Age)",
-              key: "sssa",
-            },
-            {
-              value: "Public Preschool",
-              key: "pp",
-            },
-            {
-              value: "CPPI",
-              key: "cppi",
-            },
-            {
-              value: "Boston UPK",
-              key: "bupk",
-            },
-          ],
-        },
-        {
-          value: "Private Pay",
-          key: "pp",
-        },
-      ],
-    },
-  ];
-  const [checked, setChecked] = React.useState([true, false]);
+  const [checked, setChecked] = React.useState(makeState(data));
 
-  const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([event.target.checked, event.target.checked]);
+  const handleChange = (key: string) => {
+    setChecked({ ...checked, [key]: !checked[key] });
   };
 
-  const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([event.target.checked, checked[1]]);
-  };
+  //   const checkIfChecked = (key: string){
 
-  const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([checked[0], event.target.checked]);
-  };
-
-  //   const children = (
-  //     <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-  //       <FormControlLabel
-  //         label="Child 1"
-  //         control={<Checkbox checked={checked[0]} onChange={handleChange2} />}
-  //       />
-  //       <FormControlLabel
-  //         label="Child 2"
-  //         control={<Checkbox checked={checked[1]} onChange={handleChange3} />}
-  //       />
-  //     </Box>
-  //   );
+  //   }
 
   const renderChilds = (child: any, indent: number) => {
-    console.log(child, "check 3");
+    // console.log(child, "check 3");
     return (
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         {child.map((elem: any) => {
-          console.log(elem.value, elem.children, "'check 1'");
+          //   console.log(elem.value, elem.children, "'check 1'");
           return (
             <>
               <FormControlLabel
                 label={elem.value}
                 control={
-                  <Checkbox checked={checked[1]} onChange={handleChange3} />
+                  <Checkbox
+                    checked={checked[elem.key]}
+                    onChange={() => handleChange(elem.key)}
+                  />
                 }
                 sx={{ pl: indent }}
               />
@@ -115,7 +128,7 @@ export default function IndeterminateCheckbox() {
     parent: SelectValueProps,
     indent: number
   ): React.ReactElement => {
-    console.log(parent, "check 1");
+    // console.log(parent, "check 1");
     return (
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <FormControlLabel
@@ -123,9 +136,9 @@ export default function IndeterminateCheckbox() {
           sx={{ pl: indent }}
           control={
             <Checkbox
-              checked={checked[0] && checked[1]}
-              indeterminate={checked[0] !== checked[1]}
-              onChange={handleChange1}
+              //   indeterminate={checked[0] !== checked[1]}
+              checked={checked[parent.key]}
+              onChange={() => handleChange(parent.key)}
             />
           }
         />
