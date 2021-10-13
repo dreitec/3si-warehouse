@@ -4,7 +4,7 @@ import { ping } from "../controllers/test";
 import {
   getOneChild,
   getAllChildren,
-  getAllChildrenForLastYear,
+  getChildrenEligibility,
 } from "../controllers/children";
 import { getProviders } from "../controllers/providers";
 
@@ -28,4 +28,5 @@ addRoute("/providers", getProviders);
 addRoute("/children", getAllChildren);
 addRoute("/child", getOneChild);
 
-addRoute("/children/year", getAllChildrenForLastYear);
+addRoute("/children/eligibility", getChildrenEligibility);
+addRoute("/children/served", getChildrenEligibility);
