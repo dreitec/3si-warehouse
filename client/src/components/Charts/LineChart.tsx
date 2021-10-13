@@ -25,7 +25,11 @@ const LineChartComponent = (props: Props) => {
         const {
           data: { data: response },
         } = await dataFunction();
-        setData(response);
+        const mapped: any = response.map((elem: any) => ({
+          ...elem,
+          percentage: parseFloat(elem.percentage),
+        }));
+        setData(mapped);
       } catch (error) {}
     }
     fetchData();
