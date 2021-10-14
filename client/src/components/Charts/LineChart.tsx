@@ -12,28 +12,15 @@ import {
 
 interface Props {
   keyName: string;
-  dataFunction: Function;
+  dataFromProps: any;
 }
 
 const LineChartComponent = (props: Props) => {
-  const { keyName, dataFunction } = props;
-
+  const { keyName, dataFromProps } = props;
   const [data, setData] = React.useState();
   React.useEffect(() => {
-    async function fetchData() {
-      try {
-        const {
-          data: { data: response },
-        } = await dataFunction();
-        const mapped: any = response.map((elem: any) => ({
-          ...elem,
-          percentage: parseFloat(elem.percentage),
-        }));
-        setData(mapped);
-      } catch (error) {}
-    }
-    fetchData();
-  }, []);
+    setData(dataFromProps);
+  }, [dataFromProps]);
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart

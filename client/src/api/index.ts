@@ -1,22 +1,27 @@
 import axios from "axios";
+import { getQueryString } from "./utilities";
 const baseUrl = process.env.REACT_APP_SERVER_URL || "http://localhost:5000/v0";
-
 // TODO: authentication
 
 // export const apiPing = () => getJSON(`${baseUrl}/ping`);
 // export const getProviders = () => getJSON(`${baseUrl}/providers`);
 // export const getOneChild = () => getJSON(`${baseUrl}/children/test`);
-export const getEligibilityData = async () => {
-  const data = await axios.get(`${baseUrl}/children/eligibility`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export const getEligibilityData = async (keys?: string[]) => {
+  const querystring = getQueryString(keys);
+  const data = await axios.get(
+    `${baseUrl}/children/eligibility/${querystring}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return data;
 };
 
-export const getServedData = async () => {
-  const data = await axios.get(`${baseUrl}/children/served`, {
+export const getServedData = async (keys?: string[]) => {
+  const querystring = getQueryString(keys);
+  const data = await axios.get(`${baseUrl}/children/served/${querystring}`, {
     headers: {
       "Content-Type": "application/json",
     },

@@ -13,7 +13,7 @@ const StyledChartItemContainer = styled(Grid)(({ theme }) => ({
 
 const StyledCheckBoxesContainer = styled(Grid)(({ theme }) => ({
   marginTop: "-60px",
-  padding: `${theme.spacing(2)}  0px ${theme.spacing(2)}  ${theme.spacing(2)}`,
+  padding: `${theme.spacing(0)}  0px ${theme.spacing(2)}  ${theme.spacing(2)}`,
 }));
 
 const StyledHeadingContainer = styled(Grid)(({ theme }) => ({
@@ -30,17 +30,19 @@ interface ContainerProps extends GridProps {
   labels: string[];
   checked: boolean;
   setChecked: Function;
+  title: string;
+  getData: Function;
 }
 
 const ChartContainer = (props: ContainerProps) => {
-  const { children, labels, checked, setChecked } = props;
+  const { children, labels, checked, setChecked, title, getData } = props;
   return (
     <StyledMainContainer container>
       <Grid container>
         <StyledHeadingContainer item xs={8}>
           <Grid container>
             <Grid item xs={6}>
-              <Typography variant="h4">Eligibility Geographically</Typography>
+              <Typography variant="h4">{title}</Typography>
             </Grid>
             <SwitchContainer item xs={6}>
               <Switch
@@ -58,7 +60,7 @@ const ChartContainer = (props: ContainerProps) => {
         </StyledChartItemContainer>
         <StyledCheckBoxesContainer item xs={4}>
           <FilterRadioGroup />
-          <FilterCheckboxes />
+          <FilterCheckboxes getData={getData} />
         </StyledCheckBoxesContainer>
       </Grid>
     </StyledMainContainer>

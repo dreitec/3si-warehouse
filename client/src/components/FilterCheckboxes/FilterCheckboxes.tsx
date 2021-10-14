@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, FormControlLabel, styled, Checkbox } from "@mui/material";
-
+import { Button } from "../";
 interface SelectValueProps {
   value: string;
   key: string;
@@ -26,23 +26,23 @@ const data = [
         children: [
           {
             value: "Early Head Start",
-            key: "ehs",
+            key: "early_head_start",
           },
           {
             value: "Head Start",
-            key: "hs",
+            key: "head_start",
           },
           {
             value: "State Subsidy (0-5)",
-            key: "ss",
+            key: "ccfa",
           },
           {
             value: "State Subsidy (School Age)",
-            key: "sssa",
+            key: "ccfasa",
           },
           {
             value: "Public Preschool",
-            key: "pps",
+            key: "dese_public_pk",
           },
           {
             value: "CPPI",
@@ -56,7 +56,7 @@ const data = [
       },
       {
         value: "Private Pay",
-        key: "pp",
+        key: "private_pay",
       },
     ],
   },
@@ -72,7 +72,7 @@ const makeState = (checkBoxData: any[]) => {
   const flattened: child[] = flat(checkBoxData);
   const stateData: any = {};
   flattened.forEach((elem: child) => {
-    stateData[elem.key] = false;
+    stateData[elem.key] = true;
   });
   return stateData;
 };
@@ -88,7 +88,12 @@ function flat(array: any) {
   return result;
 }
 
-export default function IndeterminateCheckbox() {
+interface Props {
+  getData: Function;
+}
+
+export default function IndeterminateCheckbox(props: Props) {
+  const { getData } = props;
   const [state, setState] = React.useState(makeState(data));
 
   const handleChange = (obj: any) => {
@@ -165,6 +170,13 @@ export default function IndeterminateCheckbox() {
     );
   };
 
+  const getFilters = () => {
+    const notRequired = ["sp", "all"];
+    return Object.keys(state).filter(
+      (elem) => state[elem] === true && !notRequired.includes(elem)
+    );
+  };
+
   const renderCheckBoxes = (
     parent: SelectValueProps,
     indent: number
@@ -185,6 +197,15 @@ export default function IndeterminateCheckbox() {
           }
         />
         {parent.children && renderChilds(parent.children, indent + 2)}
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => {
+            getData(getFilters());
+          }}
+        >
+          Submit
+        </Button>
       </Box>
     );
   };

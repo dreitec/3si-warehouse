@@ -9,12 +9,56 @@ import {
 } from "@mui/icons-material";
 import { Container } from "@material-ui/core";
 import { getEligibilityData, getServedData } from "../api";
-
+import { ServerResponse } from "../../types";
 interface Props {}
 
 const Homepage = (props: Props) => {
   const [eligibilityNotation, setEligibilityNotation] = React.useState(false);
   const [servedNotation, setservedNotation] = React.useState(false);
+
+  const [servedData, setServedData] = React.useState();
+  const [eligibilityData, setEligibilityData] = React.useState();
+
+  const populateServedData = async (keys?: string[]) => {
+    console.log(keys, "keys eligibile");
+    try {
+      const response: any = await getServedData(keys);
+
+      const servedData: ServerResponse = response.data;
+      const mapped: any = servedData.data.map((elem: any) => ({
+        ...elem,
+        percentage: parseFloat(elem.percentage),
+      }));
+      setServedData(mapped);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const populateEligibilityData = async (keys?: string[]) => {
+    console.log(keys, "keys eligibile");
+
+    try {
+      const response: any = await getEligibilityData(keys);
+
+      const eligibilityData: ServerResponse = response.data;
+      const mapped: any = eligibilityData.data.map((elem: any) => ({
+        ...elem,
+        percentage: parseFloat(elem.percentage),
+      }));
+      setEligibilityData(mapped);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  React.useEffect(() => {
+    populateEligibilityData();
+  }, []);
+
+  React.useEffect(() => {
+    populateServedData();
+  }, []);
 
   return (
     <div>
@@ -60,10 +104,12 @@ const Homepage = (props: Props) => {
         checked={eligibilityNotation}
         setChecked={setEligibilityNotation}
         labels={["Percent", "Number"]}
+        title="Eligibility Over Time"
+        getData={populateEligibilityData}
       >
         <LineChart
           keyName={eligibilityNotation ? "number" : "percentage"}
-          dataFunction={getEligibilityData}
+          dataFromProps={eligibilityData}
         />
       </ChartContainer>
 
@@ -92,10 +138,12 @@ const Homepage = (props: Props) => {
         checked={servedNotation}
         setChecked={setservedNotation}
         labels={["Percent", "Number"]}
+        title="Children Served Over Time"
+        getData={populateServedData}
       >
         <LineChart
           keyName={servedNotation ? "number" : "percentage"}
-          dataFunction={getServedData}
+          dataFromProps={servedData}
         />
       </ChartContainer>
     </div>

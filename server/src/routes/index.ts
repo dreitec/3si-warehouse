@@ -13,7 +13,7 @@ export const routes = new Router();
 
 const addRoute = (path, handler) => {
   routes.get(path, (req, res) => {
-    const result = handler();
+    const result = handler(req, res);
     if (result.then) {
       result.then((fulfilled) => {
         return res.send(fulfilled);
