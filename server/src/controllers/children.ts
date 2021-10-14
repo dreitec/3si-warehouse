@@ -107,16 +107,39 @@ export const getChildrenEligibility = async (req, res) => {
         if (err) {
           throw new Error(err);
         }
-        const total: number = rows.reduce(
-          (partial_sum, a) => partial_sum + a.CHILDREN,
-          0
-        );
-        const data = rows.map((elem) => ({
-          percentage: ((elem.CHILDREN / total) * 100).toFixed(2),
-          number: elem.CHILDREN,
-          group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
-        }));
-        resolve({ data });
+        const conditionsForTotal = [selectedClauses[0]];
+        const subConditions = makeConditions(conditionsForTotal);
+        (db as any).execute({
+          sqlText: `
+			select  
+			DATE(LOAD_DT) as date, 
+			MONTH(date) as month, 
+			YEAR(date) as year,
+			count(CHILD_ID) as children 
+			from CHILDREN
+			${subConditions}
+			group by month, LOAD_DT
+			order by LOAD_DT;`,
+          complete: (subErr, statement, subRow) => {
+            if (subErr) {
+              throw new Error(subErr);
+            }
+            console.log(subRow, rows, "subRow");
+
+            const data = rows.map((elem, index) => {
+              console.log(elem.CHILDREN, subRow[index].CHILDREN, "comparison");
+              return {
+                percentage: (
+                  (elem.CHILDREN / subRow[index].CHILDREN) *
+                  100
+                ).toFixed(2),
+                number: elem.CHILDREN,
+                group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
+              };
+            });
+            resolve({ data });
+          },
+        });
       },
     });
   });
@@ -182,16 +205,39 @@ export const getChildrenServed = async (req, res) => {
         if (err) {
           throw new Error(err);
         }
-        const total: number = rows.reduce(
-          (partial_sum, a) => partial_sum + a.CHILDREN,
-          0
-        );
-        const data = rows.map((elem) => ({
-          percentage: ((elem.CHILDREN / total) * 100).toFixed(2),
-          number: elem.CHILDREN,
-          group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
-        }));
-        resolve({ data });
+        const conditionsForTotal = [selectedClauses[0]];
+        const subConditions = makeConditions(conditionsForTotal);
+        (db as any).execute({
+          sqlText: `
+			select  
+			DATE(LOAD_DT) as date, 
+			MONTH(date) as month, 
+			YEAR(date) as year,
+			count(CHILD_ID) as children 
+			from CHILDREN
+			${subConditions}
+			group by month, LOAD_DT
+			order by LOAD_DT;`,
+          complete: (subErr, statement, subRow) => {
+            if (subErr) {
+              throw new Error(subErr);
+            }
+            console.log(subRow, rows, "subRow");
+
+            const data = rows.map((elem, index) => {
+              console.log(elem.CHILDREN, subRow[index].CHILDREN, "comparison");
+              return {
+                percentage: (
+                  (elem.CHILDREN / subRow[index].CHILDREN) *
+                  100
+                ).toFixed(2),
+                number: elem.CHILDREN,
+                group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
+              };
+            });
+            resolve({ data });
+          },
+        });
       },
     });
   });

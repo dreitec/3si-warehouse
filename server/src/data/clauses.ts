@@ -12,7 +12,7 @@ export const eligibilityClauses = {
 };
 
 export const ServedClauses = {
-  ccfa: `(PROGRAM_NAME like 'ccfa' AND AGE_GROUP not like 'School Age'`,
+  ccfa: `(PROGRAM_NAME like 'ccfa' AND AGE_GROUP not like 'School Age')`,
   ccfasa: `(PROGRAM_NAME like 'dese_private_pk')`,
   dese_public_pk: `PROGRAM_NAME like 'dese_public_pk'`,
   dese_private_pk: `(PROGRAM_NAME like 'dese_private_pubk')`,
