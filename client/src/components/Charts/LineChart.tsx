@@ -37,7 +37,11 @@ const LineChartComponent = (props: Props) => {
         <CartesianGrid vertical={false} />
         <XAxis dataKey={"group"} padding={{ left: 60, right: 60 }} />
 
-        <YAxis type="number" axisLine={false}>
+        <YAxis
+          type="number"
+          axisLine={false}
+          domain={keyName === "percentage" ? [1, 100] : [0, 1500000]}
+        >
           <Label
             value={
               keyName === "percentage"
