@@ -32,10 +32,19 @@ interface ContainerProps extends GridProps {
   setChecked: Function;
   title: string;
   getData: Function;
+  showButton?: boolean;
 }
 
 const ChartContainer = (props: ContainerProps) => {
-  const { children, labels, checked, setChecked, title, getData } = props;
+  const {
+    children,
+    labels,
+    checked,
+    setChecked,
+    title,
+    getData,
+    showButton = true,
+  } = props;
   return (
     <StyledMainContainer container>
       <Grid container>
@@ -45,11 +54,13 @@ const ChartContainer = (props: ContainerProps) => {
               <Typography variant="h4">{title}</Typography>
             </Grid>
             <SwitchContainer item xs={6}>
-              <Switch
-                labels={labels}
-                checked={checked}
-                setChecked={setChecked}
-              />
+              {showButton && (
+                <Switch
+                  labels={labels}
+                  checked={checked}
+                  setChecked={setChecked}
+                />
+              )}
             </SwitchContainer>
           </Grid>
         </StyledHeadingContainer>

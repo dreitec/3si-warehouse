@@ -1,5 +1,11 @@
 import React from "react";
-import { Description, TabBox, ChartContainer, LineChart } from "../components";
+import {
+  Description,
+  TabBox,
+  ChartContainer,
+  LineChart,
+  Choropleth,
+} from "../components";
 import {
   PeopleOutline as PeopleOutlineIcon,
   PieChart as PieChartIcon,
@@ -20,7 +26,6 @@ const Homepage = (props: Props) => {
   const [eligibilityData, setEligibilityData] = React.useState();
 
   const populateServedData = async (keys?: string[]) => {
-    console.log(keys, "keys eligibile");
     try {
       const response: any = await getServedData(keys);
 
@@ -36,8 +41,6 @@ const Homepage = (props: Props) => {
   };
 
   const populateEligibilityData = async (keys?: string[]) => {
-    console.log(keys, "keys eligibile");
-
     try {
       const response: any = await getEligibilityData(keys);
 
@@ -111,6 +114,17 @@ const Homepage = (props: Props) => {
           keyName={eligibilityNotation ? "number" : "percentage"}
           dataFromProps={eligibilityData}
         />
+      </ChartContainer>
+
+      <ChartContainer
+        checked={eligibilityNotation}
+        setChecked={setEligibilityNotation}
+        showButton={false}
+        labels={["Percent", "Number"]}
+        title="Eligibility Geographically"
+        getData={populateEligibilityData}
+      >
+        <Choropleth />
       </ChartContainer>
 
       <Container maxWidth="md">
