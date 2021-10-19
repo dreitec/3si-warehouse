@@ -8,4 +8,4 @@ export { default as LineChart } from "./Charts/LineChart";
 export { default as Switch } from "./Switch/Switch";
 export { default as FilterRadioGroup } from "./FilterRadioGroup/FilterRadioGroup";
 export { default as FilterCheckboxes } from "./FilterCheckboxes/FilterCheckboxes";
-export { default as Choropleth } from "./Charts/Choropleth";
+export { default as Choropleth } from "./Charts/Choropleth/Choropleth";

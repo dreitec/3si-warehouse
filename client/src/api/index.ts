@@ -16,7 +16,12 @@ export const getEligibilityData = async (keys?: string[]) => {
       },
     }
   );
-  return data;
+  const eligibilityData: any = data.data;
+  const mapped: any = eligibilityData.data.map((elem: any) => ({
+    ...elem,
+    percentage: parseFloat(elem.percentage),
+  }));
+  return mapped;
 };
 
 export const getServedData = async (keys?: string[]) => {
@@ -26,5 +31,25 @@ export const getServedData = async (keys?: string[]) => {
       "Content-Type": "application/json",
     },
   });
-  return data;
+
+  const eligibilityData: any = data.data;
+  const mapped: any = eligibilityData.data.map((elem: any) => ({
+    ...elem,
+    percentage: parseFloat(elem.percentage),
+  }));
+  return mapped;
+};
+
+export const getGeographicalEligibilityData = async (keys?: string[]) => {
+  const data = await axios.get(`${baseUrl}/children/eligibility/geographical`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const geographicalEligibilityData: any = data.data;
+  const mapped: any = geographicalEligibilityData.data.map((elem: any) => ({
+    ...elem,
+    percentage: parseFloat(elem.percentage),
+  }));
+  return mapped;
 };

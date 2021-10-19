@@ -14,7 +14,7 @@ const Massachusets = {
         NAME: "Franklin",
         LSAD: "06",
         ALAND: 1811271672,
-        ELIGIBLE: 65368074,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -65,7 +65,7 @@ const Massachusets = {
         NAME: "Hampden",
         LSAD: "06",
         ALAND: 1598409204,
-        ELIGIBLE: 44293472,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -124,7 +124,7 @@ const Massachusets = {
         NAME: "Plymouth",
         LSAD: "06",
         ALAND: 1707122280,
-        ELIGIBLE: 1124387947,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -194,7 +194,7 @@ const Massachusets = {
         NAME: "Hampshire",
         LSAD: "06",
         ALAND: 1365598019,
-        ELIGIBLE: 46487557,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -252,7 +252,7 @@ const Massachusets = {
         NAME: "Norfolk",
         LSAD: "06",
         ALAND: 1025927532,
-        ELIGIBLE: 124925285,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "MultiPolygon",
@@ -326,7 +326,7 @@ const Massachusets = {
         NAME: "Suffolk",
         LSAD: "06",
         ALAND: 150881016,
-        ELIGIBLE: 160487602,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -374,7 +374,7 @@ const Massachusets = {
         NAME: "Dukes",
         LSAD: "06",
         ALAND: 267455894,
-        ELIGIBLE: 1004127633,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "MultiPolygon",
@@ -425,7 +425,7 @@ const Massachusets = {
         NAME: "Berkshire",
         LSAD: "06",
         ALAND: 2400491048,
-        ELIGIBLE: 50746697,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -471,7 +471,7 @@ const Massachusets = {
         NAME: "Nantucket",
         LSAD: "06",
         ALAND: 119431671,
-        ELIGIBLE: 667032212,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -502,7 +502,7 @@ const Massachusets = {
         NAME: "Worcester",
         LSAD: "06",
         ALAND: 3912698515,
-        ELIGIBLE: 177395253,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -575,7 +575,7 @@ const Massachusets = {
         NAME: "Essex",
         LSAD: "06",
         ALAND: 1275669707,
-        ELIGIBLE: 870068134,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -634,7 +634,7 @@ const Massachusets = {
         NAME: "Middlesex",
         LSAD: "06",
         ALAND: 2118147279,
-        ELIGIBLE: 75727649,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -702,7 +702,7 @@ const Massachusets = {
         NAME: "Bristol",
         LSAD: "06",
         ALAND: 1432602435,
-        ELIGIBLE: 357662687,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -767,7 +767,7 @@ const Massachusets = {
         NAME: "Barnstable",
         LSAD: "06",
         ALAND: 1019719638,
-        ELIGIBLE: 2361606119,
+        ELIGIBLE: 0,
       },
       geometry: {
         type: "Polygon",
@@ -831,6 +831,4 @@ const Massachusets = {
     },
   ],
 };
-;
-
 export default Massachusets;

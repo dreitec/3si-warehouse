@@ -29,3 +29,21 @@ select
             )		
 			group by month, LOAD_DT
 			order by LOAD_DT;`;
+
+// third query
+//select DATE(LOAD_DT) as date,
+//			MONTH(date) as month,
+//			YEAR(date) as year, count(CHILD_ID) as children, county from CHILDREN where month = 9 and year = 2021    group by COUNTY, month,LOAD_DT
+//			order by LOAD_DT desc;
+
+//second query
+//select		DATE(LOAD_DT) as date,
+//			MONTH(date) as month,
+//			YEAR(date) as year, count(CHILD_ID) as children, county from CHILDREN where month = 9 and year = 2021 AND PROGRAM_NAME not like 'Unserved'  group by COUNTY, month,LOAD_DT
+//			order by LOAD_DT desc;
+
+// first query
+//select		DATE(LOAD_DT) as date,
+//			MONTH(date) as month
+//			from CHILDREN
+//			order by LOAD_DT desc limit 1;

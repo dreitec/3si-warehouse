@@ -14,7 +14,11 @@ import {
   //   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
 import { Container } from "@material-ui/core";
-import { getEligibilityData, getServedData } from "../api";
+import {
+  getEligibilityData,
+  getServedData,
+  getGeographicalEligibilityData,
+} from "../api";
 import { ServerResponse } from "../../types";
 interface Props {}
 
@@ -24,17 +28,15 @@ const Homepage = (props: Props) => {
 
   const [servedData, setServedData] = React.useState();
   const [eligibilityData, setEligibilityData] = React.useState();
+  const [
+    geographicalEligibilityData,
+    setGeographicalEligibilityData,
+  ] = React.useState([]);
 
   const populateServedData = async (keys?: string[]) => {
     try {
       const response: any = await getServedData(keys);
-
-      const servedData: ServerResponse = response.data;
-      const mapped: any = servedData.data.map((elem: any) => ({
-        ...elem,
-        percentage: parseFloat(elem.percentage),
-      }));
-      setServedData(mapped);
+      setServedData(response);
     } catch (error) {
       console.log(error);
     }
@@ -43,13 +45,16 @@ const Homepage = (props: Props) => {
   const populateEligibilityData = async (keys?: string[]) => {
     try {
       const response: any = await getEligibilityData(keys);
+      setEligibilityData(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      const eligibilityData: ServerResponse = response.data;
-      const mapped: any = eligibilityData.data.map((elem: any) => ({
-        ...elem,
-        percentage: parseFloat(elem.percentage),
-      }));
-      setEligibilityData(mapped);
+  const populateGeographicalEligibilityData = async (keys?: string[]) => {
+    try {
+      const response: any = await getGeographicalEligibilityData(keys);
+      setGeographicalEligibilityData(response);
     } catch (error) {
       console.log(error);
     }
@@ -57,10 +62,8 @@ const Homepage = (props: Props) => {
 
   React.useEffect(() => {
     populateEligibilityData();
-  }, []);
-
-  React.useEffect(() => {
     populateServedData();
+    populateGeographicalEligibilityData();
   }, []);
 
   return (
@@ -117,14 +120,14 @@ const Homepage = (props: Props) => {
       </ChartContainer>
 
       <ChartContainer
-        checked={eligibilityNotation}
-        setChecked={setEligibilityNotation}
+        // checked={eligibilityNotation}
+        // setChecked={setEligibilityNotation}
         showButton={false}
-        labels={["Percent", "Number"]}
+        // labels={["Percent", "Number"]}
         title="Eligibility Geographically"
-        getData={populateEligibilityData}
+        getData={populateGeographicalEligibilityData}
       >
-        <Choropleth />
+        <Choropleth dataFromProps={geographicalEligibilityData} />
       </ChartContainer>
 
       <Container maxWidth="md">
