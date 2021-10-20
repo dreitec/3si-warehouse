@@ -120,10 +120,7 @@ const Homepage = (props: Props) => {
       </ChartContainer>
 
       <ChartContainer
-        // checked={eligibilityNotation}
-        // setChecked={setEligibilityNotation}
         showButton={false}
-        // labels={["Percent", "Number"]}
         title="Eligibility Geographically"
         getData={populateGeographicalEligibilityData}
       >

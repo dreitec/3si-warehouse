@@ -41,11 +41,15 @@ export const getServedData = async (keys?: string[]) => {
 };
 
 export const getGeographicalEligibilityData = async (keys?: string[]) => {
-  const data = await axios.get(`${baseUrl}/children/eligibility/geographical`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const querystring = getQueryString(keys);
+  const data = await axios.get(
+    `${baseUrl}/children/eligibility/geographical/${querystring}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const geographicalEligibilityData: any = data.data;
   const mapped: any = geographicalEligibilityData.data.map((elem: any) => ({
     ...elem,

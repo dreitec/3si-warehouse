@@ -39,11 +39,6 @@ export const getAllChildren = async () => {
 };
 
 export const getChildrenEligibility = async (req, res) => {
-  const db = getDb();
-  if (!db) {
-    throw new Error("Could not connect to database");
-  }
-
   let currentDate = new Date();
   const currentYear: number = currentDate.getFullYear();
   const lastYear: number = currentDate.getFullYear() - 1;
@@ -106,7 +101,6 @@ export const getChildrenEligibility = async (req, res) => {
 			order by LOAD_DT;`);
 
   const data = ConditionedResults.map((elem, index) => {
-    console.log(elem.CHILDREN, TotalRecords[index].CHILDREN, "comparison");
     return {
       percentage: (
         (elem.CHILDREN / TotalRecords[index].CHILDREN) *
@@ -185,7 +179,6 @@ export const getChildrenServed = async (req, res) => {
 			order by LOAD_DT;`);
 
   const data = ConditionedResults.map((elem, index) => {
-    console.log(elem.CHILDREN, TotalRecords[index].CHILDREN, "comparison");
     return {
       percentage: (
         (elem.CHILDREN / TotalRecords[index].CHILDREN) *
@@ -201,23 +194,46 @@ export const getChildrenServed = async (req, res) => {
 export const getGeographicalElgibility = async (req, res) => {
   let currentDate = new Date();
   const currentYear: number = currentDate.getFullYear();
+  const selectedClauses: string[] = [];
 
-  const MonthRow: any = await PormisifiedQuery(`	select		
+  const MonthRow: any = await PormisifiedQuery(`select		
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month
 			from CHILDREN
 			order by LOAD_DT desc limit 1;`);
 
+  selectedClauses.push(
+    `where month = ${MonthRow[0].MONTH} and year = ${currentYear}`
+  );
+
+  if (req.query.filter && !req.query.filter.includes("private_pay")) {
+    req.query.filter.forEach((filter: string) => {
+      if (filter === "bupk") {
+        const bupkKeys = Object.keys(ServedClauses).filter((key: string) =>
+          key.includes("bupk")
+        );
+        bupkKeys.forEach((bupkKey: string) => {
+          selectedClauses.push(ServedClauses[filter]);
+        });
+      }
+      if (ServedClauses[filter]) {
+        selectedClauses.push(ServedClauses[filter]);
+      }
+    });
+  }
+
+  const conditions = makeConditions(selectedClauses);
+  console.log(conditions, "geographical conditions");
   const ELgibileChildrenByFilters: any =
-    await PormisifiedQuery(`select		DATE(LOAD_DT) as date, 
+    await PormisifiedQuery(`select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
-			YEAR(date) as year, count(CHILD_ID) as children, county from CHILDREN where month = ${MonthRow[0].MONTH} and year = ${currentYear} AND PROGRAM_NAME not like 'Unserved'  group by COUNTY, month,LOAD_DT
+			YEAR(date) as year, count(CHILD_ID) as children, county from CHILDREN ${conditions}  AND PROGRAM_NAME not like 'Unserved'  group by COUNTY, month,LOAD_DT
 			order by LOAD_DT desc;`);
 
   const totalChildren: any = await PormisifiedQuery(`
 			select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
-			YEAR(date) as year, count(CHILD_ID) as children, county from CHILDREN where month = ${MonthRow[0].MONTH} and year = ${currentYear} group by COUNTY, month,LOAD_DT
+			YEAR(date) as year, count(CHILD_ID) as children, county from CHILDREN ${conditions}  group by COUNTY, month,LOAD_DT
 			order by LOAD_DT desc;`);
 
   const data = ELgibileChildrenByFilters.map(
