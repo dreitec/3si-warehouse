@@ -34,21 +34,8 @@ export const getOneChild = () => {
 };
 
 export const getAllChildren = async () => {
-  const db = getDb();
-  if (!db) {
-    throw new Error("Could not connect to database");
-  }
-  return new Promise((resolve, reject) => {
-    (db as any).execute({
-      sqlText: "select * from CHILDREN;",
-      complete: (err, statement, rows) => {
-        if (err) {
-          throw new Error(err);
-        }
-        resolve(rows);
-      },
-    });
-  });
+  const data = await PormisifiedQuery("select * from CHILDREN limit 100");
+  return data;
 };
 
 export const getChildrenEligibility = async (req, res) => {
@@ -56,44 +43,44 @@ export const getChildrenEligibility = async (req, res) => {
   if (!db) {
     throw new Error("Could not connect to database");
   }
-  return new Promise((resolve, reject) => {
-    let currentDate = new Date();
-    const currentYear: number = currentDate.getFullYear();
-    const lastYear: number = currentDate.getFullYear() - 1;
-    const month: number = currentDate.getMonth() + 1;
-    const selectedClauses: string[] = [];
-    if (month < 6) {
-      selectedClauses.push(
-        `where (month >= ${
-          12 - (6 - month)
-        } AND year = ${lastYear}) OR ( month <= ${month} AND year = ${currentYear})`
-      );
-    } else {
-      selectedClauses.push(
-        `where (month > ${month - 6})  AND ( year = ${currentYear})`
-      );
-    }
 
-    if (req.query.filter && !req.query.filter.includes("private_pay")) {
-      req.query.filter.forEach((filter: string) => {
-        if (filter === "bupk") {
-          const bupkKeys = Object.keys(eligibilityClauses).filter(
-            (key: string) => key.includes("bupk")
-          );
-          bupkKeys.forEach((bupkKey: string) => {
-            selectedClauses.push(eligibilityClauses[filter]);
-          });
-        }
-        if (eligibilityClauses[filter]) {
+  let currentDate = new Date();
+  const currentYear: number = currentDate.getFullYear();
+  const lastYear: number = currentDate.getFullYear() - 1;
+  const month: number = currentDate.getMonth() + 1;
+  const selectedClauses: string[] = [];
+
+  if (month < 6) {
+    selectedClauses.push(
+      `where (month >= ${
+        12 - (6 - month)
+      } AND year = ${lastYear}) OR ( month <= ${month} AND year = ${currentYear})`
+    );
+  } else {
+    selectedClauses.push(
+      `where (month > ${month - 6})  AND ( year = ${currentYear})`
+    );
+  }
+
+  if (req.query.filter && !req.query.filter.includes("private_pay")) {
+    req.query.filter.forEach((filter: string) => {
+      if (filter === "bupk") {
+        const bupkKeys = Object.keys(eligibilityClauses).filter((key: string) =>
+          key.includes("bupk")
+        );
+        bupkKeys.forEach((bupkKey: string) => {
           selectedClauses.push(eligibilityClauses[filter]);
-        }
-      });
-    }
-    const conditions = makeConditions(selectedClauses);
-    console.log(conditions, "eligibility conditions");
+        });
+      }
+      if (eligibilityClauses[filter]) {
+        selectedClauses.push(eligibilityClauses[filter]);
+      }
+    });
+  }
+  const conditions = makeConditions(selectedClauses);
+  console.log(conditions, "eligibility conditions");
 
-    (db as any).execute({
-      sqlText: `
+  const ConditionedResults: any = await PormisifiedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
@@ -102,15 +89,12 @@ export const getChildrenEligibility = async (req, res) => {
 			from CHILDREN
 			${conditions}
 			group by month, LOAD_DT
-			order by LOAD_DT;`,
-      complete: (err, statement, rows) => {
-        if (err) {
-          throw new Error(err);
-        }
-        const conditionsForTotal = [selectedClauses[0]];
-        const subConditions = makeConditions(conditionsForTotal);
-        (db as any).execute({
-          sqlText: `
+			order by LOAD_DT;`);
+
+  const conditionsForTotal = [selectedClauses[0]];
+  const subConditions = makeConditions(conditionsForTotal);
+
+  const TotalRecords: any = await PormisifiedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
@@ -119,78 +103,62 @@ export const getChildrenEligibility = async (req, res) => {
 			from CHILDREN
 			${subConditions}
 			group by month, LOAD_DT
-			order by LOAD_DT;`,
-          complete: (subErr, statement, subRow) => {
-            if (subErr) {
-              throw new Error(subErr);
-            }
-            console.log(subRow, rows, "subRow");
+			order by LOAD_DT;`);
 
-            const data = rows.map((elem, index) => {
-              console.log(elem.CHILDREN, subRow[index].CHILDREN, "comparison");
-              return {
-                percentage: (
-                  (elem.CHILDREN / subRow[index].CHILDREN) *
-                  100
-                ).toFixed(2),
-                number: elem.CHILDREN,
-                group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
-              };
-            });
-            resolve({ data });
-          },
-        });
-      },
-    });
+  const data = ConditionedResults.map((elem, index) => {
+    console.log(elem.CHILDREN, TotalRecords[index].CHILDREN, "comparison");
+    return {
+      percentage: (
+        (elem.CHILDREN / TotalRecords[index].CHILDREN) *
+        100
+      ).toFixed(2),
+      number: elem.CHILDREN,
+      group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
+    };
   });
+  return { data };
 };
 
 export const getChildrenServed = async (req, res) => {
-  const db = getDb();
-  if (!db) {
-    throw new Error("Could not connect to database");
+  const selectedClauses: string[] = [];
+
+  let currentDate = new Date();
+  const currentYear: number = currentDate.getFullYear();
+  const lastYear: number = currentDate.getFullYear() - 1;
+  const month: number = currentDate.getMonth() + 1;
+
+  if (month < 6) {
+    selectedClauses.push(
+      `where (month >= ${
+        12 - (6 - month)
+      } AND year = ${lastYear}) OR ( month <= ${month} AND year = ${currentYear})`
+    );
+  } else {
+    selectedClauses.push(
+      `where (month > ${month - 6})  AND ( year = ${currentYear})`
+    );
   }
 
-  return new Promise((resolve, reject) => {
-    const selectedClauses: string[] = [];
-
-    let currentDate = new Date();
-    const currentYear: number = currentDate.getFullYear();
-    const lastYear: number = currentDate.getFullYear() - 1;
-    const month: number = currentDate.getMonth() + 1;
-
-    if (month < 6) {
-      selectedClauses.push(
-        `where (month >= ${
-          12 - (6 - month)
-        } AND year = ${lastYear}) OR ( month <= ${month} AND year = ${currentYear})`
-      );
-    } else {
-      selectedClauses.push(
-        `where (month > ${month - 6})  AND ( year = ${currentYear})`
-      );
-    }
-
-    if (req.query.filter && !req.query.filter.includes("private_pay")) {
-      req.query.filter.forEach((filter: string) => {
-        if (filter === "bupk") {
-          const bupkKeys = Object.keys(ServedClauses).filter((key: string) =>
-            key.includes("bupk")
-          );
-          bupkKeys.forEach((bupkKey: string) => {
-            selectedClauses.push(ServedClauses[filter]);
-          });
-        }
-        if (ServedClauses[filter]) {
+  if (req.query.filter && !req.query.filter.includes("private_pay")) {
+    req.query.filter.forEach((filter: string) => {
+      if (filter === "bupk") {
+        const bupkKeys = Object.keys(ServedClauses).filter((key: string) =>
+          key.includes("bupk")
+        );
+        bupkKeys.forEach((bupkKey: string) => {
           selectedClauses.push(ServedClauses[filter]);
-        }
-      });
-    }
+        });
+      }
+      if (ServedClauses[filter]) {
+        selectedClauses.push(ServedClauses[filter]);
+      }
+    });
+  }
 
-    const conditions = makeConditions(selectedClauses);
-    console.log(conditions, "served conditions");
-    (db as any).execute({
-      sqlText: `
+  const conditions = makeConditions(selectedClauses);
+  console.log(conditions, "served conditions");
+
+  const ConditionedResults: any = await PormisifiedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
@@ -200,15 +168,12 @@ export const getChildrenServed = async (req, res) => {
 			${conditions}
             AND PROGRAM_NAME not like 'Unserved'
 			group by month, LOAD_DT
-			order by LOAD_DT;`,
-      complete: (err, statement, rows) => {
-        if (err) {
-          throw new Error(err);
-        }
-        const conditionsForTotal = [selectedClauses[0]];
-        const subConditions = makeConditions(conditionsForTotal);
-        (db as any).execute({
-          sqlText: `
+			order by LOAD_DT;`);
+
+  const conditionsForTotal = [selectedClauses[0]];
+  const subConditions = makeConditions(conditionsForTotal);
+
+  const TotalRecords: any = await PormisifiedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
@@ -217,199 +182,81 @@ export const getChildrenServed = async (req, res) => {
 			from CHILDREN
 			${subConditions}
 			group by month, LOAD_DT
-			order by LOAD_DT;`,
-          complete: (subErr, statement, subRow) => {
-            if (subErr) {
-              throw new Error(subErr);
-            }
-            console.log(subRow, rows, "subRow");
+			order by LOAD_DT;`);
 
-            const data = rows.map((elem, index) => {
-              console.log(elem.CHILDREN, subRow[index].CHILDREN, "comparison");
-              return {
-                percentage: (
-                  (elem.CHILDREN / subRow[index].CHILDREN) *
-                  100
-                ).toFixed(2),
-                number: elem.CHILDREN,
-                group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
-              };
-            });
-            resolve({ data });
-          },
-        });
-      },
-    });
+  const data = ConditionedResults.map((elem, index) => {
+    console.log(elem.CHILDREN, TotalRecords[index].CHILDREN, "comparison");
+    return {
+      percentage: (
+        (elem.CHILDREN / TotalRecords[index].CHILDREN) *
+        100
+      ).toFixed(2),
+      number: elem.CHILDREN,
+      group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
+    };
   });
-};
-
-export const getElgibility = async (req, res) => {
-  const db = getDb();
-  if (!db) {
-    throw new Error("Could not connect to database");
-  }
-
-  return new Promise((resolve, reject) => {
-    const selectedClauses: string[] = [];
-
-    let currentDate = new Date();
-    const currentYear: number = currentDate.getFullYear();
-    const lastYear: number = currentDate.getFullYear() - 1;
-    const month: number = currentDate.getMonth() + 1;
-
-    if (month < 6) {
-      selectedClauses.push(
-        `where (month >= ${
-          12 - (6 - month)
-        } AND year = ${lastYear}) OR ( month <= ${month} AND year = ${currentYear})`
-      );
-    } else {
-      selectedClauses.push(
-        `where (month > ${month - 6})  AND ( year = ${currentYear})`
-      );
-    }
-
-    if (req.query.filter && !req.query.filter.includes("private_pay")) {
-      req.query.filter.forEach((filter: string) => {
-        if (filter === "bupk") {
-          const bupkKeys = Object.keys(ServedClauses).filter((key: string) =>
-            key.includes("bupk")
-          );
-          bupkKeys.forEach((bupkKey: string) => {
-            selectedClauses.push(ServedClauses[filter]);
-          });
-        }
-        if (ServedClauses[filter]) {
-          selectedClauses.push(ServedClauses[filter]);
-        }
-      });
-    }
-
-    const conditions = makeConditions(selectedClauses);
-    console.log(conditions, "served conditions");
-    (db as any).execute({
-      sqlText: `
-			select  
-			DATE(LOAD_DT) as date, 
-			MONTH(date) as month, 
-			YEAR(date) as year,
-			count(CHILD_ID) as children 
-			from CHILDREN 
-			${conditions}
-            AND PROGRAM_NAME not like 'Unserved'
-			group by month, LOAD_DT
-			order by LOAD_DT;`,
-      complete: (err, statement, rows) => {
-        if (err) {
-          throw new Error(err);
-        }
-        const conditionsForTotal = [selectedClauses[0]];
-        const subConditions = makeConditions(conditionsForTotal);
-        (db as any).execute({
-          sqlText: `
-			select  
-			DATE(LOAD_DT) as date, 
-			MONTH(date) as month, 
-			YEAR(date) as year,
-			count(CHILD_ID) as children 
-			from CHILDREN
-			${subConditions}
-			group by month, LOAD_DT
-			order by LOAD_DT;`,
-          complete: (subErr, statement, subRow) => {
-            if (subErr) {
-              throw new Error(subErr);
-            }
-            console.log(subRow, rows, "subRow");
-
-            const data = rows.map((elem, index) => {
-              console.log(elem.CHILDREN, subRow[index].CHILDREN, "comparison");
-              return {
-                percentage: (
-                  (elem.CHILDREN * 100) /
-                  subRow[index].CHILDREN
-                ).toFixed(2),
-                number: elem.CHILDREN,
-                group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
-              };
-            });
-            resolve({ data });
-          },
-        });
-      },
-    });
-  });
+  return { data };
 };
 
 export const getGeographicalElgibility = async (req, res) => {
-  const db = getDb();
-  if (!db) {
-    throw new Error("Could not connect to database");
-  }
   let currentDate = new Date();
   const currentYear: number = currentDate.getFullYear();
-  return new Promise((resolve, reject) => {
-    (db as any).execute({
-      sqlText: `
-			select		
+
+  const MonthRow: any = await PormisifiedQuery(`	select		
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month
 			from CHILDREN
-			order by LOAD_DT desc limit 1;`,
-      complete: (err, statement, MonthRow) => {
-        if (err) {
-          console.log(err);
-          throw new Error(err);
-        }
-        console.log(MonthRow);
+			order by LOAD_DT desc limit 1;`);
 
-        (db as any).execute({
-          sqlText: `
-select		DATE(LOAD_DT) as date, 
+  const ELgibileChildrenByFilters: any =
+    await PormisifiedQuery(`select		DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
 			YEAR(date) as year, count(CHILD_ID) as children, county from CHILDREN where month = ${MonthRow[0].MONTH} and year = ${currentYear} AND PROGRAM_NAME not like 'Unserved'  group by COUNTY, month,LOAD_DT
-			order by LOAD_DT desc;`,
-          complete: (err, statement, calculatedRows) => {
-            if (err) {
-              console.log(err);
-              throw new Error(err);
-            }
+			order by LOAD_DT desc;`);
 
-            (db as any).execute({
-              sqlText: `
+  const totalChildren: any = await PormisifiedQuery(`
 			select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
 			YEAR(date) as year, count(CHILD_ID) as children, county from CHILDREN where month = ${MonthRow[0].MONTH} and year = ${currentYear} group by COUNTY, month,LOAD_DT
-			order by LOAD_DT desc;`,
-              complete: (err, statement, rows) => {
-                if (err) {
-                  console.log(err);
-                  throw new Error(err);
-                }
-                const data = calculatedRows.map(
-                  (calculatedRow: any, index: number) => {
-                    const TotalObj = rows.find(
-                      (elem) => elem.COUNTY === calculatedRow.COUNTY
-                    );
-                    return {
-                      ...calculatedRow,
-                      totalChild: rows[index].CHILDREN,
-                      percentage: (
-                        (calculatedRow.CHILDREN / TotalObj.CHILDREN) *
-                        100
-                      ).toFixed(2),
-                    };
-                  }
-                );
-                resolve({ data, calculatedRows, rows });
-              },
-            });
-          },
-        });
+			order by LOAD_DT desc;`);
+
+  const data = ELgibileChildrenByFilters.map(
+    (calculatedRow: any, index: number) => {
+      const TotalObj = totalChildren.find(
+        (elem) => elem.COUNTY === calculatedRow.COUNTY
+      );
+      return {
+        ...calculatedRow,
+        totalChild: totalChildren[index].CHILDREN,
+        percentage: (
+          (calculatedRow.CHILDREN / TotalObj.CHILDREN) *
+          100
+        ).toFixed(2),
+      };
+    }
+  );
+  return { data };
+};
+
+const PormisifiedQuery = (query) =>
+  new Promise((resolve, reject) => {
+    const db = getDb();
+    if (!db) {
+      reject("Could not connect to database");
+    }
+
+    (db as any).execute({
+      sqlText: query,
+      complete: (err, statement, rows) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        }
+
+        resolve(rows);
       },
     });
   });
-};
 
 const makeConditions = (clauses: string[]): string => {
   let conditions = ``;
