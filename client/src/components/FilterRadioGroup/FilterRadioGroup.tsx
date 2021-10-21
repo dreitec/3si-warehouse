@@ -1,38 +1,49 @@
 import React from "react";
 import "./FilterRadioGroup.css";
 
-const FilterRadioGroup = () => {
-  const [value, setValue] = React.useState("program");
+export interface Option {
+  text: string;
+  value: string;
+}
+
+interface Props {
+  options: Option[];
+  selected: string;
+  setSelected: Function;
+  name: string;
+}
+const FilterRadioGroup = (props: Props) => {
+  const { selected, setSelected, options, name } = props;
   return (
     <div className="radio-group">
-      <input
-        id="toggle-on"
-        className="toggle toggle-left"
-        name="selector"
-        value="program"
-        type="radio"
-        onChange={() => {
-          setValue("program");
-        }}
-        checked={value === "program"}
-      />
-      <label htmlFor="toggle-on" className="btn">
-        Program Types
-      </label>
-      <input
-        id="toggle-off"
-        className="toggle toggle-right"
-        name="selector"
-        value="other"
-        type="radio"
-        onChange={() => {
-          setValue("other");
-        }}
-        checked={value === "other"}
-      />
-      <label htmlFor="toggle-off" className="btn">
-        Other Filters
-      </label>
+      {options.map((option: Option) => {
+        return (
+          <div
+            className="input-div"
+            style={{ width: `${(1 / options.length) * 100}%` }}
+            onClick={() => {
+              console.log("clicked div", option.value);
+              setSelected(option.value);
+            }}
+            key={option.value}
+          >
+            <input
+              id="toggle-on"
+              className="toggle toggle-left"
+              name={name}
+              value={option.value}
+              type="radio"
+              checked={selected === option.value}
+              onChange={() => {
+                setSelected(option.value);
+              }}
+            />
+            <label htmlFor={name} className="btn">
+              {option.text}
+            </label>
+          </div>
+        );
+      })}
     </div>
   );
 };

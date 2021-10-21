@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  Description,
-  TabBox,
-  ChartContainer,
-  LineChart,
-  Choropleth,
-} from "../components";
+import { Description, TabBox, ChartContainer, LineChart } from "../components";
+import { GeographicalEligibilitySection } from "../Sections";
 import {
   PeopleOutline as PeopleOutlineIcon,
   PieChart as PieChartIcon,
@@ -14,24 +9,14 @@ import {
   //   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
 import { Container } from "@material-ui/core";
-import {
-  getEligibilityData,
-  getServedData,
-  getGeographicalEligibilityData,
-} from "../api";
-import { ServerResponse } from "../../types";
-interface Props {}
+import { getEligibilityData, getServedData } from "../api";
 
-const Homepage = (props: Props) => {
+const Homepage = () => {
   const [eligibilityNotation, setEligibilityNotation] = React.useState(false);
   const [servedNotation, setservedNotation] = React.useState(false);
 
   const [servedData, setServedData] = React.useState();
   const [eligibilityData, setEligibilityData] = React.useState();
-  const [
-    geographicalEligibilityData,
-    setGeographicalEligibilityData,
-  ] = React.useState([]);
 
   const populateServedData = async (keys?: string[]) => {
     try {
@@ -51,19 +36,9 @@ const Homepage = (props: Props) => {
     }
   };
 
-  const populateGeographicalEligibilityData = async (keys?: string[]) => {
-    try {
-      const response: any = await getGeographicalEligibilityData(keys);
-      setGeographicalEligibilityData(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   React.useEffect(() => {
     populateEligibilityData();
     populateServedData();
-    populateGeographicalEligibilityData();
   }, []);
 
   return (
@@ -106,7 +81,7 @@ const Homepage = (props: Props) => {
           nulla.
         </Description>
       </Container>
-      <ChartContainer
+      {/* <ChartContainer
         checked={eligibilityNotation}
         setChecked={setEligibilityNotation}
         labels={["Percent", "Number"]}
@@ -117,15 +92,9 @@ const Homepage = (props: Props) => {
           keyName={eligibilityNotation ? "number" : "percentage"}
           dataFromProps={eligibilityData}
         />
-      </ChartContainer>
+      </ChartContainer> */}
 
-      <ChartContainer
-        showButton={false}
-        title="Eligibility Geographically"
-        getData={populateGeographicalEligibilityData}
-      >
-        <Choropleth dataFromProps={geographicalEligibilityData} />
-      </ChartContainer>
+      <GeographicalEligibilitySection />
 
       <Container maxWidth="md">
         <Description
@@ -148,7 +117,7 @@ const Homepage = (props: Props) => {
           nulla.
         </Description>
       </Container>
-      <ChartContainer
+      {/* <ChartContainer
         checked={servedNotation}
         setChecked={setservedNotation}
         labels={["Percent", "Number"]}
@@ -159,7 +128,7 @@ const Homepage = (props: Props) => {
           keyName={servedNotation ? "number" : "percentage"}
           dataFromProps={servedData}
         />
-      </ChartContainer>
+      </ChartContainer> */}
     </div>
   );
 };

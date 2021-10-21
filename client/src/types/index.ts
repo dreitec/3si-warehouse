@@ -13,3 +13,17 @@ export interface EligibilityData {
 export interface ServerResponse {
   data: ServedData[] | EligibilityData[];
 }
+
+export interface Filters {
+  [key: string]: boolean;
+}
+
+export interface Option {
+  value: string;
+  text: string;
+}
+
+export interface GeographicalEligibilityState {
+  geographicalEligibilityFilters: Filters;
+  selectedOption: string;
+}

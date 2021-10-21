@@ -90,11 +90,17 @@ function flat(array: any) {
 
 interface Props {
   getData: Function;
+  createCheckData: Function;
+  state: any;
+  setState: Function;
 }
 
 export default function IndeterminateCheckbox(props: Props) {
-  const { getData } = props;
-  const [state, setState] = React.useState(makeState(data));
+  const { getData, createCheckData, state, setState } = props;
+
+  React.useEffect(() => {
+    createCheckData(makeState(data));
+  }, []);
 
   const handleChange = (obj: any) => {
     const { children }: any = obj || {};
@@ -111,7 +117,7 @@ export default function IndeterminateCheckbox(props: Props) {
         }
       });
     }
-    setState({ ...state, [obj.key]: !state[obj.key], ...allChildren });
+    setState({ [obj.key]: !state[obj.key], ...allChildren });
   };
 
   const checkIfChildrenChecked = (obj: any) => {

@@ -13,7 +13,7 @@ const ContainerStyled = styled(Container)(() => ({
 }));
 const Legend = (props: Props) => {
   const { name, stops, lastValue } = props;
-  console.log(stops);
+  //   console.log(stops);
   const ranges = [
     `${stops[0][0]} -${stops[1][0] - 1}`,
     `${stops[1][0]}-${stops[2][0] - 1}`,

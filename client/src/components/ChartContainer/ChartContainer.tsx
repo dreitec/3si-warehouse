@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Grid, styled, GridProps, Typography } from "@mui/material";
 import { Switch, FilterRadioGroup, FilterCheckboxes } from "../";
 
@@ -33,6 +34,9 @@ interface ContainerProps extends GridProps {
   title: string;
   getData: Function;
   showButton?: boolean;
+  createCheckData: Function;
+  checkBoxesState: any;
+  setCheckBoxState: Function;
 }
 
 const renderSwitch = (
@@ -44,6 +48,8 @@ const renderSwitch = (
 };
 
 const ChartContainer = (props: ContainerProps) => {
+  const [selected, setSelected] = useState("program");
+
   const {
     children,
     labels = [],
@@ -52,7 +58,11 @@ const ChartContainer = (props: ContainerProps) => {
     title,
     getData,
     showButton = true,
+    createCheckData,
+    checkBoxesState,
+    setCheckBoxState,
   } = props;
+
   return (
     <StyledMainContainer container>
       <Grid container>
@@ -72,8 +82,21 @@ const ChartContainer = (props: ContainerProps) => {
           {children}
         </StyledChartItemContainer>
         <StyledCheckBoxesContainer item xs={4}>
-          <FilterRadioGroup />
-          <FilterCheckboxes getData={getData} />
+          <FilterRadioGroup
+            name={`filtertype-${title.replace(/ /g, "")}`}
+            options={[
+              { value: "program", text: "Program Types" },
+              { value: "other", text: "Other Types" },
+            ]}
+            selected={selected}
+            setSelected={setSelected}
+          />
+          <FilterCheckboxes
+            getData={getData}
+            createCheckData={createCheckData}
+            state={checkBoxesState}
+            setState={setCheckBoxState}
+          />
         </StyledCheckBoxesContainer>
       </Grid>
     </StyledMainContainer>

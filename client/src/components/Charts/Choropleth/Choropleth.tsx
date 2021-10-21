@@ -2,17 +2,29 @@ import React, { useRef, useEffect, useState } from "react";
 
 import mapboxgl from "mapbox-gl";
 import "./Chloropleth.css";
-import Massachusets from "./data/Masschusets";
+import Counties from "./Geojsons/Counties";
+
 import Legend from "./Legend/Legend";
-import { styled } from "@mui/material";
+import { styled, Container } from "@mui/material";
+
+import { FilterRadioGroup } from "../../";
 
 const StyledContainer = styled("div")(() => ({
   position: "relative",
 }));
 
+const StyledRadioContainer = styled("div")(() => ({
+  position: "absolute",
+  width: "60%",
+  top: "70px",
+  zIndex: 1,
+}));
+
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY || "NA";
 interface Props {
   dataFromProps: any;
+  selectedRadioOption: string;
+  selectRadioOption: Function;
 }
 
 const colors = ["#afc5ff", "#376eff", "#1c3780"];
@@ -22,11 +34,11 @@ const getStops = (data: any) => {
   data.forEach((elem: any) => {
     all.push(elem.percentage);
   });
-  console.log(all, "all before sort");
+  //   console.log(all, "all before sort");
   all.sort();
   all[0] = Math.floor(all[0]);
   all[all.length - 1] = Math.ceil(all[all.length - 1]);
-  console.log(all, "all");
+  //   console.log(all, "all");
   const mid = Math.floor((all[0] + all[all.length - 1]) / 2);
   const lowerMid = Math.floor((all[0] + mid) / 2);
   const upperMid = Math.floor((all[all.length - 1] + mid) / 2);
@@ -35,12 +47,12 @@ const getStops = (data: any) => {
     [lowerMid, colors[1]],
     [upperMid, colors[2]],
   ];
-  console.log(stops);
+  //   console.log(stops);
   return { stops, lastValue: Math.ceil(all[all.length - 1]) };
 };
 
 const Choropleth = (props: Props) => {
-  const { dataFromProps } = props;
+  const { dataFromProps, selectedRadioOption, selectRadioOption } = props;
   const mapContainer = useRef(null);
   const map: any = useRef(null);
   const [lng, setLng] = useState(-71.9143);
@@ -52,22 +64,18 @@ const Choropleth = (props: Props) => {
     [-1, "#FAF"],
   ]);
   const [lastValue, setLastValue] = useState(31);
-  //   const bounds = [
-  //     [-73.264263, 42.7414], // Southwest coordinates
-  //     [-69.872966, 41.25932],
-  //   ];
+
+  const RadioOptions = [
+    { value: "county", text: "By County" },
+    { value: "region", text: "By Region" },
+    { value: "census", text: "By Census" },
+  ];
+
+  const GeoJsonSource = Counties;
 
   const options = {
     name: "% Children Eligible",
     property: "ELIGIBLE",
-    // [
-    //   [0, "#d7e2ff"],
-    //   [10, "#afc5ff"],
-    //   [20, "#87a8ff"],
-    //   [30, "#376eff"],
-    //   [40, "#274db3"],
-    //   [50, "#1c3780"],
-    // ],
   };
   useEffect(() => {
     if (map.current) return;
@@ -87,10 +95,10 @@ const Choropleth = (props: Props) => {
   }, []);
 
   /**
-   * manipulate massachusets geojson to add your data and use it as source
+   * manipulate massachusets geojson to add your data and use it as GeoJsonSource
    */
   const makeSource = () => {
-    const defaultFeatures = Massachusets.features;
+    const defaultFeatures = GeoJsonSource.features;
     const newFeatures: any[] = [];
     dataFromProps.forEach((data: any) => {
       let feature = defaultFeatures.find(
@@ -105,8 +113,8 @@ const Choropleth = (props: Props) => {
       };
       newFeatures.push(feature);
     });
-    Massachusets.features = newFeatures;
-    AddSource(Massachusets);
+    GeoJsonSource.features = newFeatures;
+    AddSource(GeoJsonSource);
   };
 
   /**
@@ -118,7 +126,7 @@ const Choropleth = (props: Props) => {
     setLastValue(getStops(dataFromProps).lastValue);
   }, [dataFromProps]);
   /**
-   * once stops are loaded make source
+   * once stops are loaded make GeoJsonSource
    */
   useEffect(() => {
     if (stops[0][0] !== -1) makeSource();
@@ -148,15 +156,19 @@ const Choropleth = (props: Props) => {
       stops,
     });
   };
-  //   if (map && map.current) {
-  //     console.log(map.current.setPaintProperty("county", "fill-color"));
-  //   }
+  //   console.log(selected, "selecteled");
   return (
     <StyledContainer>
-      {/* <div className="sidebar">
-        Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
-      </div> */}
-
+      <StyledRadioContainer>
+        <Container>
+          <FilterRadioGroup
+            name="graphtype"
+            options={RadioOptions}
+            selected={selectedRadioOption}
+            setSelected={selectRadioOption}
+          />
+        </Container>
+      </StyledRadioContainer>
       <div ref={mapContainer} className="map-container" />
       <Legend name={options.name} stops={stops} lastValue={lastValue} />
     </StyledContainer>
