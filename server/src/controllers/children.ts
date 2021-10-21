@@ -35,10 +35,12 @@ export const getOneChild = () => {
 
 export const getAllChildren = async () => {
   const data = await PormisifiedQuery("select * from CHILDREN limit 100");
+
   return data;
 };
 
 export const getChildrenEligibility = async (req, res) => {
+  // get date data to get records of past 6 months
   let currentDate = new Date();
   const currentYear: number = currentDate.getFullYear();
   const lastYear: number = currentDate.getFullYear() - 1;
@@ -57,12 +59,14 @@ export const getChildrenEligibility = async (req, res) => {
     );
   }
 
+  // make conditions array based on query parameters
   if (req.query.filter && !req.query.filter.includes("private_pay")) {
     req.query.filter.forEach((filter: string) => {
       if (filter === "bupk") {
         const bupkKeys = Object.keys(eligibilityClauses).filter((key: string) =>
           key.includes("bupk")
         );
+
         bupkKeys.forEach((bupkKey: string) => {
           selectedClauses.push(eligibilityClauses[filter]);
         });
@@ -74,7 +78,7 @@ export const getChildrenEligibility = async (req, res) => {
   }
   const conditions = makeConditions(selectedClauses);
   console.log(conditions, "eligibility conditions");
-
+  // get eligible children
   const ConditionedResults: any = await PormisifiedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
@@ -86,6 +90,7 @@ export const getChildrenEligibility = async (req, res) => {
 			group by month, LOAD_DT
 			order by LOAD_DT;`);
 
+  // get total children
   const conditionsForTotal = [selectedClauses[0]];
   const subConditions = makeConditions(conditionsForTotal);
 
@@ -100,6 +105,7 @@ export const getChildrenEligibility = async (req, res) => {
 			group by month, LOAD_DT
 			order by LOAD_DT;`);
 
+  // calculate percentage of eligible children
   const data = ConditionedResults.map((elem, index) => {
     return {
       percentage: (
@@ -110,12 +116,13 @@ export const getChildrenEligibility = async (req, res) => {
       group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
     };
   });
+
   return { data };
 };
 
 export const getChildrenServed = async (req, res) => {
   const selectedClauses: string[] = [];
-
+  // get date data to get records of past 6 months
   let currentDate = new Date();
   const currentYear: number = currentDate.getFullYear();
   const lastYear: number = currentDate.getFullYear() - 1;
@@ -133,6 +140,7 @@ export const getChildrenServed = async (req, res) => {
     );
   }
 
+  // make conditions array based on query parameters
   if (req.query.filter && !req.query.filter.includes("private_pay")) {
     req.query.filter.forEach((filter: string) => {
       if (filter === "bupk") {
@@ -152,6 +160,7 @@ export const getChildrenServed = async (req, res) => {
   const conditions = makeConditions(selectedClauses);
   console.log(conditions, "served conditions");
 
+  // get eligible children
   const ConditionedResults: any = await PormisifiedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
@@ -167,6 +176,7 @@ export const getChildrenServed = async (req, res) => {
   const conditionsForTotal = [selectedClauses[0]];
   const subConditions = makeConditions(conditionsForTotal);
 
+  // get total children
   const TotalRecords: any = await PormisifiedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
@@ -178,6 +188,7 @@ export const getChildrenServed = async (req, res) => {
 			group by month, LOAD_DT
 			order by LOAD_DT;`);
 
+  // calculate percentage of eligible children
   const data = ConditionedResults.map((elem, index) => {
     return {
       percentage: (
@@ -188,6 +199,7 @@ export const getChildrenServed = async (req, res) => {
       group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
     };
   });
+
   return { data };
 };
 
@@ -196,12 +208,14 @@ export const getGeographicalElgibility = async (req, res) => {
   const currentYear: number = currentDate.getFullYear();
   const selectedClauses: string[] = [];
 
+  // get latest month data was entered for
   const MonthRow: any = await PormisifiedQuery(`select		
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month
 			from CHILDREN
 			order by LOAD_DT desc limit 1;`);
 
+  // build where conditions
   selectedClauses.push(
     `where month = ${MonthRow[0].MONTH} and year = ${currentYear}`
   );
@@ -227,25 +241,27 @@ export const getGeographicalElgibility = async (req, res) => {
     region: "EEC_REGIONNAME",
   };
   const GROUPBY = GROUPARR[req.query.groupBy];
-  console.log(GROUPBY, req.query.groupBy, "GROUPBY");
+
   const conditions = makeConditions(selectedClauses);
-  console.log(conditions, "geographical conditions");
+
+  // get eligible children
   const ELgibileChildrenByFilters: any =
     await PormisifiedQuery(`select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
 			YEAR(date) as year, count(CHILD_ID) as children, ${GROUPBY} from CHILDREN ${conditions}  AND PROGRAM_NAME not like 'Unserved'  group by ${GROUPBY}, month,LOAD_DT
 			order by LOAD_DT desc;`);
-
+  // get all children
   const totalChildren: any = await PormisifiedQuery(`
 			select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
 			YEAR(date) as year, count(CHILD_ID) as children, ${GROUPBY} from CHILDREN ${conditions}  group by ${GROUPBY}, month,LOAD_DT
 			order by LOAD_DT desc;`);
 
+  // calculate percentage of eligible children
   const data = ELgibileChildrenByFilters.map(
     (calculatedRow: any, index: number) => {
       const TotalObj = totalChildren.find(
-        (elem) => elem.COUNTY === calculatedRow.COUNTY
+        (elem) => elem[GROUPBY] === calculatedRow[GROUPBY]
       );
       return {
         ...calculatedRow,
@@ -257,9 +273,15 @@ export const getGeographicalElgibility = async (req, res) => {
       };
     }
   );
+
   return { data };
 };
 
+/**
+ * Promisify snowflake queries to use cleaner async/await syntax
+ * @param query - sql query
+ * @returns - Results of query
+ */
 const PormisifiedQuery = (query) =>
   new Promise((resolve, reject) => {
     const db = getDb();
@@ -279,7 +301,11 @@ const PormisifiedQuery = (query) =>
       },
     });
   });
-
+/**
+ * Helper function to make where part of query using conditions in an array
+ * @param clauses : array containing conditions
+ * @returns - WHERE part of sql query
+ */
 const makeConditions = (clauses: string[]): string => {
   let conditions = ``;
   clauses.forEach((elem, index) => {
@@ -293,5 +319,6 @@ const makeConditions = (clauses: string[]): string => {
       conditions = `${conditions} ${elem} OR `;
     }
   });
+
   return conditions;
 };
