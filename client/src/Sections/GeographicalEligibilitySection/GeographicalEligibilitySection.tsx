@@ -4,7 +4,6 @@ import { getGeographicalEligibilityData } from "../../api";
 import { GeographicalEligibilityReducer } from "../../state";
 import { GeographicalEligibilityState } from "../../types";
 import {
-  CREATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS,
   UPDATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS,
   UPDATE_GEOGRAPHICAL_ELIGIBILITY_BY_TYPE,
 } from "../../state/types";
