@@ -34,7 +34,7 @@ interface ContainerProps extends GridProps {
   title: string;
   getData: Function;
   showButton?: boolean;
-  createCheckData: Function;
+  checkBoxTree: any[];
   checkBoxesState: any;
   setCheckBoxState: Function;
 }
@@ -58,7 +58,7 @@ const ChartContainer = (props: ContainerProps) => {
     title,
     getData,
     showButton = true,
-    createCheckData,
+    checkBoxTree,
     checkBoxesState,
     setCheckBoxState,
   } = props;
@@ -93,7 +93,7 @@ const ChartContainer = (props: ContainerProps) => {
           />
           <FilterCheckboxes
             getData={getData}
-            createCheckData={createCheckData}
+            data={checkBoxTree}
             state={checkBoxesState}
             setState={setCheckBoxState}
           />

@@ -68,39 +68,15 @@ interface child {
   children?: any;
 }
 
-const makeState = (checkBoxData: any[]) => {
-  const flattened: child[] = flat(checkBoxData);
-  const stateData: any = {};
-  flattened.forEach((elem: child) => {
-    stateData[elem.key] = true;
-  });
-  return stateData;
-};
-
-function flat(array: any) {
-  let result: child[] = [];
-  array.forEach(function (a: any) {
-    result.push(a);
-    if (Array.isArray(a.children)) {
-      result = result.concat(flat(a.children));
-    }
-  });
-  return result;
-}
-
 interface Props {
   getData: Function;
-  createCheckData: Function;
   state: any;
   setState: Function;
+  data: any[];
 }
 
 export default function IndeterminateCheckbox(props: Props) {
-  const { getData, createCheckData, state, setState } = props;
-
-  React.useEffect(() => {
-    createCheckData(makeState(data));
-  }, []);
+  const { getData, state, setState, data } = props;
 
   const handleChange = (obj: any) => {
     const { children }: any = obj || {};

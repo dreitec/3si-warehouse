@@ -8,6 +8,10 @@ import {
   UPDATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS,
   UPDATE_GEOGRAPHICAL_ELIGIBILITY_BY_TYPE,
 } from "../../state/types";
+import {
+  StateObject as SelectedOptionsStateObject,
+  CheckBoxTree,
+} from "../../Constants/ProgramAndOtherChecks";
 interface Props {}
 
 const GeographicalELigibility = (props: Props) => {
@@ -26,7 +30,7 @@ const GeographicalELigibility = (props: Props) => {
   };
 
   const initialArg: GeographicalEligibilityState = {
-    geographicalEligibilityFilters: {},
+    geographicalEligibilityFilters: SelectedOptionsStateObject,
     selectedOption: "county",
   };
 
@@ -34,7 +38,7 @@ const GeographicalELigibility = (props: Props) => {
     GeographicalEligibilityReducer,
     initialArg
   );
-
+  console.log(state, "hello");
   useEffect(() => {
     populateGeographicalEligibilityData();
   }, []);
@@ -44,9 +48,7 @@ const GeographicalELigibility = (props: Props) => {
       showButton={false}
       title="Eligibility Geographically"
       getData={populateGeographicalEligibilityData}
-      createCheckData={(payload: any) =>
-        dispatch({ type: CREATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS, payload })
-      }
+      checkBoxTree={CheckBoxTree}
       checkBoxesState={state.geographicalEligibilityFilters}
       setCheckBoxState={(payload: any) =>
         dispatch({ type: UPDATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS, payload })
