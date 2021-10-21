@@ -1,10 +1,14 @@
 import React from "react";
 import { Container, Grid, styled } from "@mui/material";
 import { Typography } from "@material-ui/core";
+
+interface Range {
+  color: string;
+  text: string;
+}
 interface Props {
   name: string;
-  stops: any[][];
-  lastValue: number;
+  ranges: Range[];
 }
 
 const ContainerStyled = styled(Container)(() => ({
@@ -12,29 +16,25 @@ const ContainerStyled = styled(Container)(() => ({
   top: "470px",
 }));
 const Legend = (props: Props) => {
-  const { name, stops, lastValue } = props;
-  //   console.log(stops);
-  const ranges = [
-    `${stops[0][0]} -${stops[1][0] - 1}`,
-    `${stops[1][0]}-${stops[2][0] - 1}`,
-    `${stops[2][0]}-${lastValue}`,
-  ];
-
-  const renderLegendKeys = (stop: any[], i: number) => {
+  const { name, ranges } = props;
+  console.log(ranges, "ranges in legend");
+  const renderLegendKeys = (range: Range) => {
     return (
-      <div key={i}>
+      <div key={range.text}>
         <span
           style={{
-            backgroundColor: stop[1],
+            backgroundColor: range.color,
             display: "inline-block",
             padding: 8,
           }}
         >
-          {ranges[i]}
+          {range.text}
         </span>
       </div>
     );
   };
+
+  React.useEffect(() => {}, [ranges]);
 
   return (
     <ContainerStyled>
@@ -42,7 +42,7 @@ const Legend = (props: Props) => {
         <Grid item xs={12}>
           <Typography variant="h6">{name}</Typography>
         </Grid>
-        <Grid container>{stops.map(renderLegendKeys)}</Grid>
+        <Grid container>{ranges.map(renderLegendKeys)}</Grid>
       </Grid>
     </ContainerStyled>
   );

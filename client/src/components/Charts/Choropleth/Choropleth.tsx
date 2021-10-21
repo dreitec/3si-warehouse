@@ -29,9 +29,9 @@ interface Props {
   selectedType: string;
 }
 
-const colors = ["#afc5ff", "#376eff", "#1c3780"];
+const colors = ["#afc5ff", "#739aff", "#376eff", "#214299"];
 
-const getStops = (data: any) => {
+const getSteps = (data: any) => {
   const all: any[] = [];
   data.forEach((elem: any) => {
     all.push(elem.percentage);
@@ -44,13 +44,30 @@ const getStops = (data: any) => {
   const mid = Math.floor((all[0] + all[all.length - 1]) / 2);
   const lowerMid = Math.floor((all[0] + mid) / 2);
   const upperMid = Math.floor((all[all.length - 1] + mid) / 2);
-  const stops = [
-    [Math.floor(all[0]), colors[0]],
-    [lowerMid, colors[1]],
-    [upperMid, colors[2]],
+  const steps = [
+    "step",
+    ["get", "ELIGIBLE"],
+    colors[0],
+    lowerMid,
+    colors[1],
+    mid,
+    colors[2],
+    upperMid,
+    colors[3],
   ];
-  //   console.log(stops);
-  return { stops, lastValue: Math.ceil(all[all.length - 1]) };
+  //   console.log(steps);
+  return {
+    steps,
+    ranges: [
+      { color: colors[0], text: `${all[0]}-${lowerMid - 1}` },
+      { color: colors[1], text: `${lowerMid}-${mid - 1}` },
+      { color: colors[2], text: `${mid}-${upperMid - 1}` },
+      {
+        color: colors[3],
+        text: `${upperMid}-${Math.ceil(all[all.length - 1])}`,
+      },
+    ],
+  };
 };
 
 const Choropleth = (props: Props) => {
@@ -65,12 +82,26 @@ const Choropleth = (props: Props) => {
   const [lng, setLng] = useState(-71.9143);
   const [lat, setLat] = useState(42.33);
   const [zoom, setZoom] = useState(7);
-  const [stops, setStops] = useState([
-    [-1, "#FFF"],
-    [-1, "#AFA"],
-    [-1, "#FAF"],
+  const [steps, setSteps] = useState([
+    "step",
+    ["get", "ELIGIBLE"],
+    colors[0],
+    -1,
+    colors[1],
+    0,
+    colors[2],
+    2,
+    colors[3],
   ]);
-  const [lastValue, setLastValue] = useState(31);
+  const [ranges, setRanges] = useState([
+    { color: colors[0], text: `lo` },
+    { color: colors[1], text: `ad` },
+    { color: colors[2], text: `in` },
+    {
+      color: colors[3],
+      text: `g`,
+    },
+  ]);
 
   const RadioOptions = [
     { value: "county", text: "By County" },
@@ -127,19 +158,22 @@ const Choropleth = (props: Props) => {
   };
 
   /**
-   * make stops
+   * make steps
    */
   useEffect(() => {
     if (dataFromProps.length === 0) return;
-    setStops(getStops(dataFromProps).stops);
-    setLastValue(getStops(dataFromProps).lastValue);
+    const stepsData = getSteps(dataFromProps);
+    setSteps(stepsData.steps);
+    console.log(ranges, stepsData.ranges, "test");
+    setRanges(stepsData.ranges);
+    console.log(steps);
   }, [dataFromProps]);
   /**
-   * once stops are loaded make GeoJsonSource
+   * once steps are loaded make GeoJsonSource
    */
   useEffect(() => {
-    if (stops[0][0] !== -1) makeSource();
-  }, [stops]);
+    if (steps[3] !== -1) makeSource();
+  }, [steps]);
 
   const removeSource = () => {
     if (!map.current.getSource("counties")) return;
@@ -160,12 +194,9 @@ const Choropleth = (props: Props) => {
       type: "fill",
       source: "counties",
     });
-    map.current.setPaintProperty("county", "fill-color", {
-      property: options.property,
-      stops,
-    });
+    map.current.setPaintProperty("county", "fill-color", steps);
   };
-  //   console.log(selected, "selecteled");
+
   return (
     <StyledContainer>
       <StyledRadioContainer>
@@ -179,7 +210,7 @@ const Choropleth = (props: Props) => {
         </Container>
       </StyledRadioContainer>
       <div ref={mapContainer} className="map-container" />
-      <Legend name={options.name} stops={stops} lastValue={lastValue} />
+      <Legend name={options.name} ranges={ranges} />
     </StyledContainer>
   );
 };
