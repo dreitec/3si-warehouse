@@ -221,19 +221,25 @@ export const getGeographicalElgibility = async (req, res) => {
       }
     });
   }
-
+  const GROUPARR = {
+    county: "COUNTY",
+    census: "CENSUS_TRACT",
+    region: "EEC_REGIONNAME",
+  };
+  const GROUPBY = GROUPARR[req.query.groupBy];
+  console.log(GROUPBY, req.query.groupBy, "GROUPBY");
   const conditions = makeConditions(selectedClauses);
   console.log(conditions, "geographical conditions");
   const ELgibileChildrenByFilters: any =
     await PormisifiedQuery(`select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
-			YEAR(date) as year, count(CHILD_ID) as children, county from CHILDREN ${conditions}  AND PROGRAM_NAME not like 'Unserved'  group by COUNTY, month,LOAD_DT
+			YEAR(date) as year, count(CHILD_ID) as children, ${GROUPBY} from CHILDREN ${conditions}  AND PROGRAM_NAME not like 'Unserved'  group by ${GROUPBY}, month,LOAD_DT
 			order by LOAD_DT desc;`);
 
   const totalChildren: any = await PormisifiedQuery(`
 			select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
-			YEAR(date) as year, count(CHILD_ID) as children, county from CHILDREN ${conditions}  group by COUNTY, month,LOAD_DT
+			YEAR(date) as year, count(CHILD_ID) as children, ${GROUPBY} from CHILDREN ${conditions}  group by ${GROUPBY}, month,LOAD_DT
 			order by LOAD_DT desc;`);
 
   const data = ELgibileChildrenByFilters.map(

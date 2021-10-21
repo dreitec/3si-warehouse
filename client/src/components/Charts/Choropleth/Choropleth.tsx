@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "./Chloropleth.css";
 import Counties from "./Geojsons/Counties";
+import Tracts from "./Geojsons/Tracts";
 
 import Legend from "./Legend/Legend";
 import { styled, Container } from "@mui/material";
@@ -25,6 +26,7 @@ interface Props {
   dataFromProps: any;
   selectedRadioOption: string;
   selectRadioOption: Function;
+  selectedType: string;
 }
 
 const colors = ["#afc5ff", "#376eff", "#1c3780"];
@@ -52,7 +54,12 @@ const getStops = (data: any) => {
 };
 
 const Choropleth = (props: Props) => {
-  const { dataFromProps, selectedRadioOption, selectRadioOption } = props;
+  const {
+    dataFromProps,
+    selectedRadioOption,
+    selectRadioOption,
+    selectedType,
+  } = props;
   const mapContainer = useRef(null);
   const map: any = useRef(null);
   const [lng, setLng] = useState(-71.9143);
@@ -71,7 +78,7 @@ const Choropleth = (props: Props) => {
     { value: "census", text: "By Census" },
   ];
 
-  const GeoJsonSource = Counties;
+  const GeoJsonSource: any = selectedType === "county" ? Counties : Tracts;
 
   const options = {
     name: "% Children Eligible",
@@ -101,8 +108,10 @@ const Choropleth = (props: Props) => {
     const defaultFeatures = GeoJsonSource.features;
     const newFeatures: any[] = [];
     dataFromProps.forEach((data: any) => {
-      let feature = defaultFeatures.find(
-        (elem: any) => elem.properties.COUNTYFP === data.COUNTY
+      let feature = defaultFeatures.find((elem: any) =>
+        selectedType === "county"
+          ? elem.properties.COUNTYFP === data.COUNTY
+          : elem.properties.TRACTCE === data.CENSUS_TRACT
       ) || { properties: {} };
       feature = {
         ...feature,

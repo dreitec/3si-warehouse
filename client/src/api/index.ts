@@ -40,8 +40,16 @@ export const getServedData = async (keys?: string[]) => {
   return mapped;
 };
 
-export const getGeographicalEligibilityData = async (keys?: string[]) => {
-  const querystring = getQueryString(keys);
+export const getGeographicalEligibilityData = async (
+  groupBy: string,
+  keys?: string[]
+) => {
+  let querystring = getQueryString(keys);
+  if (querystring) {
+    querystring = `${querystring}&groupBy=${groupBy}`;
+  } else {
+    querystring = `?groupBy=${groupBy}`;
+  }
   const data = await axios.get(
     `${baseUrl}/children/eligibility/geographical/${querystring}`,
     {

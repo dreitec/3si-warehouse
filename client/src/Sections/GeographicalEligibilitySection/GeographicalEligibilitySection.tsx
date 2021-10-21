@@ -18,29 +18,43 @@ const GeographicalELigibility = (props: Props) => {
     geographicalEligibilityData,
     setGeographicalEligibilityData,
   ] = useState([]);
-
+  const initialArg: GeographicalEligibilityState = {
+    geographicalEligibilityFilters: SelectedOptionsStateObject,
+    selectedOption: "county",
+  };
+  const [state, dispatch] = useReducer(
+    GeographicalEligibilityReducer,
+    initialArg
+  );
   const populateGeographicalEligibilityData = async (keys?: string[]) => {
     try {
-      const response: any = await getGeographicalEligibilityData(keys);
+      const response: any = await getGeographicalEligibilityData(
+        state.selectedOption,
+        keys
+      );
       setGeographicalEligibilityData(response);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const initialArg: GeographicalEligibilityState = {
-    geographicalEligibilityFilters: SelectedOptionsStateObject,
-    selectedOption: "county",
-  };
-
-  const [state, dispatch] = useReducer(
-    GeographicalEligibilityReducer,
-    initialArg
-  );
   console.log(state, "GeographicalEligibilityState");
   useEffect(() => {
     populateGeographicalEligibilityData();
   }, []);
+
+  useEffect(() => {
+    const getFilters = () => {
+      const notRequired = ["sp", "all"];
+      return Object.keys(state.geographicalEligibilityFilters).filter(
+        (elem) =>
+          state.geographicalEligibilityFilters[elem] === true &&
+          !notRequired.includes(elem)
+      );
+    };
+
+    populateGeographicalEligibilityData(getFilters());
+  }, [state.selectedOption]);
 
   return (
     <ChartContainer
@@ -55,6 +69,7 @@ const GeographicalELigibility = (props: Props) => {
     >
       <Choropleth
         dataFromProps={geographicalEligibilityData}
+        selectedType={state.selectedOption}
         selectedRadioOption={state.selectedOption}
         selectRadioOption={(payload: string) =>
           dispatch({ type: UPDATE_GEOGRAPHICAL_ELIGIBILITY_BY_TYPE, payload })
