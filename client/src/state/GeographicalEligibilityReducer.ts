@@ -3,7 +3,7 @@ import {
   UPDATE_GEOGRAPHICAL_ELIGIBILITY_BY_TYPE,
 } from "./types";
 
-import { GeographicalEligibilityState, Filters } from "../types";
+import { GeographicalEligibilityState, Filters } from "../interfaces";
 
 type Action =
   | {

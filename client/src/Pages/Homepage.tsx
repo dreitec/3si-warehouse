@@ -1,6 +1,10 @@
 import React from "react";
 import { Description, TabBox } from "../components";
-import { GeographicalEligibilitySection, EligbilitySection } from "../Sections";
+import {
+  GeographicalEligibilitySection,
+  EligbilitySection,
+  ServedSection,
+} from "../Sections";
 import {
   PeopleOutline as PeopleOutlineIcon,
   PieChart as PieChartIcon,
@@ -9,25 +13,8 @@ import {
   //   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
 import { Container } from "@material-ui/core";
-import { getEligibilityData, getServedData } from "../api";
 
 const Homepage = () => {
-  const [servedNotation, setservedNotation] = React.useState(false);
-  const [servedData, setServedData] = React.useState();
-
-  const populateServedData = async (keys?: string[]) => {
-    try {
-      const response: any = await getServedData(keys);
-      setServedData(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  React.useEffect(() => {
-    populateServedData();
-  }, []);
-
   return (
     <div>
       <Container maxWidth="md">
@@ -93,18 +80,7 @@ const Homepage = () => {
           nulla.
         </Description>
       </Container>
-      {/* <ChartContainer
-        checked={servedNotation}
-        setChecked={setservedNotation}
-        labels={["Percent", "Number"]}
-        title="Children Served Over Time"
-        getData={populateServedData}
-      >
-        <LineChart
-          keyName={servedNotation ? "number" : "percentage"}
-          dataFromProps={servedData}
-        />
-      </ChartContainer> */}
+      <ServedSection />
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import { ChartContainer, LineChart } from "../../components";
 import { getEligibilityData } from "../../api";
 import { EligibilityReducer } from "../../state";
-import { EligibilityState } from "../../types";
+import { EligibilityState } from "../../interfaces";
 import { UPDATE_ELIGIBILITY_FILTERS } from "../../state/types";
 import {
   StateObject as SelectedOptionsStateObject,

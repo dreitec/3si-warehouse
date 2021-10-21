@@ -30,3 +30,7 @@ export interface GeographicalEligibilityState {
 export interface EligibilityState {
   eligibilityFilters: Filters;
 }
+
+export interface ServedState {
+  servedFilters: Filters;
+}

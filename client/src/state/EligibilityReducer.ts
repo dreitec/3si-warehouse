@@ -1,11 +1,11 @@
 import { UPDATE_ELIGIBILITY_FILTERS } from "./types";
-
-import { EligibilityState, Filters } from "../types";
+import { EligibilityState, Filters } from "../interfaces";
 
 type Action = {
   payload: Filters;
   type: typeof UPDATE_ELIGIBILITY_FILTERS;
 };
+
 export const reducer = (
   state: EligibilityState,
   action: Action

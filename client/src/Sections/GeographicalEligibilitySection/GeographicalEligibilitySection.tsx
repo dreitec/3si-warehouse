@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useState } from "react";
 import { ChartContainer, Choropleth } from "../../components";
 import { getGeographicalEligibilityData } from "../../api";
 import { GeographicalEligibilityReducer } from "../../state";
-import { GeographicalEligibilityState } from "../../types";
+import { GeographicalEligibilityState } from "../../interfaces";
 import {
   UPDATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS,
   UPDATE_GEOGRAPHICAL_ELIGIBILITY_BY_TYPE,
