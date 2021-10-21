@@ -37,7 +37,7 @@ const GeographicalELigibility = (props: Props) => {
     GeographicalEligibilityReducer,
     initialArg
   );
-  console.log(state, "hello");
+  console.log(state, "GeographicalEligibilityState");
   useEffect(() => {
     populateGeographicalEligibilityData();
   }, []);

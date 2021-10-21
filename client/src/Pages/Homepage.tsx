@@ -1,6 +1,6 @@
 import React from "react";
-import { Description, TabBox, ChartContainer, LineChart } from "../components";
-import { GeographicalEligibilitySection } from "../Sections";
+import { Description, TabBox } from "../components";
+import { GeographicalEligibilitySection, EligbilitySection } from "../Sections";
 import {
   PeopleOutline as PeopleOutlineIcon,
   PieChart as PieChartIcon,
@@ -12,11 +12,8 @@ import { Container } from "@material-ui/core";
 import { getEligibilityData, getServedData } from "../api";
 
 const Homepage = () => {
-  const [eligibilityNotation, setEligibilityNotation] = React.useState(false);
   const [servedNotation, setservedNotation] = React.useState(false);
-
   const [servedData, setServedData] = React.useState();
-  const [eligibilityData, setEligibilityData] = React.useState();
 
   const populateServedData = async (keys?: string[]) => {
     try {
@@ -27,17 +24,7 @@ const Homepage = () => {
     }
   };
 
-  const populateEligibilityData = async (keys?: string[]) => {
-    try {
-      const response: any = await getEligibilityData(keys);
-      setEligibilityData(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   React.useEffect(() => {
-    populateEligibilityData();
     populateServedData();
   }, []);
 
@@ -81,18 +68,7 @@ const Homepage = () => {
           nulla.
         </Description>
       </Container>
-      {/* <ChartContainer
-        checked={eligibilityNotation}
-        setChecked={setEligibilityNotation}
-        labels={["Percent", "Number"]}
-        title="Eligibility Over Time"
-        getData={populateEligibilityData}
-      >
-        <LineChart
-          keyName={eligibilityNotation ? "number" : "percentage"}
-          dataFromProps={eligibilityData}
-        />
-      </ChartContainer> */}
+      <EligbilitySection />
 
       <GeographicalEligibilitySection />
 

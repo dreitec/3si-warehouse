@@ -27,3 +27,6 @@ export interface GeographicalEligibilityState {
   geographicalEligibilityFilters: Filters;
   selectedOption: string;
 }
+export interface EligibilityState {
+  eligibilityFilters: Filters;
+}
