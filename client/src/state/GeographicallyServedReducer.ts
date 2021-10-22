@@ -3,7 +3,7 @@ import {
   UPDATE_GEOGRAPHICAL_SERVED_BY_TYPE,
 } from "./types";
 
-import { GeographicalServedState, Filters } from "../interfaces";
+import { GeographicalFiltersBaseState, Filters } from "../interfaces";
 
 type Action =
   | {
@@ -16,15 +16,15 @@ type Action =
     };
 
 export const reducer = (
-  state: GeographicalServedState,
+  state: GeographicalFiltersBaseState,
   action: Action
-): GeographicalServedState => {
+): GeographicalFiltersBaseState => {
   switch (action.type) {
     case UPDATE_GEOGRAPHICAL_SERVED_FILTERS:
       return {
         ...state,
-        geographicalServedFilters: {
-          ...state.geographicalServedFilters,
+        programFilters: {
+          ...state.programFilters,
           ...action.payload,
         },
       };

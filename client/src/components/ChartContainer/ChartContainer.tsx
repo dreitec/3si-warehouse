@@ -48,7 +48,7 @@ const renderSwitch = (
 };
 
 const ChartContainer = (props: ContainerProps) => {
-  const [selected, setSelected] = useState("program");
+  const [selected, setSelected] = useState("programFilters");
 
   const {
     children,
@@ -85,8 +85,8 @@ const ChartContainer = (props: ContainerProps) => {
           <FilterRadioGroup
             name={`filtertype-${title.replace(/ /g, "")}`}
             options={[
-              { value: "program", text: "Program Types" },
-              { value: "other", text: "Other Types" },
+              { value: "programFilters", text: "Program Types" },
+              { value: "otherFilters", text: "Other Types" },
             ]}
             selected={selected}
             setSelected={setSelected}

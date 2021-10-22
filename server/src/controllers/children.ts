@@ -223,15 +223,15 @@ export const getGeographicalElgibility = async (req, res) => {
   if (req.query.filter && !req.query.filter.includes("private_pay")) {
     req.query.filter.forEach((filter: string) => {
       if (filter === "bupk") {
-        const bupkKeys = Object.keys(ServedClauses).filter((key: string) =>
+        const bupkKeys = Object.keys(eligibilityClauses).filter((key: string) =>
           key.includes("bupk")
         );
         bupkKeys.forEach((bupkKey: string) => {
-          selectedClauses.push(ServedClauses[filter]);
+          selectedClauses.push(eligibilityClauses[filter]);
         });
       }
-      if (ServedClauses[filter]) {
-        selectedClauses.push(ServedClauses[filter]);
+      if (eligibilityClauses[filter]) {
+        selectedClauses.push(eligibilityClauses[filter]);
       }
     });
   }

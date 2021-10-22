@@ -8,9 +8,13 @@ import {
   UPDATE_GEOGRAPHICAL_ELIGIBILITY_BY_TYPE,
 } from "../../state/types";
 import {
-  StateObject as SelectedOptionsStateObject,
-  CheckBoxTree,
-} from "../../Constants/ProgramAndOtherChecks";
+  StateObject as SelectedProgramsStateObject,
+  ProgramOptionTree,
+} from "../../Constants/ProgramChecks";
+import {
+  OtherStateObject as SelectedOtherStateObject,
+  OtherOptionTree,
+} from "../../Constants/OtherChecks";
 interface Props {}
 
 const GeographicalELigibility = (props: Props) => {
@@ -19,7 +23,9 @@ const GeographicalELigibility = (props: Props) => {
     setGeographicalEligibilityData,
   ] = useState([]);
   const initialArg: GeographicalEligibilityState = {
-    geographicalEligibilityFilters: SelectedOptionsStateObject,
+    programFilters: SelectedProgramsStateObject,
+    otherFilters: SelectedOtherStateObject,
+    selectedFilterType: "programFilters",
     selectedOption: "county",
   };
   const [state, dispatch] = useReducer(
@@ -46,10 +52,9 @@ const GeographicalELigibility = (props: Props) => {
   useEffect(() => {
     const getFilters = () => {
       const notRequired = ["sp", "all"];
-      return Object.keys(state.geographicalEligibilityFilters).filter(
+      return Object.keys(state.programFilters).filter(
         (elem) =>
-          state.geographicalEligibilityFilters[elem] === true &&
-          !notRequired.includes(elem)
+          state.programFilters[elem] === true && !notRequired.includes(elem)
       );
     };
 
@@ -61,8 +66,8 @@ const GeographicalELigibility = (props: Props) => {
       showButton={false}
       title="Eligibility Geographically"
       getData={populateGeographicalEligibilityData}
-      checkBoxTree={CheckBoxTree}
-      checkBoxesState={state.geographicalEligibilityFilters}
+      checkBoxTree={ProgramOptionTree}
+      checkBoxesState={state.programFilters}
       setCheckBoxState={(payload: any) =>
         dispatch({ type: UPDATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS, payload })
       }

@@ -1,18 +1,21 @@
 import { UPDATE_SERVED_FILTERS } from "./types";
-import { ServedState, Filters } from "../interfaces";
+import { FiltersBaseState, Filters } from "../interfaces";
 
 type Action = {
   payload: Filters;
   type: typeof UPDATE_SERVED_FILTERS;
 };
 
-export const reducer = (state: ServedState, action: Action): ServedState => {
+export const reducer = (
+  state: FiltersBaseState,
+  action: Action
+): FiltersBaseState => {
   switch (action.type) {
     case UPDATE_SERVED_FILTERS:
       return {
         ...state,
-        servedFilters: {
-          ...state.servedFilters,
+        programFilters: {
+          ...state.programFilters,
           ...action.payload,
         },
       };

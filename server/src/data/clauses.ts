@@ -23,3 +23,18 @@ export const ServedClauses = {
   early_head_start: `(PROGRAM_NAME like 'early_head_start')`,
   cppi: `(PROGRAM_NAME like 'cppi')`,
 };
+
+export const CommonClauses = {
+  cnt_under_100_perc_fpl: `(INCOME_BRACKET like 'cnt_under_100_perc_fpl')`,
+  cnt_100_199_perc_fpl: `(INCOME_BRACKET like 'cnt_100_199_perc_fpl')`,
+  cnt_200_299_perc_fpl: `(INCOME_BRACKET like 'cnt_200_299_perc_fpl')`,
+  cnt_300_399_perc_fpl: `(INCOME_BRACKET like 'cnt_300_399_perc_fpl')`,
+  cnt_400_499_perc_fpl: `(INCOME_BRACKET like 'cnt_400_499_perc_fpl')`,
+  cnt_gte_500_perc_fpl: `(INCOME_BRACKET like 'cnt_gte_500_perc_fpl')`,
+  infant: `(AGE_GROUP like 'Infant')`,
+  toddler: `(AGE_GROUP like 'Toddler')`,
+  preschool: `(AGE_GROUP like 'Preschool')`,
+  school_age: `(AGE_GROUP like 'School Age')`,
+  adilf: `(UNEMPLOYMENT = 0)`,
+  nadilf: `(UNEMPLOYMENT = 1)`,
+};

@@ -23,8 +23,8 @@ export const reducer = (
     case UPDATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS:
       return {
         ...state,
-        geographicalEligibilityFilters: {
-          ...state.geographicalEligibilityFilters,
+        programFilters: {
+          ...state.programFilters,
           ...action.payload,
         },
       };

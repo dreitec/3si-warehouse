@@ -2,21 +2,27 @@ import React, { useReducer, useEffect, useState } from "react";
 import { ChartContainer, Choropleth } from "../../components";
 import { getGeographicalServedData } from "../../api";
 import { GeographicalServedReducer } from "../../state";
-import { GeographicalServedState } from "../../interfaces";
+import { GeographicalFiltersBaseState } from "../../interfaces";
 import {
   UPDATE_GEOGRAPHICAL_SERVED_FILTERS,
   UPDATE_GEOGRAPHICAL_SERVED_BY_TYPE,
 } from "../../state/types";
 import {
-  StateObject as SelectedOptionsStateObject,
-  CheckBoxTree,
-} from "../../Constants/ProgramAndOtherChecks";
+  StateObject as SelectedProgramsStateObject,
+  ProgramOptionTree,
+} from "../../Constants/ProgramChecks";
+import {
+  OtherStateObject as SelectedOtherStateObject,
+  OtherOptionTree,
+} from "../../Constants/OtherChecks";
 interface Props {}
 
 const GeographicalELigibility = (props: Props) => {
   const [geographicalServedData, setGeographicalServedData] = useState([]);
-  const initialArg: GeographicalServedState = {
-    geographicalServedFilters: SelectedOptionsStateObject,
+  const initialArg: GeographicalFiltersBaseState = {
+    programFilters: SelectedProgramsStateObject,
+    otherFilters: SelectedOtherStateObject,
+    selectedFilterType: "programFilters",
     selectedOption: "county",
   };
   const [state, dispatch] = useReducer(GeographicalServedReducer, initialArg);
@@ -32,7 +38,7 @@ const GeographicalELigibility = (props: Props) => {
     }
   };
 
-  console.log(state, "GeographicalServedState");
+  console.log(state, "GeographicalFiltersBaseState");
   useEffect(() => {
     populateGeographicalServedData();
   }, []);
@@ -40,10 +46,9 @@ const GeographicalELigibility = (props: Props) => {
   useEffect(() => {
     const getFilters = () => {
       const notRequired = ["sp", "all"];
-      return Object.keys(state.geographicalServedFilters).filter(
+      return Object.keys(state.programFilters).filter(
         (elem) =>
-          state.geographicalServedFilters[elem] === true &&
-          !notRequired.includes(elem)
+          state.programFilters[elem] === true && !notRequired.includes(elem)
       );
     };
 
@@ -55,8 +60,8 @@ const GeographicalELigibility = (props: Props) => {
       showButton={false}
       title="Served Geographically"
       getData={populateGeographicalServedData}
-      checkBoxTree={CheckBoxTree}
-      checkBoxesState={state.geographicalServedFilters}
+      checkBoxTree={ProgramOptionTree}
+      checkBoxesState={state.programFilters}
       setCheckBoxState={(payload: any) =>
         dispatch({ type: UPDATE_GEOGRAPHICAL_SERVED_FILTERS, payload })
       }

@@ -1,5 +1,5 @@
 import { UPDATE_ELIGIBILITY_FILTERS } from "./types";
-import { EligibilityState, Filters } from "../interfaces";
+import { FiltersBaseState, Filters } from "../interfaces";
 
 type Action = {
   payload: Filters;
@@ -7,15 +7,15 @@ type Action = {
 };
 
 export const reducer = (
-  state: EligibilityState,
+  state: FiltersBaseState,
   action: Action
-): EligibilityState => {
+): FiltersBaseState => {
   switch (action.type) {
     case UPDATE_ELIGIBILITY_FILTERS:
       return {
         ...state,
-        eligibilityFilters: {
-          ...state.eligibilityFilters,
+        programFilters: {
+          ...state.programFilters,
           ...action.payload,
         },
       };

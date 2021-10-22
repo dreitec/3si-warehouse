@@ -2,12 +2,13 @@ import React, { useReducer } from "react";
 import { ChartContainer, LineChart } from "../../components";
 import { getServedData } from "../../api";
 import { ServedReducer } from "../../state";
-import { ServedState } from "../../interfaces";
+import { FiltersBaseState } from "../../interfaces";
 import { UPDATE_SERVED_FILTERS } from "../../state/types";
 import {
-  StateObject as SelectedOptionsStateObject,
-  CheckBoxTree,
-} from "../../Constants/ProgramAndOtherChecks";
+  StateObject as SelectedProgramsStateObject,
+  ProgramOptionTree,
+} from "../../Constants/ProgramChecks";
+import { OtherStateObject } from "src/Constants/OtherChecks";
 
 interface Props {}
 
@@ -23,8 +24,10 @@ const EligibilityLineGraphSection = (props: Props) => {
     }
   };
 
-  const initialArg: ServedState = {
-    servedFilters: SelectedOptionsStateObject,
+  const initialArg: FiltersBaseState = {
+    programFilters: SelectedProgramsStateObject,
+    otherFilters: OtherStateObject,
+    selectedFilterType: "programFilters",
   };
 
   const [state, dispatch] = useReducer(ServedReducer, initialArg);
@@ -39,8 +42,8 @@ const EligibilityLineGraphSection = (props: Props) => {
       labels={["Percent", "Number"]}
       title="Eligibility Over Time"
       getData={populateServedData}
-      checkBoxTree={CheckBoxTree}
-      checkBoxesState={state.servedFilters}
+      checkBoxTree={ProgramOptionTree}
+      checkBoxesState={state.programFilters}
       setCheckBoxState={(payload: any) =>
         dispatch({ type: UPDATE_SERVED_FILTERS, payload })
       }

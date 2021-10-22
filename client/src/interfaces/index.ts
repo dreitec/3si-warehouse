@@ -23,19 +23,14 @@ export interface Option {
   text: string;
 }
 
-export interface GeographicalEligibilityState {
-  geographicalEligibilityFilters: Filters;
+export interface FiltersBaseState {
+  programFilters: Filters;
+  otherFilters: Filters;
+  selectedFilterType: "programFilters" | "otherFilters";
+}
+export interface GeographicalEligibilityState extends FiltersBaseState {
   selectedOption: string;
 }
-export interface EligibilityState {
-  eligibilityFilters: Filters;
-}
-
-export interface ServedState {
-  servedFilters: Filters;
-}
-
-export interface GeographicalServedState {
-  geographicalServedFilters: Filters;
+export interface GeographicalFiltersBaseState extends FiltersBaseState {
   selectedOption: string;
 }

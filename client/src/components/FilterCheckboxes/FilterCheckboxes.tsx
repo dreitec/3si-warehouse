@@ -3,7 +3,7 @@ import { Box, FormControlLabel, styled, Checkbox } from "@mui/material";
 import { Button } from "../";
 interface SelectValueProps {
   value: string;
-  key: string;
+  text: string;
   children?: any[];
 }
 
@@ -15,56 +15,9 @@ const StyledContainer = styled("div")(({ theme }) => ({
   },
 }));
 
-const data = [
-  {
-    value: "All programs",
-    key: "all",
-    children: [
-      {
-        value: "Subsidized Programs",
-        key: "sp",
-        children: [
-          {
-            value: "Early Head Start",
-            key: "early_head_start",
-          },
-          {
-            value: "Head Start",
-            key: "head_start",
-          },
-          {
-            value: "State Subsidy (0-5)",
-            key: "ccfa",
-          },
-          {
-            value: "State Subsidy (School Age)",
-            key: "ccfasa",
-          },
-          {
-            value: "Public Preschool",
-            key: "dese_public_pk",
-          },
-          {
-            value: "CPPI",
-            key: "cppi",
-          },
-          {
-            value: "Boston UPK",
-            key: "bupk",
-          },
-        ],
-      },
-      {
-        value: "Private Pay",
-        key: "private_pay",
-      },
-    ],
-  },
-];
-
 interface child {
   value: string;
-  key: string;
+  text: string;
   children?: any;
 }
 
@@ -83,17 +36,17 @@ export default function IndeterminateCheckbox(props: Props) {
     const allChildren: any = {};
     if (children) {
       children.forEach((elem: child) => {
-        allChildren[elem.key] = !state[obj.key];
+        allChildren[elem.value] = !state[obj.value];
         if (elem.children) {
           elem.children.forEach((elem: child) => {
-            allChildren[elem.key] = !state[obj.key];
+            allChildren[elem.value] = !state[obj.value];
             if (elem.children) {
             }
           });
         }
       });
     }
-    setState({ [obj.key]: !state[obj.key], ...allChildren });
+    setState({ [obj.value]: !state[obj.value], ...allChildren });
   };
 
   const checkIfChildrenChecked = (obj: any) => {
@@ -101,13 +54,13 @@ export default function IndeterminateCheckbox(props: Props) {
     let isChecked: boolean = true;
     if (children) {
       for (const child of children) {
-        if (state[child.key] === false) {
+        if (state[child.value] === false) {
           isChecked = false;
           break;
         }
       }
     } else {
-      isChecked = state[obj.key];
+      isChecked = state[obj.value];
     }
     return isChecked;
   };
@@ -117,8 +70,8 @@ export default function IndeterminateCheckbox(props: Props) {
     const allChildConditions: boolean[] = [];
     if (children) {
       for (const child of children) {
-        if (!allChildConditions.includes(state[child.key])) {
-          allChildConditions.push(state[child.key]);
+        if (!allChildConditions.includes(state[child.value])) {
+          allChildConditions.push(state[child.value]);
         }
       }
     }
@@ -133,7 +86,7 @@ export default function IndeterminateCheckbox(props: Props) {
           return (
             <div key={elem.value}>
               <FormControlLabel
-                label={elem.value}
+                label={elem.text}
                 control={
                   <Checkbox
                     key={elem.value}
@@ -167,7 +120,7 @@ export default function IndeterminateCheckbox(props: Props) {
     return (
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <FormControlLabel
-          label={parent.value}
+          label={parent.text}
           sx={{ pl: indent }}
           control={
             <Checkbox

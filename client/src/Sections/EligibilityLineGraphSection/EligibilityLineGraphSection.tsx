@@ -2,12 +2,16 @@ import React, { useReducer } from "react";
 import { ChartContainer, LineChart } from "../../components";
 import { getEligibilityData } from "../../api";
 import { EligibilityReducer } from "../../state";
-import { EligibilityState } from "../../interfaces";
+import { FiltersBaseState } from "../../interfaces";
 import { UPDATE_ELIGIBILITY_FILTERS } from "../../state/types";
 import {
-  StateObject as SelectedOptionsStateObject,
-  CheckBoxTree,
-} from "../../Constants/ProgramAndOtherChecks";
+  StateObject as SelectedProgramsStateObject,
+  ProgramOptionTree,
+} from "../../Constants/ProgramChecks";
+import {
+  OtherStateObject as SelectedOtherStateObject,
+  OtherOptionTree,
+} from "../../Constants/OtherChecks";
 
 interface Props {}
 
@@ -23,8 +27,10 @@ const EligibilityLineGraphSection = (props: Props) => {
     }
   };
 
-  const initialArg: EligibilityState = {
-    eligibilityFilters: SelectedOptionsStateObject,
+  const initialArg: FiltersBaseState = {
+    programFilters: SelectedProgramsStateObject,
+    otherFilters: SelectedOtherStateObject,
+    selectedFilterType: "programFilters",
   };
 
   const [state, dispatch] = useReducer(EligibilityReducer, initialArg);
@@ -40,8 +46,8 @@ const EligibilityLineGraphSection = (props: Props) => {
       labels={["Percent", "Number"]}
       title="Eligibility Over Time"
       getData={populateEligibilityData}
-      checkBoxTree={CheckBoxTree}
-      checkBoxesState={state.eligibilityFilters}
+      checkBoxTree={ProgramOptionTree}
+      checkBoxesState={state.programFilters}
       setCheckBoxState={(payload: any) =>
         dispatch({ type: UPDATE_ELIGIBILITY_FILTERS, payload })
       }

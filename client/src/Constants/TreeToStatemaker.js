@@ -2,7 +2,9 @@ const makeState = (checkBoxData) => {
   const flattened = flat(checkBoxData);
   const stateData = {};
   flattened.forEach((elem) => {
-    stateData[elem.key] = true;
+    if (elem.text !== "label") {
+      stateData[elem.value] = true;
+    }
   });
   return stateData;
 };
@@ -21,48 +23,64 @@ function flat(array) {
 console.log(
   makeState([
     {
-      value: "All programs",
-      key: "all",
-      children: [
-        {
-          value: "Subsidized Programs",
-          key: "sp",
-          children: [
-            {
-              value: "Early Head Start",
-              key: "early_head_start",
-            },
-            {
-              value: "Head Start",
-              key: "head_start",
-            },
-            {
-              value: "State Subsidy (0-5)",
-              key: "ccfa",
-            },
-            {
-              value: "State Subsidy (School Age)",
-              key: "ccfasa",
-            },
-            {
-              value: "Public Preschool",
-              key: "dese_public_pk",
-            },
-            {
-              value: "CPPI",
-              key: "cppi",
-            },
-            {
-              value: "Boston UPK",
-              key: "bupk",
-            },
-          ],
-        },
-        {
-          value: "Private Pay",
-          key: "private_pay",
-        },
-      ],
+      text: "label",
+      value: "Age",
+    },
+    {
+      text: "<100% FPL",
+      value: "cnt_under_100_perc_fpl",
+    },
+    {
+      text: "100-199% FPL",
+      value: "cnt_100_199_perc_fpl",
+    },
+    {
+      text: "200-299% FPL",
+      value: "cnt_200_299_perc_fpl",
+    },
+    {
+      text: "300-399% FPL",
+      value: "cnt_300_399_perc_fpl",
+    },
+    {
+      text: "400-499% FPL",
+      value: "cnt_400_499_perc_fpl",
+    },
+    {
+      text: ">500% FPL",
+      value: "cnt_gte_500_perc_fpl",
+    },
+    {
+      text: "label",
+      value: "Age",
+    },
+    {
+      text: "Infant",
+      value: "infant",
+    },
+    {
+      text: "Toddler",
+      value: "toddler",
+    },
+    {
+      text: "Preschool",
+      value: "preschool",
+    },
+    {
+      text: "School age",
+      value: "school_age",
+    },
+    {
+      text: "label",
+      value: "Labor Force Participation",
+    },
+    {
+      text: "All adults in the labor force",
+      value: "adilf",
+    },
+    {
+      text: "Not all adults in the labor force",
+      value: "nadilf",
     },
   ])
 );
