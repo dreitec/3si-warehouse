@@ -38,6 +38,18 @@ const getSteps = (data: any) => {
   });
   //   console.log(all, "all before sort");
   all.sort();
+  if (all[0] === all[all.length - 1]) {
+    return {
+      steps: [],
+      ranges: [
+        {
+          color: colors[3],
+          text: `${all[0]}%`,
+        },
+      ],
+    };
+  }
+
   all[0] = Math.floor(all[0]);
   all[all.length - 1] = Math.ceil(all[all.length - 1]);
   //   console.log(all, "all");
@@ -178,6 +190,7 @@ const Choropleth = (props: Props) => {
   const removeSource = () => {
     if (!map.current.getSource("counties")) return;
     map.current.removeLayer("county");
+    map.current.removeLayer("outline");
     map.current.removeSource("counties");
   };
 
@@ -194,7 +207,22 @@ const Choropleth = (props: Props) => {
       type: "fill",
       source: "counties",
     });
-    map.current.setPaintProperty("county", "fill-color", steps);
+    // Add a black outline around the polygon.
+    map.current.addLayer({
+      id: "outline",
+      type: "line",
+      source: "counties",
+      layout: {},
+      paint: {
+        "line-color": "#000",
+        "line-width": 1,
+      },
+    });
+    map.current.setPaintProperty(
+      "county",
+      "fill-color",
+      steps.length === 0 ? colors[3] : steps
+    );
   };
 
   return (
