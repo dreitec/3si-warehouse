@@ -1,18 +1,15 @@
-import {
-  UPDATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS,
-  UPDATE_GEOGRAPHICAL_ELIGIBILITY_BY_TYPE,
-} from "./types";
+import { UPDATE_PROGRAM_FILTERS, UPDATE_BY_TYPE } from "./types";
 
 import { GeographicalEligibilityState, Filters } from "../interfaces";
 
 type Action =
   | {
       payload: Filters;
-      type: typeof UPDATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS;
+      type: typeof UPDATE_PROGRAM_FILTERS;
     }
   | {
       payload: string;
-      type: typeof UPDATE_GEOGRAPHICAL_ELIGIBILITY_BY_TYPE;
+      type: typeof UPDATE_BY_TYPE;
     };
 
 export const reducer = (
@@ -20,7 +17,7 @@ export const reducer = (
   action: Action
 ): GeographicalEligibilityState => {
   switch (action.type) {
-    case UPDATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS:
+    case UPDATE_PROGRAM_FILTERS:
       return {
         ...state,
         programFilters: {
@@ -28,7 +25,7 @@ export const reducer = (
           ...action.payload,
         },
       };
-    case UPDATE_GEOGRAPHICAL_ELIGIBILITY_BY_TYPE:
+    case UPDATE_BY_TYPE:
       return {
         ...state,
         selectedOption: action.payload,

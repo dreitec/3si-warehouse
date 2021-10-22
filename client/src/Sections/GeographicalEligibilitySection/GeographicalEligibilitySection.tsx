@@ -3,10 +3,7 @@ import { ChartContainer, Choropleth } from "../../components";
 import { getGeographicalEligibilityData } from "../../api";
 import { GeographicalEligibilityReducer } from "../../state";
 import { GeographicalEligibilityState } from "../../interfaces";
-import {
-  UPDATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS,
-  UPDATE_GEOGRAPHICAL_ELIGIBILITY_BY_TYPE,
-} from "../../state/types";
+import { UPDATE_PROGRAM_FILTERS, UPDATE_BY_TYPE } from "../../state/types";
 import {
   StateObject as SelectedProgramsStateObject,
   ProgramOptionTree,
@@ -69,7 +66,7 @@ const GeographicalELigibility = (props: Props) => {
       checkBoxTree={ProgramOptionTree}
       checkBoxesState={state.programFilters}
       setCheckBoxState={(payload: any) =>
-        dispatch({ type: UPDATE_GEOGRAPHICAL_ELIGIBILITY_FILTERS, payload })
+        dispatch({ type: UPDATE_PROGRAM_FILTERS, payload })
       }
     >
       <Choropleth
@@ -77,7 +74,7 @@ const GeographicalELigibility = (props: Props) => {
         selectedType={state.selectedOption}
         selectedRadioOption={state.selectedOption}
         selectRadioOption={(payload: string) =>
-          dispatch({ type: UPDATE_GEOGRAPHICAL_ELIGIBILITY_BY_TYPE, payload })
+          dispatch({ type: UPDATE_BY_TYPE, payload })
         }
       />
     </ChartContainer>

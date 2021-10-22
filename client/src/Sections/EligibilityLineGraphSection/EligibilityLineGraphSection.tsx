@@ -3,7 +3,7 @@ import { ChartContainer, LineChart } from "../../components";
 import { getEligibilityData } from "../../api";
 import { EligibilityReducer } from "../../state";
 import { FiltersBaseState } from "../../interfaces";
-import { UPDATE_ELIGIBILITY_FILTERS } from "../../state/types";
+import { UPDATE_PROGRAM_FILTERS } from "../../state/types";
 import {
   StateObject as SelectedProgramsStateObject,
   ProgramOptionTree,
@@ -49,7 +49,7 @@ const EligibilityLineGraphSection = (props: Props) => {
       checkBoxTree={ProgramOptionTree}
       checkBoxesState={state.programFilters}
       setCheckBoxState={(payload: any) =>
-        dispatch({ type: UPDATE_ELIGIBILITY_FILTERS, payload })
+        dispatch({ type: UPDATE_PROGRAM_FILTERS, payload })
       }
     >
       <LineChart
