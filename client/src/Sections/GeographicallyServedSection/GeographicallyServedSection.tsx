@@ -3,7 +3,12 @@ import { ChartContainer, Choropleth } from "../../components";
 import { getGeographicalServedData } from "../../api";
 import { GeographicalServedReducer } from "../../state";
 import { GeographicalFiltersBaseState } from "../../interfaces";
-import { UPDATE_PROGRAM_FILTERS, UPDATE_BY_TYPE } from "../../state/types";
+import {
+  UPDATE_PROGRAM_FILTERS,
+  UPDATE_BY_TYPE,
+  UPDATE_FILTER_TYPE,
+  UPDATE_OTHER_FILTERS,
+} from "../../state/types";
 import {
   StateObject as SelectedProgramsStateObject,
   ProgramOptionTree,
@@ -57,11 +62,29 @@ const GeographicalELigibility = (props: Props) => {
       showButton={false}
       title="Served Geographically"
       getData={populateGeographicalServedData}
-      checkBoxTree={ProgramOptionTree}
-      checkBoxesState={state.programFilters}
-      setCheckBoxState={(payload: any) =>
-        dispatch({ type: UPDATE_PROGRAM_FILTERS, payload })
+      checkBoxTree={
+        state.selectedFilterType === "programFilters"
+          ? ProgramOptionTree
+          : OtherOptionTree
       }
+      checkBoxesState={
+        state.selectedFilterType === "programFilters"
+          ? state.programFilters
+          : state.otherFilters
+      }
+      setCheckBoxState={(payload: any) =>
+        dispatch({
+          type:
+            state.selectedFilterType === "programFilters"
+              ? UPDATE_PROGRAM_FILTERS
+              : UPDATE_OTHER_FILTERS,
+          payload,
+        })
+      }
+      selectFiltersType={(payload: string) =>
+        dispatch({ type: UPDATE_FILTER_TYPE, payload })
+      }
+      selectedFilterType={state.selectedFilterType}
     >
       <Choropleth
         dataFromProps={geographicalServedData}

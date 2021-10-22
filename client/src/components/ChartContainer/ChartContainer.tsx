@@ -37,6 +37,8 @@ interface ContainerProps extends GridProps {
   checkBoxTree: any[];
   checkBoxesState: any;
   setCheckBoxState: Function;
+  selectFiltersType: Function;
+  selectedFilterType: string;
 }
 
 const renderSwitch = (
@@ -48,8 +50,6 @@ const renderSwitch = (
 };
 
 const ChartContainer = (props: ContainerProps) => {
-  const [selected, setSelected] = useState("programFilters");
-
   const {
     children,
     labels = [],
@@ -61,6 +61,8 @@ const ChartContainer = (props: ContainerProps) => {
     checkBoxTree,
     checkBoxesState,
     setCheckBoxState,
+    selectFiltersType,
+    selectedFilterType,
   } = props;
 
   return (
@@ -88,8 +90,8 @@ const ChartContainer = (props: ContainerProps) => {
               { value: "programFilters", text: "Program Types" },
               { value: "otherFilters", text: "Other Types" },
             ]}
-            selected={selected}
-            setSelected={setSelected}
+            selected={selectedFilterType}
+            setSelected={selectFiltersType}
           />
           <FilterCheckboxes
             getData={getData}

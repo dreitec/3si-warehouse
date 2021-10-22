@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, FormControlLabel, styled, Checkbox } from "@mui/material";
 import { Button } from "../";
+import { Typography } from "@material-ui/core";
 interface SelectValueProps {
   value: string;
   text: string;
@@ -132,18 +133,26 @@ export default function IndeterminateCheckbox(props: Props) {
           }
         />
         {parent.children && renderChilds(parent.children, indent + 2)}
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => {
-            getData(getFilters());
-          }}
-        >
-          Submit
-        </Button>
       </Box>
     );
   };
 
-  return <StyledContainer>{renderCheckBoxes(data[0], 0)}</StyledContainer>;
+  return (
+    <StyledContainer>
+      {data.map((child: child) => {
+        if (child.text === "label")
+          return <Typography variant="h6">{child.value}</Typography>;
+        return renderCheckBoxes(child, 0);
+      })}
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => {
+          getData(getFilters());
+        }}
+      >
+        Submit
+      </Button>
+    </StyledContainer>
+  );
 }

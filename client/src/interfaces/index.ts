@@ -26,7 +26,7 @@ export interface Option {
 export interface FiltersBaseState {
   programFilters: Filters;
   otherFilters: Filters;
-  selectedFilterType: "programFilters" | "otherFilters";
+  selectedFilterType: string;
 }
 export interface GeographicalEligibilityState extends FiltersBaseState {
   selectedOption: string;

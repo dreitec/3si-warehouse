@@ -3,12 +3,16 @@ import { ChartContainer, LineChart } from "../../components";
 import { getServedData } from "../../api";
 import { ServedReducer } from "../../state";
 import { FiltersBaseState } from "../../interfaces";
-import { UPDATE_PROGRAM_FILTERS } from "../../state/types";
+import {
+  UPDATE_PROGRAM_FILTERS,
+  UPDATE_FILTER_TYPE,
+  UPDATE_OTHER_FILTERS,
+} from "../../state/types";
 import {
   StateObject as SelectedProgramsStateObject,
   ProgramOptionTree,
 } from "../../Constants/ProgramChecks";
-import { OtherStateObject } from "src/Constants/OtherChecks";
+import { OtherStateObject, OtherOptionTree } from "src/Constants/OtherChecks";
 
 interface Props {}
 
@@ -42,11 +46,29 @@ const EligibilityLineGraphSection = (props: Props) => {
       labels={["Percent", "Number"]}
       title="Eligibility Over Time"
       getData={populateServedData}
-      checkBoxTree={ProgramOptionTree}
-      checkBoxesState={state.programFilters}
-      setCheckBoxState={(payload: any) =>
-        dispatch({ type: UPDATE_PROGRAM_FILTERS, payload })
+      checkBoxTree={
+        state.selectedFilterType === "programFilters"
+          ? ProgramOptionTree
+          : OtherOptionTree
       }
+      checkBoxesState={
+        state.selectedFilterType === "programFilters"
+          ? state.programFilters
+          : state.otherFilters
+      }
+      setCheckBoxState={(payload: any) =>
+        dispatch({
+          type:
+            state.selectedFilterType === "programFilters"
+              ? UPDATE_PROGRAM_FILTERS
+              : UPDATE_OTHER_FILTERS,
+          payload,
+        })
+      }
+      selectFiltersType={(payload: string) =>
+        dispatch({ type: UPDATE_FILTER_TYPE, payload })
+      }
+      selectedFilterType={state.selectedFilterType}
     >
       <LineChart
         keyName={servedNotation ? "number" : "percentage"}

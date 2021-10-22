@@ -14,9 +14,16 @@ interface Props {
 }
 const FilterRadioGroup = (props: Props) => {
   const { selected, setSelected, options, name } = props;
+  //   console.log(selected, options, "check options ");
   return (
     <div className="radio-group">
       {options.map((option: Option) => {
+        // console.log(
+        //   selected === option.value,
+        //   option.value,
+        //   selected,
+        //   "check options 2"
+        // );
         return (
           <div
             className="input-div"

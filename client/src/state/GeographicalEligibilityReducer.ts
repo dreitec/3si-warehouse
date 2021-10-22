@@ -1,4 +1,9 @@
-import { UPDATE_PROGRAM_FILTERS, UPDATE_BY_TYPE } from "./types";
+import {
+  UPDATE_PROGRAM_FILTERS,
+  UPDATE_BY_TYPE,
+  UPDATE_FILTER_TYPE,
+  UPDATE_OTHER_FILTERS,
+} from "./types";
 
 import { GeographicalEligibilityState, Filters } from "../interfaces";
 
@@ -10,6 +15,14 @@ type Action =
   | {
       payload: string;
       type: typeof UPDATE_BY_TYPE;
+    }
+  | {
+      payload: string;
+      type: typeof UPDATE_FILTER_TYPE;
+    }
+  | {
+      payload: Filters;
+      type: typeof UPDATE_OTHER_FILTERS;
     };
 
 export const reducer = (
@@ -25,10 +38,23 @@ export const reducer = (
           ...action.payload,
         },
       };
+    case UPDATE_OTHER_FILTERS:
+      return {
+        ...state,
+        otherFilters: {
+          ...state.otherFilters,
+          ...action.payload,
+        },
+      };
     case UPDATE_BY_TYPE:
       return {
         ...state,
         selectedOption: action.payload,
+      };
+    case UPDATE_FILTER_TYPE:
+      return {
+        ...state,
+        selectedFilterType: action.payload,
       };
     default:
       return state;

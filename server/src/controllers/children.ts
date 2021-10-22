@@ -13,7 +13,11 @@ const months = [
   "Nov",
   "Dec",
 ];
-import { eligibilityClauses, ServedClauses } from "../data/clauses";
+import {
+  eligibilityClauses,
+  ServedClauses,
+  CommonClauses,
+} from "../data/clauses";
 
 export const getOneChild = () => {
   const db = getDb();
@@ -58,21 +62,21 @@ export const getChildrenEligibility = async (req, res) => {
       `where (month > ${month - 6})  AND ( year = ${currentYear})`
     );
   }
-
+  const clauses = { ...eligibilityClauses, ...CommonClauses };
   // make conditions array based on query parameters
   if (req.query.filter && !req.query.filter.includes("private_pay")) {
     req.query.filter.forEach((filter: string) => {
       if (filter === "bupk") {
-        const bupkKeys = Object.keys(eligibilityClauses).filter((key: string) =>
+        const bupkKeys = Object.keys(clauses).filter((key: string) =>
           key.includes("bupk")
         );
 
         bupkKeys.forEach((bupkKey: string) => {
-          selectedClauses.push(eligibilityClauses[filter]);
+          selectedClauses.push(clauses[filter]);
         });
       }
-      if (eligibilityClauses[filter]) {
-        selectedClauses.push(eligibilityClauses[filter]);
+      if (clauses[filter]) {
+        selectedClauses.push(clauses[filter]);
       }
     });
   }
@@ -139,20 +143,20 @@ export const getChildrenServed = async (req, res) => {
       `where (month > ${month - 6})  AND ( year = ${currentYear})`
     );
   }
-
+  const clauses = { ...ServedClauses, ...CommonClauses };
   // make conditions array based on query parameters
   if (req.query.filter && !req.query.filter.includes("private_pay")) {
     req.query.filter.forEach((filter: string) => {
       if (filter === "bupk") {
-        const bupkKeys = Object.keys(ServedClauses).filter((key: string) =>
+        const bupkKeys = Object.keys(clauses).filter((key: string) =>
           key.includes("bupk")
         );
         bupkKeys.forEach((bupkKey: string) => {
-          selectedClauses.push(ServedClauses[filter]);
+          selectedClauses.push(clauses[filter]);
         });
       }
-      if (ServedClauses[filter]) {
-        selectedClauses.push(ServedClauses[filter]);
+      if (clauses[filter]) {
+        selectedClauses.push(clauses[filter]);
       }
     });
   }
@@ -220,18 +224,20 @@ export const getGeographicalElgibility = async (req, res) => {
     `where month = ${MonthRow[0].MONTH} and year = ${currentYear}`
   );
 
+  const clauses = { ...eligibilityClauses, ...CommonClauses };
+
   if (req.query.filter && !req.query.filter.includes("private_pay")) {
     req.query.filter.forEach((filter: string) => {
       if (filter === "bupk") {
-        const bupkKeys = Object.keys(eligibilityClauses).filter((key: string) =>
+        const bupkKeys = Object.keys(clauses).filter((key: string) =>
           key.includes("bupk")
         );
         bupkKeys.forEach((bupkKey: string) => {
-          selectedClauses.push(eligibilityClauses[filter]);
+          selectedClauses.push(clauses[filter]);
         });
       }
-      if (eligibilityClauses[filter]) {
-        selectedClauses.push(eligibilityClauses[filter]);
+      if (clauses[filter]) {
+        selectedClauses.push(clauses[filter]);
       }
     });
   }
@@ -295,19 +301,20 @@ export const getGeographicalServed = async (req, res) => {
   selectedClauses.push(
     `where month = ${MonthRow[0].MONTH} and year = ${currentYear}`
   );
+  const clauses = { ...ServedClauses, ...CommonClauses };
 
   if (req.query.filter && !req.query.filter.includes("private_pay")) {
     req.query.filter.forEach((filter: string) => {
       if (filter === "bupk") {
-        const bupkKeys = Object.keys(ServedClauses).filter((key: string) =>
+        const bupkKeys = Object.keys(clauses).filter((key: string) =>
           key.includes("bupk")
         );
         bupkKeys.forEach((bupkKey: string) => {
-          selectedClauses.push(ServedClauses[filter]);
+          selectedClauses.push(clauses[filter]);
         });
       }
-      if (ServedClauses[filter]) {
-        selectedClauses.push(ServedClauses[filter]);
+      if (clauses[filter]) {
+        selectedClauses.push(clauses[filter]);
       }
     });
   }
