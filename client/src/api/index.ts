@@ -65,3 +65,29 @@ export const getGeographicalEligibilityData = async (
   }));
   return mapped;
 };
+
+export const getGeographicalServedData = async (
+  groupBy: string,
+  keys?: string[]
+) => {
+  let querystring = getQueryString(keys);
+  if (querystring) {
+    querystring = `${querystring}&groupBy=${groupBy}`;
+  } else {
+    querystring = `?groupBy=${groupBy}`;
+  }
+  const data = await axios.get(
+    `${baseUrl}/children/served/geographical/${querystring}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const geographicalEligibilityData: any = data.data;
+  const mapped: any = geographicalEligibilityData.data.map((elem: any) => ({
+    ...elem,
+    percentage: parseFloat(elem.percentage),
+  }));
+  return mapped;
+};

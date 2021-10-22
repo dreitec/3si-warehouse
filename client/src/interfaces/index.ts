@@ -34,3 +34,8 @@ export interface EligibilityState {
 export interface ServedState {
   servedFilters: Filters;
 }
+
+export interface GeographicalServedState {
+  geographicalServedFilters: Filters;
+  selectedOption: string;
+}

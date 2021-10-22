@@ -4,6 +4,7 @@ import {
   GeographicalEligibilitySection,
   EligbilitySection,
   ServedSection,
+  GeograpicallyServedSection,
 } from "../Sections";
 import {
   PeopleOutline as PeopleOutlineIcon,
@@ -81,6 +82,7 @@ const Homepage = () => {
         </Description>
       </Container>
       <ServedSection />
+      <GeograpicallyServedSection />
     </div>
   );
 };

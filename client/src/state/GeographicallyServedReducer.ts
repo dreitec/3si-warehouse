@@ -1,6 +1,6 @@
 import {
-  UPDATE_GEOGRAPHICAL_SERVICED_FILTERS,
-  UPDATE_GEOGRAPHICAL_SERVICED_BY_TYPE,
+  UPDATE_GEOGRAPHICAL_SERVED_FILTERS,
+  UPDATE_GEOGRAPHICAL_SERVED_BY_TYPE,
 } from "./types";
 
 import { GeographicalServedState, Filters } from "../interfaces";
@@ -8,11 +8,11 @@ import { GeographicalServedState, Filters } from "../interfaces";
 type Action =
   | {
       payload: Filters;
-      type: typeof UPDATE_GEOGRAPHICAL_SERVICED_FILTERS;
+      type: typeof UPDATE_GEOGRAPHICAL_SERVED_FILTERS;
     }
   | {
       payload: string;
-      type: typeof UPDATE_GEOGRAPHICAL_SERVICED_BY_TYPE;
+      type: typeof UPDATE_GEOGRAPHICAL_SERVED_BY_TYPE;
     };
 
 export const reducer = (
@@ -20,7 +20,7 @@ export const reducer = (
   action: Action
 ): GeographicalServedState => {
   switch (action.type) {
-    case UPDATE_GEOGRAPHICAL_SERVICED_FILTERS:
+    case UPDATE_GEOGRAPHICAL_SERVED_FILTERS:
       return {
         ...state,
         geographicalServedFilters: {
@@ -28,7 +28,7 @@ export const reducer = (
           ...action.payload,
         },
       };
-    case UPDATE_GEOGRAPHICAL_SERVICED_BY_TYPE:
+    case UPDATE_GEOGRAPHICAL_SERVED_BY_TYPE:
       return {
         ...state,
         selectedOption: action.payload,

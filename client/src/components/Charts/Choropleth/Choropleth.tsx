@@ -37,7 +37,7 @@ const getSteps = (data: any) => {
     all.push(elem.percentage);
   });
   //   console.log(all, "all before sort");
-  all.sort();
+  all.sort((a: number, b: number) => a - b);
   if (all[0] === all[all.length - 1]) {
     return {
       steps: [],
@@ -52,7 +52,7 @@ const getSteps = (data: any) => {
 
   all[0] = Math.floor(all[0]);
   all[all.length - 1] = Math.ceil(all[all.length - 1]);
-  //   console.log(all, "all");
+  console.log(all, "all");
   const mid = Math.floor((all[0] + all[all.length - 1]) / 2);
   const lowerMid = Math.floor((all[0] + mid) / 2);
   const upperMid = Math.floor((all[all.length - 1] + mid) / 2);
