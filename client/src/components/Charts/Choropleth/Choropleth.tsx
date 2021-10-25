@@ -1,6 +1,8 @@
+/* eslint-disable import/no-webpack-loader-syntax */
 import React, { useRef, useEffect, useState } from "react";
 
-import mapboxgl from "mapbox-gl";
+// @ts-ignore
+import mapboxgl from "!mapbox-gl";
 import "./Chloropleth.css";
 import Counties from "./Geojsons/Counties";
 import Tracts from "./Geojsons/Tracts";
