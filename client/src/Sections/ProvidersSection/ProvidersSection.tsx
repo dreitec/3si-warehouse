@@ -4,6 +4,7 @@ import {
   Choropleth,
   Table,
   FilterCheckboxes,
+  Description,
 } from "../../components";
 import { getProvidersChartData, getProvidersTableData } from "../../api";
 import { ProvidersReducer } from "../../state";
@@ -24,7 +25,8 @@ import {
   OtherOptionTree,
 } from "../../Constants/OtherChecks";
 import { SiteOptionTree, SitesStateObject } from "../../Constants/SiteChecks";
-
+import { Container } from "@mui/material";
+import { Map as MapIcon } from "@mui/icons-material";
 interface Props {}
 
 const GeographicalELigibility = (props: Props) => {
@@ -118,27 +120,50 @@ const GeographicalELigibility = (props: Props) => {
     />,
   ];
   return (
-    <ChartContainer
-      showButton={false}
-      title="Service Sites"
-      selectFiltersType={(payload: string) =>
-        dispatch({ type: UPDATE_FILTER_TYPE, payload })
-      }
-      selectedFilterType={state.selectedFilterType}
-      checkboxes={checkboxes}
-      getData={populateProvidersData}
-    >
-      <Choropleth
-        dataFromProps={providersData.chart}
-        selectedType={state.selectedOption}
-        selectedRadioOption={state.selectedOption}
-        selectRadioOption={(payload: string) =>
-          dispatch({ type: UPDATE_BY_TYPE, payload })
+    <>
+      <Container maxWidth="md">
+        <Description
+          heading="Providers"
+          Icon={MapIcon}
+          button={true}
+          margin={20}
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+          auctor consequat mauris. Vestibulum ornare vel odio ac hendrerit.
+          Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit amet
+          sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum dolor sit
+          amet, consectetur adipiscing elit. Quisque auctor consequat mauris.
+          Vestibulum ornare vel odio ac hendrerit. Curabitur lacinia sem id
+          pharetra hendrerit. Nam quis lacus sit amet sapien dapibus eleifend.
+          Nunc quis augue nulla.Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Quisque auctor consequat mauris. Vestibulum ornare
+          vel odio ac hendrerit. Curabitur lacinia sem id pharetra hendrerit.
+          Nam quis lacus sit amet sapien dapibus eleifend. Nunc quis augue
+          nulla.
+        </Description>
+      </Container>
+      <ChartContainer
+        showButton={false}
+        title="Service Sites"
+        selectFiltersType={(payload: string) =>
+          dispatch({ type: UPDATE_FILTER_TYPE, payload })
         }
-        options={{ name: "# Service sites", property: "PROVIDERS" }}
-      />
-      <Table data={providersData.table} />
-    </ChartContainer>
+        selectedFilterType={state.selectedFilterType}
+        checkboxes={checkboxes}
+        getData={populateProvidersData}
+      >
+        <Choropleth
+          dataFromProps={providersData.chart}
+          selectedType={state.selectedOption}
+          selectedRadioOption={state.selectedOption}
+          selectRadioOption={(payload: string) =>
+            dispatch({ type: UPDATE_BY_TYPE, payload })
+          }
+          options={{ name: "# Service sites", property: "PROVIDERS" }}
+        />
+        <Table data={providersData.table} />
+      </ChartContainer>
+    </>
   );
 };
 

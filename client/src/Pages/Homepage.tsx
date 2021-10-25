@@ -7,18 +7,13 @@ import {
   GeograpicallyServedSection,
   ProvidersSection,
 } from "../Sections";
-import {
-  PeopleOutline as PeopleOutlineIcon,
-  PieChart as PieChartIcon,
-  Map as MapIcon,
-  //   Height as HeightIcon,
-  //   SaveAlt as SaveAltIcon,
-} from "@mui/icons-material";
-import { Container } from "@material-ui/core";
+
+import { Container } from "@mui/material";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 const Homepage = () => {
   return (
-    <div>
+    <Router>
       <Container maxWidth="md">
         <Description heading="FIRST GLIMPSE INTO YOUR DATA WAREHOUSE">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
@@ -36,75 +31,19 @@ const Homepage = () => {
         </Description>
 
         <TabBox />
-
-        <Description
-          heading="FIRST GLIMPSE INTO YOUR DATA WAREHOUSE"
-          Icon={PeopleOutlineIcon}
-          button={true}
-          margin={20}
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-          auctor consequat mauris. Vestibulum ornare vel odio ac hendrerit.
-          Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit amet
-          sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum dolor sit
-          amet, consectetur adipiscing elit. Quisque auctor consequat mauris.
-          Vestibulum ornare vel odio ac hendrerit. Curabitur lacinia sem id
-          pharetra hendrerit. Nam quis lacus sit amet sapien dapibus eleifend.
-          Nunc quis augue nulla.Lorem ipsum dolor sit amet, consectetur
-          adipiscing elit. Quisque auctor consequat mauris. Vestibulum ornare
-          vel odio ac hendrerit. Curabitur lacinia sem id pharetra hendrerit.
-          Nam quis lacus sit amet sapien dapibus eleifend. Nunc quis augue
-          nulla.
-        </Description>
       </Container>
-      <EligbilitySection />
-      <GeographicalEligibilitySection />
-      <Container maxWidth="md">
-        <Description
-          heading="Service"
-          Icon={PieChartIcon}
-          button={true}
-          margin={20}
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-          auctor consequat mauris. Vestibulum ornare vel odio ac hendrerit.
-          Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit amet
-          sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum dolor sit
-          amet, consectetur adipiscing elit. Quisque auctor consequat mauris.
-          Vestibulum ornare vel odio ac hendrerit. Curabitur lacinia sem id
-          pharetra hendrerit. Nam quis lacus sit amet sapien dapibus eleifend.
-          Nunc quis augue nulla.Lorem ipsum dolor sit amet, consectetur
-          adipiscing elit. Quisque auctor consequat mauris. Vestibulum ornare
-          vel odio ac hendrerit. Curabitur lacinia sem id pharetra hendrerit.
-          Nam quis lacus sit amet sapien dapibus eleifend. Nunc quis augue
-          nulla.
-        </Description>
-      </Container>
-      <ServedSection />
-      <GeograpicallyServedSection />
-      <Container maxWidth="md">
-        <Description
-          heading="Providers"
-          Icon={MapIcon}
-          button={true}
-          margin={20}
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-          auctor consequat mauris. Vestibulum ornare vel odio ac hendrerit.
-          Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit amet
-          sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum dolor sit
-          amet, consectetur adipiscing elit. Quisque auctor consequat mauris.
-          Vestibulum ornare vel odio ac hendrerit. Curabitur lacinia sem id
-          pharetra hendrerit. Nam quis lacus sit amet sapien dapibus eleifend.
-          Nunc quis augue nulla.Lorem ipsum dolor sit amet, consectetur
-          adipiscing elit. Quisque auctor consequat mauris. Vestibulum ornare
-          vel odio ac hendrerit. Curabitur lacinia sem id pharetra hendrerit.
-          Nam quis lacus sit amet sapien dapibus eleifend. Nunc quis augue
-          nulla.
-        </Description>
-      </Container>
-      <ProvidersSection />
-    </div>
+      <Route path="/" exact>
+        <EligbilitySection />
+        <GeographicalEligibilitySection />
+      </Route>
+      <Route path="/service">
+        <ServedSection />
+        <GeograpicallyServedSection />
+      </Route>
+      <Route path="/providers">
+        <ProvidersSection />
+      </Route>
+    </Router>
   );
 };
 

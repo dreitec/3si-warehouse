@@ -8,6 +8,7 @@ import {
   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
 import { Grid, Typography, styled, Theme } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 interface StyledDivProps extends React.HTMLAttributes<HTMLDivElement> {
   active: boolean;
@@ -55,6 +56,9 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
     justifyContent: "center",
   },
 }));
+const StyledLink = styled(Link)(() => ({
+  textDecoration: "none",
+}));
 interface Props {
   active?: boolean;
 }
@@ -69,38 +73,44 @@ const TabBox = (props: Props) => {
     <StyledContainer>
       <StyledGrid container>
         <Grid item xs={12} sm={5} md={2}>
-          <StyledDiv active={activeTab === 1} onClick={() => changeTab(1)}>
-            <PeopleOutlineIcon />
-            <StyledHeading variant="h6">Eligibility</StyledHeading>
-          </StyledDiv>
+          <StyledLink to="/">
+            <StyledDiv active={activeTab === 1} onClick={() => changeTab(1)}>
+              <PeopleOutlineIcon />
+              <StyledHeading variant="h6">Eligibility</StyledHeading>
+            </StyledDiv>
+          </StyledLink>
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
-          {
+          <StyledLink to="/service">
             <StyledDiv active={activeTab === 2} onClick={() => changeTab(2)}>
               <PieChartIcon />
               <StyledHeading variant="h6">Service</StyledHeading>
             </StyledDiv>
-          }
+          </StyledLink>
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
-          {
+          <StyledLink to="/providers">
             <StyledDiv active={activeTab === 3} onClick={() => changeTab(3)}>
               <MapIcon />
               <StyledHeading variant="h6">Provider</StyledHeading>
             </StyledDiv>
-          }
+          </StyledLink>
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
-          <StyledDiv active={activeTab === 4} onClick={() => changeTab(4)}>
-            <HeightIcon style={{ transform: "rotate(90deg)" }} />
-            <StyledHeading variant="h6">Gaps</StyledHeading>
-          </StyledDiv>
+          <StyledLink to="/gaps">
+            <StyledDiv active={activeTab === 4} onClick={() => changeTab(4)}>
+              <HeightIcon style={{ transform: "rotate(90deg)" }} />
+              <StyledHeading variant="h6">Gaps</StyledHeading>
+            </StyledDiv>
+          </StyledLink>
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
-          <StyledDiv active={activeTab === 5} onClick={() => changeTab(5)}>
-            <SaveAltIcon />
-            <StyledHeading variant="h6">Export</StyledHeading>
-          </StyledDiv>
+          <StyledLink to="/export">
+            <StyledDiv active={activeTab === 5} onClick={() => changeTab(5)}>
+              <SaveAltIcon />
+              <StyledHeading variant="h6">Export</StyledHeading>
+            </StyledDiv>
+          </StyledLink>
         </Grid>
       </StyledGrid>
     </StyledContainer>

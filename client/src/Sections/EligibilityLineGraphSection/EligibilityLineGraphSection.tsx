@@ -1,5 +1,10 @@
 import React, { useReducer } from "react";
-import { ChartContainer, LineChart, FilterCheckboxes } from "../../components";
+import {
+  ChartContainer,
+  LineChart,
+  FilterCheckboxes,
+  Description,
+} from "../../components";
 import { getEligibilityData } from "../../api";
 import { EligibilityReducer } from "../../state";
 import { FiltersBaseState } from "../../interfaces";
@@ -16,6 +21,8 @@ import {
   OtherStateObject as SelectedOtherStateObject,
   OtherOptionTree,
 } from "../../Constants/OtherChecks";
+import { Container } from "@material-ui/core";
+import { PeopleOutline as PeopleOutlineIcon } from "@mui/icons-material";
 
 interface Props {}
 
@@ -78,23 +85,46 @@ const EligibilityLineGraphSection = (props: Props) => {
     />,
   ];
   return (
-    <ChartContainer
-      checked={eligibilityNotation}
-      setChecked={setEligibilityNotation}
-      labels={["Percent", "Number"]}
-      title="Eligibility Over Time"
-      selectFiltersType={(payload: string) =>
-        dispatch({ type: UPDATE_FILTER_TYPE, payload })
-      }
-      selectedFilterType={state.selectedFilterType}
-      checkboxes={checkboxes}
-      getData={populateEligibilityData}
-    >
-      <LineChart
-        keyName={eligibilityNotation ? "number" : "percentage"}
-        dataFromProps={eligibilityData}
-      />
-    </ChartContainer>
+    <>
+      <Container>
+        <Description
+          heading="Eligibility"
+          Icon={PeopleOutlineIcon}
+          button={true}
+          margin={20}
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+          auctor consequat mauris. Vestibulum ornare vel odio ac hendrerit.
+          Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit amet
+          sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum dolor sit
+          amet, consectetur adipiscing elit. Quisque auctor consequat mauris.
+          Vestibulum ornare vel odio ac hendrerit. Curabitur lacinia sem id
+          pharetra hendrerit. Nam quis lacus sit amet sapien dapibus eleifend.
+          Nunc quis augue nulla.Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Quisque auctor consequat mauris. Vestibulum ornare
+          vel odio ac hendrerit. Curabitur lacinia sem id pharetra hendrerit.
+          Nam quis lacus sit amet sapien dapibus eleifend. Nunc quis augue
+          nulla.
+        </Description>
+      </Container>
+      <ChartContainer
+        checked={eligibilityNotation}
+        setChecked={setEligibilityNotation}
+        labels={["Percent", "Number"]}
+        title="Eligibility Over Time"
+        selectFiltersType={(payload: string) =>
+          dispatch({ type: UPDATE_FILTER_TYPE, payload })
+        }
+        selectedFilterType={state.selectedFilterType}
+        checkboxes={checkboxes}
+        getData={populateEligibilityData}
+      >
+        <LineChart
+          keyName={eligibilityNotation ? "number" : "percentage"}
+          dataFromProps={eligibilityData}
+        />
+      </ChartContainer>
+    </>
   );
 };
 export default EligibilityLineGraphSection;
