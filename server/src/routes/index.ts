@@ -9,7 +9,7 @@ import {
   getGeographicalElgibility,
   getGeographicalServed,
 } from "../controllers/children";
-import { getProviders } from "../controllers/providers";
+import { getProvidersGraph, getProvidersTable } from "../controllers/providers";
 
 export const routes = new Router();
 
@@ -27,7 +27,9 @@ const addRoute = (path, handler) => {
 };
 
 addRoute("/ping", ping);
-addRoute("/providers", getProviders);
+addRoute("/providers/chart", getProvidersGraph);
+addRoute("/providers/table", getProvidersTable);
+
 addRoute("/children", getAllChildren);
 addRoute("/child", getOneChild);
 

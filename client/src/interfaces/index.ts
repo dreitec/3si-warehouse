@@ -34,3 +34,15 @@ export interface GeographicalEligibilityState extends FiltersBaseState {
 export interface GeographicalFiltersBaseState extends FiltersBaseState {
   selectedOption: string;
 }
+
+export interface ProvidersState extends FiltersBaseState {
+  programFilters: Filters;
+  otherFilters: Filters;
+  selectedFilterType: string;
+  siteFilers: Filters;
+  selectedOption: string;
+}
+
+export interface ProvidersData {
+  data: any[];
+}

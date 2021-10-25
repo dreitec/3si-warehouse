@@ -2,3 +2,4 @@ export { reducer as GeographicalEligibilityReducer } from "./GeographicalEligibi
 export { reducer as EligibilityReducer } from "./EligibilityReducer";
 export { reducer as ServedReducer } from "./ServedReducer";
 export { reducer as GeographicalServedReducer } from "./GeographicallyServedReducer";
+export { reducer as ProvidersReducer } from "./ProvidersReducer";

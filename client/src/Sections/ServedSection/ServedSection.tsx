@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { ChartContainer, LineChart } from "../../components";
+import { ChartContainer, LineChart, FilterCheckboxes } from "../../components";
 import { getServedData } from "../../api";
 import { ServedReducer } from "../../state";
 import { FiltersBaseState } from "../../interfaces";
@@ -38,25 +38,19 @@ const EligibilityLineGraphSection = (props: Props) => {
   React.useEffect(() => {
     populateServedData();
   }, []);
-
-  return (
-    <ChartContainer
-      checked={servedNotation}
-      setChecked={setservedNotation}
-      labels={["Percent", "Number"]}
-      title="Eligibility Over Time"
-      getData={populateServedData}
-      checkBoxTree={
+  const checkboxes = [
+    <FilterCheckboxes
+      data={
         state.selectedFilterType === "programFilters"
           ? ProgramOptionTree
           : OtherOptionTree
       }
-      checkBoxesState={
+      state={
         state.selectedFilterType === "programFilters"
           ? state.programFilters
           : state.otherFilters
       }
-      setCheckBoxState={(payload: any) =>
+      setState={(payload: any) =>
         dispatch({
           type:
             state.selectedFilterType === "programFilters"
@@ -65,10 +59,20 @@ const EligibilityLineGraphSection = (props: Props) => {
           payload,
         })
       }
+    />,
+  ];
+  return (
+    <ChartContainer
+      checked={servedNotation}
+      setChecked={setservedNotation}
+      labels={["Percent", "Number"]}
+      title="Eligibility Over Time"
       selectFiltersType={(payload: string) =>
         dispatch({ type: UPDATE_FILTER_TYPE, payload })
       }
       selectedFilterType={state.selectedFilterType}
+      checkboxes={checkboxes}
+      getData={populateServedData}
     >
       <LineChart
         keyName={servedNotation ? "number" : "percentage"}

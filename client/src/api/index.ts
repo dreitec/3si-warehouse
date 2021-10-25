@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getQueryString } from "./utilities";
+import { ProvidersData } from "../interfaces";
 const baseUrl = process.env.REACT_APP_SERVER_URL || "http://localhost:5000/v0";
 // TODO: authentication
 
@@ -90,4 +91,52 @@ export const getGeographicalServedData = async (
     percentage: parseFloat(elem.percentage),
   }));
   return mapped;
+};
+
+export const getProvidersChartData = async (
+  groupBy: string,
+  keys?: string[]
+): Promise<any[]> => {
+  let querystring = getQueryString(keys);
+  if (querystring) {
+    querystring = `${querystring}&groupBy=${groupBy}`;
+  } else {
+    querystring = `?groupBy=${groupBy}`;
+  }
+  const response = await axios.get<any[]>(
+    `${baseUrl}/providers/chart${querystring}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const { data }: any = response.data;
+
+  return data;
+};
+
+export const getProvidersTableData = async (
+  groupBy: string,
+  keys?: string[]
+): Promise<any[]> => {
+  let querystring = getQueryString(keys);
+  if (querystring) {
+    querystring = `${querystring}&groupBy=${groupBy}`;
+  } else {
+    querystring = `?groupBy=${groupBy}`;
+  }
+  const response = await axios.get<ProvidersData>(
+    `${baseUrl}/providers/table${querystring}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const { data }: any = response.data;
+
+  return data;
 };

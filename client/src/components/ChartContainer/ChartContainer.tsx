@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Grid, styled, GridProps, Typography } from "@mui/material";
-import { Switch, FilterRadioGroup, FilterCheckboxes } from "../";
+import { Switch, FilterRadioGroup, Button } from "../";
 
 const StyledMainContainer = styled(Grid)(({ theme }) => ({
   margin: `${theme.spacing(6)} 0px `,
@@ -32,13 +31,11 @@ interface ContainerProps extends GridProps {
   checked?: boolean;
   setChecked?: Function;
   title: string;
-  getData: Function;
   showButton?: boolean;
-  checkBoxTree: any[];
-  checkBoxesState: any;
-  setCheckBoxState: Function;
   selectFiltersType: Function;
   selectedFilterType: string;
+  checkboxes: React.ReactNode;
+  getData: Function;
 }
 
 const renderSwitch = (
@@ -56,13 +53,11 @@ const ChartContainer = (props: ContainerProps) => {
     checked = false,
     setChecked = () => {},
     title,
-    getData,
     showButton = true,
-    checkBoxTree,
-    checkBoxesState,
-    setCheckBoxState,
     selectFiltersType,
     selectedFilterType,
+    checkboxes,
+    getData,
   } = props;
 
   return (
@@ -93,12 +88,16 @@ const ChartContainer = (props: ContainerProps) => {
             selected={selectedFilterType}
             setSelected={selectFiltersType}
           />
-          <FilterCheckboxes
-            getData={getData}
-            data={checkBoxTree}
-            state={checkBoxesState}
-            setState={setCheckBoxState}
-          />
+          {checkboxes}
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              getData();
+            }}
+          >
+            Submit
+          </Button>
         </StyledCheckBoxesContainer>
       </Grid>
     </StyledMainContainer>

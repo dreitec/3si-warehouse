@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { ChartContainer, LineChart } from "../../components";
+import { ChartContainer, LineChart, FilterCheckboxes } from "../../components";
 import { getEligibilityData } from "../../api";
 import { EligibilityReducer } from "../../state";
 import { FiltersBaseState } from "../../interfaces";
@@ -22,7 +22,13 @@ interface Props {}
 const EligibilityLineGraphSection = (props: Props) => {
   const [eligibilityNotation, setEligibilityNotation] = React.useState(false);
   const [eligibilityData, setEligibilityData] = React.useState();
-  const populateEligibilityData = async (keys?: string[]) => {
+  const populateEligibilityData = async () => {
+    const keys: string[] =
+      getFilters(
+        state.selectedFilterType === "programFilters"
+          ? "programFilters"
+          : "otherFilters"
+      ) || [];
     try {
       const response: any = await getEligibilityData(keys);
       setEligibilityData(response);
@@ -38,29 +44,29 @@ const EligibilityLineGraphSection = (props: Props) => {
   };
 
   const [state, dispatch] = useReducer(EligibilityReducer, initialArg);
-  console.log(state, "GeographicalEligibilityState");
   React.useEffect(() => {
     populateEligibilityData();
   }, []);
 
-  return (
-    <ChartContainer
-      checked={eligibilityNotation}
-      setChecked={setEligibilityNotation}
-      labels={["Percent", "Number"]}
-      title="Eligibility Over Time"
-      getData={populateEligibilityData}
-      checkBoxTree={
+  const getFilters = (key: "programFilters" | "otherFilters") => {
+    const notRequired = ["sp", "all"];
+    return Object.keys(state[key]).filter(
+      (elem: string) => state[key][elem] === true && !notRequired.includes(elem)
+    );
+  };
+  const checkboxes = [
+    <FilterCheckboxes
+      data={
         state.selectedFilterType === "programFilters"
           ? ProgramOptionTree
           : OtherOptionTree
       }
-      checkBoxesState={
+      state={
         state.selectedFilterType === "programFilters"
           ? state.programFilters
           : state.otherFilters
       }
-      setCheckBoxState={(payload: any) =>
+      setState={(payload: any) =>
         dispatch({
           type:
             state.selectedFilterType === "programFilters"
@@ -69,10 +75,20 @@ const EligibilityLineGraphSection = (props: Props) => {
           payload,
         })
       }
+    />,
+  ];
+  return (
+    <ChartContainer
+      checked={eligibilityNotation}
+      setChecked={setEligibilityNotation}
+      labels={["Percent", "Number"]}
+      title="Eligibility Over Time"
       selectFiltersType={(payload: string) =>
         dispatch({ type: UPDATE_FILTER_TYPE, payload })
       }
       selectedFilterType={state.selectedFilterType}
+      checkboxes={checkboxes}
+      getData={populateEligibilityData}
     >
       <LineChart
         keyName={eligibilityNotation ? "number" : "percentage"}

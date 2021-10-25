@@ -47,3 +47,6 @@ select
 //			MONTH(date) as month
 //			from CHILDREN
 //			order by LOAD_DT desc limit 1;
+
+// providers table stats
+// Select providers.NAME, providers.PROVIDER_TYPE, providers.CAPACITY,  count(children.CHILD_ID) as served from providers INNER JOIN children ON children.PROVIDER_ID=providers.PROVIDER_ID group by providers.NAME, providers.PROVIDER_TYPE, providers.CAPACITY;

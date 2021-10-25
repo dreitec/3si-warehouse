@@ -8,6 +8,4 @@ const config = {
   dbWarehouse: "COMPUTE_WH",
 };
 
-console.log(`config: ${JSON.stringify(config)}`);
-
 export const getConfig = (key: string) => config?.[key] || "";

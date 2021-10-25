@@ -5,11 +5,12 @@ import {
   EligbilitySection,
   ServedSection,
   GeograpicallyServedSection,
+  ProvidersSection,
 } from "../Sections";
 import {
   PeopleOutline as PeopleOutlineIcon,
   PieChart as PieChartIcon,
-  //   Map as MapIcon,
+  Map as MapIcon,
   //   Height as HeightIcon,
   //   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
@@ -57,9 +58,7 @@ const Homepage = () => {
         </Description>
       </Container>
       <EligbilitySection />
-
       <GeographicalEligibilitySection />
-
       <Container maxWidth="md">
         <Description
           heading="Service"
@@ -83,6 +82,28 @@ const Homepage = () => {
       </Container>
       <ServedSection />
       <GeograpicallyServedSection />
+      <Container maxWidth="md">
+        <Description
+          heading="Providers"
+          Icon={MapIcon}
+          button={true}
+          margin={20}
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+          auctor consequat mauris. Vestibulum ornare vel odio ac hendrerit.
+          Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit amet
+          sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum dolor sit
+          amet, consectetur adipiscing elit. Quisque auctor consequat mauris.
+          Vestibulum ornare vel odio ac hendrerit. Curabitur lacinia sem id
+          pharetra hendrerit. Nam quis lacus sit amet sapien dapibus eleifend.
+          Nunc quis augue nulla.Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Quisque auctor consequat mauris. Vestibulum ornare
+          vel odio ac hendrerit. Curabitur lacinia sem id pharetra hendrerit.
+          Nam quis lacus sit amet sapien dapibus eleifend. Nunc quis augue
+          nulla.
+        </Description>
+      </Container>
+      <ProvidersSection />
     </div>
   );
 };

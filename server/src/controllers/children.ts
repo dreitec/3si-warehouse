@@ -1,4 +1,3 @@
-import { getDb } from "../data";
 const months = [
   "Jan",
   "Feb",
@@ -18,23 +17,11 @@ import {
   ServedClauses,
   CommonClauses,
 } from "../data/clauses";
-
-export const getOneChild = () => {
-  const db = getDb();
-  if (!db) {
-    throw new Error("Could not connect to database");
-  }
-  return new Promise((resolve, reject) => {
-    (db as any).execute({
-      sqlText: "select * from CHILDREN LIMIT 1",
-      complete: (err, statement, rows) => {
-        if (err) {
-          throw new Error(err);
-        }
-        resolve({ rows });
-      },
-    });
-  });
+import PormisifiedQuery from "../utils/QueryHelper";
+import makeConditions from "../utils/ConditionsHelper";
+export const getOneChild = async () => {
+  const data = await PormisifiedQuery("select * from CHILDREN LIMIT 1");
+  return data;
 };
 
 export const getAllChildren = async () => {
@@ -81,7 +68,6 @@ export const getChildrenEligibility = async (req, res) => {
     });
   }
   const conditions = makeConditions(selectedClauses);
-  console.log(conditions, "eligibility conditions");
   // get eligible children
   const ConditionedResults: any = await PormisifiedQuery(`
 			select  
@@ -162,7 +148,6 @@ export const getChildrenServed = async (req, res) => {
   }
 
   const conditions = makeConditions(selectedClauses);
-  console.log(conditions, "served conditions");
 
   // get eligible children
   const ConditionedResults: any = await PormisifiedQuery(`
@@ -327,7 +312,6 @@ export const getGeographicalServed = async (req, res) => {
 
   const conditions = makeConditions(selectedClauses);
 
-  console.log(conditions, "conditions");
   // get eligible children
   const ServedChildrenByFilters: any =
     await PormisifiedQuery(`select DATE(LOAD_DT) as date, 
@@ -337,7 +321,6 @@ export const getGeographicalServed = async (req, res) => {
   // get all children
   const conditionsForTotal = [selectedClauses[0]];
   const subConditions = makeConditions(conditionsForTotal);
-  console.log(subConditions, "sub conditions");
   const totalChildren: any = await PormisifiedQuery(`
 			select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
@@ -361,50 +344,4 @@ export const getGeographicalServed = async (req, res) => {
   );
 
   return { data };
-};
-
-/**
- * Promisify snowflake queries to use cleaner async/await syntax
- * @param query - sql query
- * @returns - Results of query
- */
-const PormisifiedQuery = (query) =>
-  new Promise((resolve, reject) => {
-    const db = getDb();
-    if (!db) {
-      reject("Could not connect to database");
-    }
-
-    (db as any).execute({
-      sqlText: query,
-      complete: (err, statement, rows) => {
-        if (err) {
-          console.log(err);
-          reject(err);
-        }
-
-        resolve(rows);
-      },
-    });
-  });
-/**
- * Helper function to make where part of query using conditions in an array
- * @param clauses : array containing conditions
- * @returns - WHERE part of sql query
- */
-const makeConditions = (clauses: string[]): string => {
-  let conditions = ``;
-  clauses.forEach((elem, index) => {
-    if (index === 0 && clauses.length > 1) {
-      conditions = `${elem} AND (`;
-    } else if (index === 0 && clauses.length == 1) {
-      conditions = `${elem}`;
-    } else if (index === clauses.length - 1) {
-      conditions = `${conditions} ${elem})`;
-    } else {
-      conditions = `${conditions} ${elem} OR `;
-    }
-  });
-
-  return conditions;
 };

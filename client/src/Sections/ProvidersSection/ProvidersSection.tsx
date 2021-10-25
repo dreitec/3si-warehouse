@@ -1,13 +1,19 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { ChartContainer, Choropleth, FilterCheckboxes } from "../../components";
-import { getGeographicalServedData } from "../../api";
-import { GeographicalServedReducer } from "../../state";
-import { GeographicalFiltersBaseState } from "../../interfaces";
+import {
+  ChartContainer,
+  Choropleth,
+  Table,
+  FilterCheckboxes,
+} from "../../components";
+import { getProvidersChartData, getProvidersTableData } from "../../api";
+import { ProvidersReducer } from "../../state";
+import { ProvidersState } from "../../interfaces";
 import {
   UPDATE_PROGRAM_FILTERS,
   UPDATE_BY_TYPE,
   UPDATE_FILTER_TYPE,
   UPDATE_OTHER_FILTERS,
+  UPDATE_SITE_FILTERS,
 } from "../../state/types";
 import {
   StateObject as SelectedProgramsStateObject,
@@ -17,58 +23,78 @@ import {
   OtherStateObject as SelectedOtherStateObject,
   OtherOptionTree,
 } from "../../Constants/OtherChecks";
+import { SiteOptionTree, SitesStateObject } from "../../Constants/SiteChecks";
+
 interface Props {}
 
 const GeographicalELigibility = (props: Props) => {
-  const [geographicalServedData, setGeographicalServedData] = useState([]);
-  const initialArg: GeographicalFiltersBaseState = {
+  const [providersData, setProvidersData] = useState<{
+    chart: any[];
+    table: any[];
+  }>({ chart: [], table: [] });
+
+  const initialArg: ProvidersState = {
     programFilters: SelectedProgramsStateObject,
     otherFilters: SelectedOtherStateObject,
+    siteFilers: SitesStateObject,
     selectedFilterType: "programFilters",
     selectedOption: "county",
   };
-  const [state, dispatch] = useReducer(GeographicalServedReducer, initialArg);
-  const populateGeographicalServedData = async () => {
+  const [state, dispatch] = useReducer(ProvidersReducer, initialArg);
+  const populateProvidersData = async () => {
     const keys: string[] =
       getFilters(
         state.selectedFilterType === "programFilters"
           ? "programFilters"
           : "otherFilters"
       ) || [];
+    const siteKeys: string[] = getFilters("siteFilers");
     try {
-      const response: any = await getGeographicalServedData(
-        state.selectedOption,
-        keys
+      getProvidersChartData(state.selectedOption, [...keys, ...siteKeys]).then(
+        (chart: any[]) => {
+          setProvidersData({ ...providersData, chart });
+        }
       );
-      setGeographicalServedData(response);
+
+      await getProvidersTableData(state.selectedOption, [
+        ...keys,
+        ...siteKeys,
+      ]).then((table: any[]) => {
+        setProvidersData({ ...providersData, table });
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    populateGeographicalServedData();
+    populateProvidersData();
   }, []);
 
   useEffect(() => {
-    const getFilters = () => {
-      const notRequired = ["sp", "all"];
-      return Object.keys(state.programFilters).filter(
-        (elem) =>
-          state.programFilters[elem] === true && !notRequired.includes(elem)
-      );
-    };
-
-    populateGeographicalServedData();
+    populateProvidersData();
   }, [state.selectedOption]);
 
-  const getFilters = (key: "programFilters" | "otherFilters") => {
+  const getFilters = (
+    key: "programFilters" | "siteFilers" | "otherFilters"
+  ) => {
     const notRequired = ["sp", "all"];
     return Object.keys(state[key]).filter(
       (elem: string) => state[key][elem] === true && !notRequired.includes(elem)
     );
   };
+
   const checkboxes = [
+    <FilterCheckboxes
+      data={SiteOptionTree}
+      state={state.siteFilers}
+      setState={(payload: any) =>
+        dispatch({
+          type: UPDATE_SITE_FILTERS,
+          payload,
+        })
+      }
+    />,
     <FilterCheckboxes
       data={
         state.selectedFilterType === "programFilters"
@@ -94,23 +120,24 @@ const GeographicalELigibility = (props: Props) => {
   return (
     <ChartContainer
       showButton={false}
-      title="Served Geographically"
+      title="Service Sites"
       selectFiltersType={(payload: string) =>
         dispatch({ type: UPDATE_FILTER_TYPE, payload })
       }
       selectedFilterType={state.selectedFilterType}
       checkboxes={checkboxes}
-      getData={populateGeographicalServedData}
+      getData={populateProvidersData}
     >
       <Choropleth
-        dataFromProps={geographicalServedData}
+        dataFromProps={providersData.chart}
         selectedType={state.selectedOption}
         selectedRadioOption={state.selectedOption}
         selectRadioOption={(payload: string) =>
           dispatch({ type: UPDATE_BY_TYPE, payload })
         }
-        options={{ name: "% Children Served", property: "percentage" }}
+        options={{ name: "# Service sites", property: "PROVIDERS" }}
       />
+      <Table data={providersData.table} />
     </ChartContainer>
   );
 };

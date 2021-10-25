@@ -17,7 +17,6 @@ const ContainerStyled = styled(Container)(() => ({
 }));
 const Legend = (props: Props) => {
   const { name, ranges } = props;
-  console.log(ranges, "ranges in legend");
   const renderLegendKeys = (range: Range) => {
     return (
       <div key={range.text}>

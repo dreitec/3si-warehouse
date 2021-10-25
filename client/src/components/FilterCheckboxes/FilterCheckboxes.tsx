@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, FormControlLabel, styled, Checkbox } from "@mui/material";
-import { Button } from "../";
 import { Typography } from "@material-ui/core";
 interface SelectValueProps {
   value: string;
@@ -23,14 +22,13 @@ interface child {
 }
 
 interface Props {
-  getData: Function;
   state: any;
   setState: Function;
   data: any[];
 }
 
 export default function IndeterminateCheckbox(props: Props) {
-  const { getData, state, setState, data } = props;
+  const { state, setState, data } = props;
 
   const handleChange = (obj: any) => {
     const { children }: any = obj || {};
@@ -106,13 +104,6 @@ export default function IndeterminateCheckbox(props: Props) {
     );
   };
 
-  const getFilters = () => {
-    const notRequired = ["sp", "all"];
-    return Object.keys(state).filter(
-      (elem) => state[elem] === true && !notRequired.includes(elem)
-    );
-  };
-
   const renderCheckBoxes = (
     parent: SelectValueProps,
     indent: number
@@ -144,15 +135,6 @@ export default function IndeterminateCheckbox(props: Props) {
           return <Typography variant="h6">{child.value}</Typography>;
         return renderCheckBoxes(child, 0);
       })}
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={() => {
-          getData(getFilters());
-        }}
-      >
-        Submit
-      </Button>
     </StyledContainer>
   );
 }

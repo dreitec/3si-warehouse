@@ -24,21 +24,32 @@ const StyledRadioContainer = styled("div")(() => ({
 }));
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY || "NA";
+
+interface Options {
+  property: string;
+  name: string;
+}
 interface Props {
   dataFromProps: any;
   selectedRadioOption: string;
   selectRadioOption: Function;
   selectedType: string;
+  options: Options;
 }
 
 const colors = ["#afc5ff", "#739aff", "#376eff", "#214299"];
 
-const getSteps = (data: any) => {
+const ReplaceWithK = (number: number): string => {
+  let numberStr = number.toString();
+  if (numberStr.length > 4) return number.toString().slice(0, -3) + "K";
+  return numberStr;
+};
+
+const getSteps = (data: any, property: string) => {
   const all: any[] = [];
   data.forEach((elem: any) => {
-    all.push(elem.percentage);
+    all.push(elem[property]);
   });
-  //   console.log(all, "all before sort");
   all.sort((a: number, b: number) => a - b);
   if (all[0] === all[all.length - 1]) {
     return {
@@ -54,13 +65,12 @@ const getSteps = (data: any) => {
 
   all[0] = Math.floor(all[0]);
   all[all.length - 1] = Math.ceil(all[all.length - 1]);
-  console.log(all, "all");
   const mid = Math.floor((all[0] + all[all.length - 1]) / 2);
   const lowerMid = Math.floor((all[0] + mid) / 2);
   const upperMid = Math.floor((all[all.length - 1] + mid) / 2);
   const steps = [
     "step",
-    ["get", "ELIGIBLE"],
+    ["get", property],
     colors[0],
     lowerMid,
     colors[1],
@@ -69,16 +79,23 @@ const getSteps = (data: any) => {
     upperMid,
     colors[3],
   ];
-  //   console.log(steps);
   return {
     steps,
     ranges: [
-      { color: colors[0], text: `${all[0]}-${lowerMid - 1}` },
-      { color: colors[1], text: `${lowerMid}-${mid - 1}` },
-      { color: colors[2], text: `${mid}-${upperMid - 1}` },
+      { color: colors[0], text: `${all[0]}-${ReplaceWithK(lowerMid - 1)}` },
+      {
+        color: colors[1],
+        text: `${ReplaceWithK(lowerMid)}-${ReplaceWithK(mid - 1)}`,
+      },
+      {
+        color: colors[2],
+        text: `${ReplaceWithK(mid)}-${ReplaceWithK(upperMid - 1)}`,
+      },
       {
         color: colors[3],
-        text: `${upperMid}-${Math.ceil(all[all.length - 1])}`,
+        text: `${ReplaceWithK(upperMid)}-${ReplaceWithK(
+          Math.ceil(all[all.length - 1])
+        )}`,
       },
     ],
   };
@@ -90,6 +107,7 @@ const Choropleth = (props: Props) => {
     selectedRadioOption,
     selectRadioOption,
     selectedType,
+    options,
   } = props;
   const mapContainer = useRef(null);
   const map: any = useRef(null);
@@ -98,7 +116,7 @@ const Choropleth = (props: Props) => {
   const [zoom, setZoom] = useState(7);
   const [steps, setSteps] = useState([
     "step",
-    ["get", "ELIGIBLE"],
+    ["get", options.property],
     colors[0],
     -1,
     colors[1],
@@ -125,10 +143,6 @@ const Choropleth = (props: Props) => {
 
   const GeoJsonSource: any = selectedType === "county" ? Counties : Tracts;
 
-  const options = {
-    name: "% Children Eligible",
-    property: "ELIGIBLE",
-  };
   useEffect(() => {
     if (map.current) return;
     map.current = new mapboxgl.Map({
@@ -139,6 +153,7 @@ const Choropleth = (props: Props) => {
       // @ts-ignore
       //   maxBounds: bounds,
     });
+
     map.current.on("move", () => {
       setLng(map.current.getCenter().lng.toFixed(4));
       setLat(map.current.getCenter().lat.toFixed(4));
@@ -162,11 +177,13 @@ const Choropleth = (props: Props) => {
         ...feature,
         properties: {
           ...feature.properties,
-          ELIGIBLE: data.percentage | 0,
+          [options.property]: data[options.property] | 0,
         },
       };
+
       newFeatures.push(feature);
     });
+
     GeoJsonSource.features = newFeatures;
     AddSource(GeoJsonSource);
   };
@@ -176,11 +193,9 @@ const Choropleth = (props: Props) => {
    */
   useEffect(() => {
     if (dataFromProps.length === 0) return;
-    const stepsData = getSteps(dataFromProps);
+    const stepsData = getSteps(dataFromProps, options.property);
     setSteps(stepsData.steps);
-    console.log(ranges, stepsData.ranges, "test");
     setRanges(stepsData.ranges);
-    console.log(steps);
   }, [dataFromProps]);
   /**
    * once steps are loaded make GeoJsonSource

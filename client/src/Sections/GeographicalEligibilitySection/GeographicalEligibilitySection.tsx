@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { ChartContainer, Choropleth } from "../../components";
+import { ChartContainer, Choropleth, FilterCheckboxes } from "../../components";
 import { getGeographicalEligibilityData } from "../../api";
 import { GeographicalEligibilityReducer } from "../../state";
 import { GeographicalEligibilityState } from "../../interfaces";
@@ -46,7 +46,6 @@ const GeographicalELigibility = (props: Props) => {
     }
   };
 
-  console.log(state, "GeographicalEligibilityState");
   useEffect(() => {
     populateGeographicalEligibilityData();
   }, []);
@@ -63,22 +62,19 @@ const GeographicalELigibility = (props: Props) => {
     populateGeographicalEligibilityData(getFilters());
   }, [state.selectedOption]);
 
-  return (
-    <ChartContainer
-      showButton={false}
-      title="Eligibility Geographically"
-      getData={populateGeographicalEligibilityData}
-      checkBoxTree={
+  const checkboxes = [
+    <FilterCheckboxes
+      data={
         state.selectedFilterType === "programFilters"
           ? ProgramOptionTree
           : OtherOptionTree
       }
-      checkBoxesState={
+      state={
         state.selectedFilterType === "programFilters"
           ? state.programFilters
           : state.otherFilters
       }
-      setCheckBoxState={(payload: any) =>
+      setState={(payload: any) =>
         dispatch({
           type:
             state.selectedFilterType === "programFilters"
@@ -87,10 +83,18 @@ const GeographicalELigibility = (props: Props) => {
           payload,
         })
       }
+    />,
+  ];
+  return (
+    <ChartContainer
+      showButton={false}
+      title="Eligibility Geographically"
       selectFiltersType={(payload: string) =>
         dispatch({ type: UPDATE_FILTER_TYPE, payload })
       }
       selectedFilterType={state.selectedFilterType}
+      checkboxes={checkboxes}
+      getData={populateGeographicalEligibilityData}
     >
       <Choropleth
         dataFromProps={geographicalEligibilityData}
@@ -99,6 +103,7 @@ const GeographicalELigibility = (props: Props) => {
         selectRadioOption={(payload: string) =>
           dispatch({ type: UPDATE_BY_TYPE, payload })
         }
+        options={{ name: "% Children Eligible", property: "percentage" }}
       />
     </ChartContainer>
   );
