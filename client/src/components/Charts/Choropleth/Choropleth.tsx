@@ -3,14 +3,13 @@ import React, { useRef, useEffect, useState } from "react";
 
 // @ts-ignore
 import mapboxgl from "!mapbox-gl";
-import "./Chloropleth.css";
+import { styled, Container } from "@mui/material";
+import Legend from "./Legend/Legend";
+import { FilterRadioGroup } from "../../";
 import Counties from "./Geojsons/Counties";
 import Tracts from "./Geojsons/Tracts";
-
-import Legend from "./Legend/Legend";
-import { styled, Container } from "@mui/material";
-
-import { FilterRadioGroup } from "../../";
+import Regions from "./Geojsons/Regions";
+import "./Chloropleth.css";
 
 const StyledContainer = styled("div")(() => ({
   position: "relative",
@@ -141,7 +140,12 @@ const Choropleth = (props: Props) => {
     { value: "census", text: "By Census" },
   ];
 
-  const GeoJsonSource: any = selectedType === "county" ? Counties : Tracts;
+  const GeoJsonSource: any =
+    selectedType === "county"
+      ? Counties
+      : selectedType === "region"
+      ? Regions
+      : Tracts;
 
   useEffect(() => {
     if (map.current) return;
@@ -168,11 +172,17 @@ const Choropleth = (props: Props) => {
     const defaultFeatures = GeoJsonSource.features;
     const newFeatures: any[] = [];
     dataFromProps.forEach((data: any) => {
-      let feature = defaultFeatures.find((elem: any) =>
-        selectedType === "county"
-          ? elem.properties.COUNTYFP === data.COUNTY
-          : elem.properties.TRACTCE === data.CENSUS_TRACT
-      ) || { properties: {} };
+      let feature = defaultFeatures.find((elem: any) => {
+        let condition: boolean = false;
+        if (selectedType === "county") {
+          condition = elem.properties.COUNTYFP === data.COUNTY;
+        } else if (selectedType === "region") {
+          condition = elem.properties.RegionName === data.EEC_REGIONNAME;
+        } else {
+          condition = elem.properties.TRACTCE === data.CENSUS_TRACT;
+        }
+        return condition;
+      }) || { properties: {} };
       feature = {
         ...feature,
         properties: {
