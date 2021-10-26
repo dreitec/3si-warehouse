@@ -11,7 +11,7 @@ export const getProvidersGraph = async (req, res) => {
   const GROUPBY = GROUPARR[req.query.groupBy] || "COUNTY";
 
   const data: any = await PormisifiedQuery(
-    `select count(PROVIDER_ID) as providers, COUNTY from providers group by ${GROUPBY};`
+    `select count(PROVIDER_ID) as providers, ${GROUPBY} from providers group by ${GROUPBY};`
   );
 
   return { data };
