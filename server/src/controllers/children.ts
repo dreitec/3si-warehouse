@@ -17,15 +17,14 @@ import {
   ServedClauses,
   CommonClauses,
 } from "../data/clauses";
-import PormisifiedQuery from "../utils/QueryHelper";
-import makeConditions from "../utils/ConditionsHelper";
+import { PromisifiedQuery, MakeConditions, MakeQueryArray } from "../utils";
 export const getOneChild = async () => {
-  const data = await PormisifiedQuery("select * from CHILDREN LIMIT 1");
+  const data = await PromisifiedQuery("select * from CHILDREN LIMIT 1");
   return data;
 };
 
 export const getAllChildren = async () => {
-  const data = await PormisifiedQuery("select * from CHILDREN limit 100");
+  const data = await PromisifiedQuery("select * from CHILDREN limit 100");
 
   return data;
 };
@@ -36,7 +35,7 @@ export const getChildrenEligibility = async (req, res) => {
   const currentYear: number = currentDate.getFullYear();
   const lastYear: number = currentDate.getFullYear() - 1;
   const month: number = currentDate.getMonth() + 1;
-  const selectedClauses: string[] = [];
+  let selectedClauses: string[] = [];
 
   if (month < 6) {
     selectedClauses.push(
@@ -51,25 +50,11 @@ export const getChildrenEligibility = async (req, res) => {
   }
   const clauses = { ...eligibilityClauses, ...CommonClauses };
   // make conditions array based on query parameters
-  if (req.query.filter && !req.query.filter.includes("private_pay")) {
-    req.query.filter.forEach((filter: string) => {
-      if (filter === "bupk") {
-        const bupkKeys = Object.keys(clauses).filter((key: string) =>
-          key.includes("bupk")
-        );
+  selectedClauses = [...selectedClauses, ...MakeQueryArray(req.query, clauses)];
 
-        bupkKeys.forEach((bupkKey: string) => {
-          selectedClauses.push(clauses[filter]);
-        });
-      }
-      if (clauses[filter]) {
-        selectedClauses.push(clauses[filter]);
-      }
-    });
-  }
-  const conditions = makeConditions(selectedClauses);
+  const conditions = MakeConditions(selectedClauses);
   // get eligible children
-  const ConditionedResults: any = await PormisifiedQuery(`
+  const ConditionedResults: any = await PromisifiedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
@@ -82,9 +67,9 @@ export const getChildrenEligibility = async (req, res) => {
 
   // get total children
   const conditionsForTotal = [selectedClauses[0]];
-  const subConditions = makeConditions(conditionsForTotal);
+  const subConditions = MakeConditions(conditionsForTotal);
 
-  const TotalRecords: any = await PormisifiedQuery(`
+  const TotalRecords: any = await PromisifiedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
@@ -111,7 +96,7 @@ export const getChildrenEligibility = async (req, res) => {
 };
 
 export const getChildrenServed = async (req, res) => {
-  const selectedClauses: string[] = [];
+  let selectedClauses: string[] = [];
   // get date data to get records of past 6 months
   let currentDate = new Date();
   const currentYear: number = currentDate.getFullYear();
@@ -131,26 +116,12 @@ export const getChildrenServed = async (req, res) => {
   }
   const clauses = { ...ServedClauses, ...CommonClauses };
   // make conditions array based on query parameters
-  if (req.query.filter && !req.query.filter.includes("private_pay")) {
-    req.query.filter.forEach((filter: string) => {
-      if (filter === "bupk") {
-        const bupkKeys = Object.keys(clauses).filter((key: string) =>
-          key.includes("bupk")
-        );
-        bupkKeys.forEach((bupkKey: string) => {
-          selectedClauses.push(clauses[filter]);
-        });
-      }
-      if (clauses[filter]) {
-        selectedClauses.push(clauses[filter]);
-      }
-    });
-  }
+  selectedClauses = [...selectedClauses, ...MakeQueryArray(req.query, clauses)];
 
-  const conditions = makeConditions(selectedClauses);
+  const conditions = MakeConditions(selectedClauses);
 
   // get eligible children
-  const ConditionedResults: any = await PormisifiedQuery(`
+  const ConditionedResults: any = await PromisifiedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
@@ -163,10 +134,10 @@ export const getChildrenServed = async (req, res) => {
 			order by LOAD_DT;`);
 
   const conditionsForTotal = [selectedClauses[0]];
-  const subConditions = makeConditions(conditionsForTotal);
+  const subConditions = MakeConditions(conditionsForTotal);
 
   // get total children
-  const TotalRecords: any = await PormisifiedQuery(`
+  const TotalRecords: any = await PromisifiedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
@@ -195,10 +166,10 @@ export const getChildrenServed = async (req, res) => {
 export const getGeographicalElgibility = async (req, res) => {
   let currentDate = new Date();
   const currentYear: number = currentDate.getFullYear();
-  const selectedClauses: string[] = [];
+  let selectedClauses: string[] = [];
 
   // get latest month data was entered for
-  const MonthRow: any = await PormisifiedQuery(`select		
+  const MonthRow: any = await PromisifiedQuery(`select		
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month
 			from CHILDREN
@@ -211,21 +182,7 @@ export const getGeographicalElgibility = async (req, res) => {
 
   const clauses = { ...eligibilityClauses, ...CommonClauses };
 
-  if (req.query.filter && !req.query.filter.includes("private_pay")) {
-    req.query.filter.forEach((filter: string) => {
-      if (filter === "bupk") {
-        const bupkKeys = Object.keys(clauses).filter((key: string) =>
-          key.includes("bupk")
-        );
-        bupkKeys.forEach((bupkKey: string) => {
-          selectedClauses.push(clauses[filter]);
-        });
-      }
-      if (clauses[filter]) {
-        selectedClauses.push(clauses[filter]);
-      }
-    });
-  }
+  selectedClauses = [...selectedClauses, ...MakeQueryArray(req.query, clauses)];
   const GROUPARR = {
     county: "COUNTY",
     census: "CENSUS_TRACT",
@@ -233,18 +190,18 @@ export const getGeographicalElgibility = async (req, res) => {
   };
   const GROUPBY = GROUPARR[req.query.groupBy] || "COUNTY";
 
-  const conditions = makeConditions(selectedClauses);
+  const conditions = MakeConditions(selectedClauses);
 
   // get eligible children
   const ELgibileChildrenByFilters: any =
-    await PormisifiedQuery(`select DATE(LOAD_DT) as date, 
+    await PromisifiedQuery(`select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
 			YEAR(date) as year, count(CHILD_ID) as children, ${GROUPBY} from CHILDREN ${conditions} group by ${GROUPBY}, month,LOAD_DT
 			order by LOAD_DT desc;`);
   // get all children
   const conditionsForTotal = [selectedClauses[0]];
-  const subConditions = makeConditions(conditionsForTotal);
-  const totalChildren: any = await PormisifiedQuery(`
+  const subConditions = MakeConditions(conditionsForTotal);
+  const totalChildren: any = await PromisifiedQuery(`
 			select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
 			YEAR(date) as year, count(CHILD_ID) as children, ${GROUPBY} from CHILDREN ${subConditions}  group by ${GROUPBY}, month,LOAD_DT
@@ -273,10 +230,10 @@ export const getGeographicalElgibility = async (req, res) => {
 export const getGeographicalServed = async (req, res) => {
   let currentDate = new Date();
   const currentYear: number = currentDate.getFullYear();
-  const selectedClauses: string[] = [];
+  let selectedClauses: string[] = [];
 
   // get latest month data was entered for
-  const MonthRow: any = await PormisifiedQuery(`select		
+  const MonthRow: any = await PromisifiedQuery(`select		
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month
 			from CHILDREN
@@ -288,21 +245,8 @@ export const getGeographicalServed = async (req, res) => {
   );
   const clauses = { ...ServedClauses, ...CommonClauses };
 
-  if (req.query.filter && !req.query.filter.includes("private_pay")) {
-    req.query.filter.forEach((filter: string) => {
-      if (filter === "bupk") {
-        const bupkKeys = Object.keys(clauses).filter((key: string) =>
-          key.includes("bupk")
-        );
-        bupkKeys.forEach((bupkKey: string) => {
-          selectedClauses.push(clauses[filter]);
-        });
-      }
-      if (clauses[filter]) {
-        selectedClauses.push(clauses[filter]);
-      }
-    });
-  }
+  selectedClauses = [...selectedClauses, ...MakeQueryArray(req.query, clauses)];
+
   const GROUPARR = {
     county: "COUNTY",
     census: "CENSUS_TRACT",
@@ -310,18 +254,18 @@ export const getGeographicalServed = async (req, res) => {
   };
   const GROUPBY = GROUPARR[req.query.groupBy] || "COUNTY";
 
-  const conditions = makeConditions(selectedClauses);
+  const conditions = MakeConditions(selectedClauses);
 
   // get eligible children
   const ServedChildrenByFilters: any =
-    await PormisifiedQuery(`select DATE(LOAD_DT) as date, 
+    await PromisifiedQuery(`select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
 			YEAR(date) as year, count(CHILD_ID) as children, ${GROUPBY} from CHILDREN ${conditions}  AND PROGRAM_NAME not like 'Unserved'  group by ${GROUPBY}, month,LOAD_DT
 			order by LOAD_DT desc;`);
   // get all children
   const conditionsForTotal = [selectedClauses[0]];
-  const subConditions = makeConditions(conditionsForTotal);
-  const totalChildren: any = await PormisifiedQuery(`
+  const subConditions = MakeConditions(conditionsForTotal);
+  const totalChildren: any = await PromisifiedQuery(`
 			select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
 			YEAR(date) as year, count(CHILD_ID) as children, ${GROUPBY} from CHILDREN ${subConditions}  group by ${GROUPBY}, month,LOAD_DT
