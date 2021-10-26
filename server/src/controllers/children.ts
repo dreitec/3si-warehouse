@@ -231,7 +231,7 @@ export const getGeographicalElgibility = async (req, res) => {
     census: "CENSUS_TRACT",
     region: "EEC_REGIONNAME",
   };
-  const GROUPBY = GROUPARR[req.query.groupBy];
+  const GROUPBY = GROUPARR[req.query.groupBy] || "COUNTY";
 
   const conditions = makeConditions(selectedClauses);
 

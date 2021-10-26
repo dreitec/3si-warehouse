@@ -34,7 +34,13 @@ const GeographicalELigibility = (props: Props) => {
     GeographicalEligibilityReducer,
     initialArg
   );
-  const populateGeographicalEligibilityData = async (keys?: string[]) => {
+  const populateGeographicalEligibilityData = async () => {
+    const keys: string[] =
+      getFilters(
+        state.selectedFilterType === "programFilters"
+          ? "programFilters"
+          : "otherFilters"
+      ) || [];
     try {
       const response: any = await getGeographicalEligibilityData(
         state.selectedOption,
@@ -51,16 +57,15 @@ const GeographicalELigibility = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    const getFilters = () => {
-      const notRequired = ["sp", "all"];
-      return Object.keys(state.programFilters).filter(
-        (elem) =>
-          state.programFilters[elem] === true && !notRequired.includes(elem)
-      );
-    };
-
-    populateGeographicalEligibilityData(getFilters());
+    populateGeographicalEligibilityData();
   }, [state.selectedOption]);
+
+  const getFilters = (key: "programFilters" | "otherFilters") => {
+    const notRequired = ["sp", "all"];
+    return Object.keys(state[key]).filter(
+      (elem: string) => state[key][elem] === true && !notRequired.includes(elem)
+    );
+  };
 
   const checkboxes = [
     <FilterCheckboxes
