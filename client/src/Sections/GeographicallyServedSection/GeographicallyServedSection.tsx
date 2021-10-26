@@ -51,14 +51,6 @@ const GeographicalELigibility = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    const getFilters = () => {
-      const notRequired = ["sp", "all"];
-      return Object.keys(state.programFilters).filter(
-        (elem) =>
-          state.programFilters[elem] === true && !notRequired.includes(elem)
-      );
-    };
-
     populateGeographicalServedData();
   }, [state.selectedOption]);
 
