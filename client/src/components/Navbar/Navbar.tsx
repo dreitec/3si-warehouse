@@ -11,9 +11,8 @@ import {
   styled,
   Box,
 } from "@mui/material";
-import { Link } from "../";
-
 import MenuIcon from "@mui/icons-material/Menu";
+import { Link } from "../";
 
 const StyledBrand = styled(MUILink)(() => ({
   textDecoration: "none",
