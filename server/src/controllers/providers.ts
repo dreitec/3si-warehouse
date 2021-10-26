@@ -1,5 +1,5 @@
 import { PromisifiedQuery, MakeQueryArray, MakeConditions } from "../utils";
-import { SiteClauses, ServedClauses } from "../data/clauses";
+import { SiteClauses, ServedClauses, CommonClauses } from "../data/clauses";
 
 export const getProvidersGraph = async (req, res) => {
   const GROUPARR = {
@@ -12,7 +12,7 @@ export const getProvidersGraph = async (req, res) => {
     MakeQueryArray(req.query, SiteClauses, false)
   );
   let ChildrenConditions = MakeConditions(
-    MakeQueryArray(req.query, ServedClauses, false)
+    MakeQueryArray(req.query, { ...ServedClauses, ...CommonClauses }, false)
   );
   if (SiteConditions.length > 0) {
     ChildrenConditions = ChildrenConditions.replace("where", "OR");
@@ -29,7 +29,7 @@ export const getProvidersTable = async (req, res) => {
     MakeQueryArray(req.query, SiteClauses, false)
   );
   let ChildrenConditions = MakeConditions(
-    MakeQueryArray(req.query, ServedClauses, false)
+    MakeQueryArray(req.query, { ...ServedClauses, ...CommonClauses }, false)
   );
   if (SiteConditions.length > 0) {
     ChildrenConditions = ChildrenConditions.replace("where", "OR");
