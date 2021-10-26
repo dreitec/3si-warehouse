@@ -74,7 +74,20 @@ const GeographicalELigibility = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    populateProvidersData();
+    const keys: string[] =
+      getFilters(
+        state.selectedFilterType === "programFilters"
+          ? "programFilters"
+          : "otherFilters"
+      ) || [];
+    const siteKeys: string[] = getFilters("siteFilers");
+    getProvidersChartData(state.selectedOption, [...keys, ...siteKeys])
+      .then((chart: any[]) => {
+        setProvidersData({ ...providersData, chart });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [state.selectedOption]);
 
   const getFilters = (
