@@ -1,6 +1,5 @@
-import PormisifiedQuery from "../utils/QueryHelper";
-// import { ServedClauses, CommonClauses } from "../data/clauses";
-// import makeConditions from "../utils/ConditionsHelper";
+import { PromisifiedQuery, MakeQueryArray, MakeConditions } from "../utils";
+import { SiteClauses, ServedClauses } from "../data/clauses";
 
 export const getProvidersGraph = async (req, res) => {
   const GROUPARR = {
@@ -9,17 +8,35 @@ export const getProvidersGraph = async (req, res) => {
     region: "EEC_REGIONNAME",
   };
   const GROUPBY = GROUPARR[req.query.groupBy] || "COUNTY";
-
-  const data: any = await PormisifiedQuery(
-    `select count(PROVIDER_ID) as providers, ${GROUPBY} from providers group by ${GROUPBY};`
+  const SiteConditions = MakeConditions(
+    MakeQueryArray(req.query, SiteClauses, false)
+  );
+  let ChildrenConditions = MakeConditions(
+    MakeQueryArray(req.query, ServedClauses, false)
+  );
+  if (SiteConditions.length > 0) {
+    ChildrenConditions = ChildrenConditions.replace("where", "OR");
+  }
+  const data: any = await PromisifiedQuery(
+    `select count(providers.PROVIDER_ID) as providers, providers.${GROUPBY} from providers INNER JOIN children ON children.PROVIDER_ID=providers.PROVIDER_ID  ${SiteConditions} ${ChildrenConditions} group by providers.${GROUPBY};`
   );
 
   return { data };
 };
 
 export const getProvidersTable = async (req, res) => {
-  const data: any = await PormisifiedQuery(
-    `Select providers.NAME, providers.PROVIDER_TYPE, providers.CAPACITY,  count(children.CHILD_ID) as enrollment from providers INNER JOIN children ON children.PROVIDER_ID=providers.PROVIDER_ID group by providers.NAME, providers.PROVIDER_TYPE, providers.CAPACITY;`
+  const SiteConditions = MakeConditions(
+    MakeQueryArray(req.query, SiteClauses, false)
+  );
+  let ChildrenConditions = MakeConditions(
+    MakeQueryArray(req.query, ServedClauses, false)
+  );
+  if (SiteConditions.length > 0) {
+    ChildrenConditions = ChildrenConditions.replace("where", "OR");
+  }
+
+  const data: any = await PromisifiedQuery(
+    `Select providers.NAME, providers.PROVIDER_TYPE, providers.CAPACITY,  count(children.CHILD_ID) as enrollment from providers  INNER JOIN children ON children.PROVIDER_ID=providers.PROVIDER_ID ${SiteConditions} ${ChildrenConditions} group by providers.NAME, providers.PROVIDER_TYPE, providers.CAPACITY; `
   );
 
   return { data };

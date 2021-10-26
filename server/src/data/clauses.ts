@@ -38,3 +38,13 @@ export const CommonClauses = {
   adilf: `(UNEMPLOYMENT = 0)`,
   nadilf: `(UNEMPLOYMENT = 1)`,
 };
+
+export const SiteClauses = {
+  privs: `(PROVIDER_TYPE like 'Public School')`,
+  pubs: `(PROVIDER_TYPE like 'Private School')`,
+  lg: `(PROVIDER_TYPE like 'Large Group')`,
+  sg: `(PROVIDER_TYPE like 'Small Group')`,
+  fcc: `(PROVIDER_TYPE like 'Family Child Care')`,
+  icc: `(PROVIDER_TYPE like 'Informal Child Care')`,
+  other: `(PROVIDER_TYPE not in ('Private School', 'Large Group', 'Public School', 'Small Group', 'Family Child Care', 'Informal Child Care'))`,
+};
