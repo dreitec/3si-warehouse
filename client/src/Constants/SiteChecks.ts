@@ -8,7 +8,7 @@ export const SiteOptionTree = [
         value: "lg",
       },
       {
-        text: "Large Group",
+        text: "Small Group",
         value: "sg",
       },
       {
