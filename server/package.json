@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node -r dotenv/config dist/index.js",
-    "dev:server": "nodemon --watch './**/*.ts' --exec 'ts-node' src/index.ts"
+    "dev": "nodemon --watch './**/*.ts' --exec 'ts-node' src/index.ts"
   },
   "keywords": [
     "domain"
