@@ -9,6 +9,7 @@ import {
 } from "@mui/icons-material";
 import { Grid, Typography, styled, Theme } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 interface StyledDivProps extends React.HTMLAttributes<HTMLDivElement> {
   active: boolean;
@@ -64,17 +65,22 @@ interface Props {
 }
 
 const TabBox = (props: Props) => {
-  const [activeTab, setActiveTab] = React.useState(1);
+  const location = useLocation();
+  const [activeTab, setActiveTab] = React.useState(location.pathname);
 
-  const changeTab = (number: number) => {
-    setActiveTab(number);
+  const changeTab = (path: string) => {
+    setActiveTab(path);
   };
+
   return (
     <StyledContainer>
       <StyledGrid container>
         <Grid item xs={12} sm={5} md={2}>
           <StyledLink to="/">
-            <StyledDiv active={activeTab === 1} onClick={() => changeTab(1)}>
+            <StyledDiv
+              active={activeTab === "/"}
+              onClick={() => changeTab("/")}
+            >
               <PeopleOutlineIcon />
               <StyledHeading variant="h6">Eligibility</StyledHeading>
             </StyledDiv>
@@ -82,7 +88,10 @@ const TabBox = (props: Props) => {
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
           <StyledLink to="/service">
-            <StyledDiv active={activeTab === 2} onClick={() => changeTab(2)}>
+            <StyledDiv
+              active={activeTab === "/service"}
+              onClick={() => changeTab("/service")}
+            >
               <PieChartIcon />
               <StyledHeading variant="h6">Service</StyledHeading>
             </StyledDiv>
@@ -90,7 +99,10 @@ const TabBox = (props: Props) => {
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
           <StyledLink to="/providers">
-            <StyledDiv active={activeTab === 3} onClick={() => changeTab(3)}>
+            <StyledDiv
+              active={activeTab === "/providers"}
+              onClick={() => changeTab("/providers")}
+            >
               <MapIcon />
               <StyledHeading variant="h6">Provider</StyledHeading>
             </StyledDiv>
@@ -98,7 +110,10 @@ const TabBox = (props: Props) => {
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
           <StyledLink to="/gaps">
-            <StyledDiv active={activeTab === 4} onClick={() => changeTab(4)}>
+            <StyledDiv
+              active={activeTab === "/gaps"}
+              onClick={() => changeTab("/gaps")}
+            >
               <HeightIcon style={{ transform: "rotate(90deg)" }} />
               <StyledHeading variant="h6">Gaps</StyledHeading>
             </StyledDiv>
@@ -106,7 +121,10 @@ const TabBox = (props: Props) => {
         </Grid>
         <Grid item xs={12} sm={5} md={2}>
           <StyledLink to="/export">
-            <StyledDiv active={activeTab === 5} onClick={() => changeTab(5)}>
+            <StyledDiv
+              active={activeTab === "/export"}
+              onClick={() => changeTab("/export")}
+            >
               <SaveAltIcon />
               <StyledHeading variant="h6">Export</StyledHeading>
             </StyledDiv>
