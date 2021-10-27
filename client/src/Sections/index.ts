@@ -3,3 +3,4 @@ export { default as EligbilitySection } from "./EligibilityLineGraphSection/Elig
 export { default as ServedSection } from "./ServedSection/ServedSection";
 export { default as GeograpicallyServedSection } from "./GeographicallyServedSection/GeographicallyServedSection";
 export { default as ProvidersSection } from "./ProvidersSection/ProvidersSection";
+export { default as UnservedChildrenScatterGraphSection } from "./UnservedChildrenScatterGraphSection/UnservedChildrenScatterGraphSection";

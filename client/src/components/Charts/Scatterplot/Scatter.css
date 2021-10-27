@@ -1,0 +1,11 @@
+.circle {
+  fill: #376eff;
+}
+
+.circle:hover {
+  fill: #c3c7d5 !important;
+  stroke: #376eff;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  fill: none;
+}

@@ -32,10 +32,11 @@ interface ContainerProps extends GridProps {
   setChecked?: Function;
   title: string;
   showButton?: boolean;
-  selectFiltersType: Function;
-  selectedFilterType: string;
+  selectFiltersType?: Function;
+  selectedFilterType?: string;
   checkboxes: React.ReactNode;
   getData: Function;
+  showOptionSelector?: boolean;
 }
 
 const renderSwitch = (
@@ -54,10 +55,11 @@ const ChartContainer = (props: ContainerProps) => {
     setChecked = () => {},
     title,
     showButton = true,
-    selectFiltersType,
-    selectedFilterType,
+    selectFiltersType = () => {},
+    selectedFilterType = "program",
     checkboxes,
     getData,
+    showOptionSelector = true,
   } = props;
 
   return (
@@ -79,15 +81,18 @@ const ChartContainer = (props: ContainerProps) => {
           {children}
         </StyledChartItemContainer>
         <StyledCheckBoxesContainer item xs={4}>
-          <FilterRadioGroup
-            name={`filtertype-${title.replace(/ /g, "")}`}
-            options={[
-              { value: "programFilters", text: "Program Types" },
-              { value: "otherFilters", text: "Other Types" },
-            ]}
-            selected={selectedFilterType}
-            setSelected={selectFiltersType}
-          />
+          {showOptionSelector && (
+            <FilterRadioGroup
+              name={`filtertype-${title.replace(/ /g, "")}`}
+              options={[
+                { value: "programFilters", text: "Program Types" },
+                { value: "otherFilters", text: "Other Types" },
+              ]}
+              selected={selectedFilterType}
+              setSelected={selectFiltersType}
+            />
+          )}
+
           {checkboxes}
           <Button
             variant="outlined"

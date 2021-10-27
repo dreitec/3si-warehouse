@@ -8,7 +8,7 @@ export const colors = {
   },
   secondary: {
     main: "#080808",
-    secondary: "#C3C7D5",
+    light: "#C3C7D5",
   },
   border: {
     main: "#C5D7F9",

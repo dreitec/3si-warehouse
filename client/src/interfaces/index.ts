@@ -46,3 +46,7 @@ export interface ProvidersState extends FiltersBaseState {
 export interface ProvidersData {
   data: any[];
 }
+
+export interface GapsState {
+  filters: Filters;
+}

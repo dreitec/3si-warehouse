@@ -6,6 +6,7 @@ import {
   ServedSection,
   GeograpicallyServedSection,
   ProvidersSection,
+  UnservedChildrenScatterGraphSection,
 } from "../Sections";
 
 import { Container } from "@mui/material";
@@ -42,6 +43,9 @@ const Homepage = () => {
       </Route>
       <Route path="/providers">
         <ProvidersSection />
+      </Route>
+      <Route path="/gaps">
+        <UnservedChildrenScatterGraphSection />
       </Route>
     </Router>
   );

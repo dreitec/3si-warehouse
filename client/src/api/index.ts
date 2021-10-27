@@ -140,3 +140,26 @@ export const getProvidersTableData = async (
 
   return data;
 };
+
+export const getScatterData = async (keys?: string[]): Promise<any[]> => {
+  let querystring = getQueryString(keys);
+  if (querystring) {
+    querystring = `${querystring}`;
+  }
+  const response = await axios.get<ProvidersData>(
+    `${baseUrl}/children/unserved/scatter${querystring}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const geographicalEligibilityData: any = response.data;
+  const mapped: any = geographicalEligibilityData.data.map((elem: any) => ({
+    ...elem,
+    percentage: parseFloat(elem.percentage),
+  }));
+
+  return mapped;
+};

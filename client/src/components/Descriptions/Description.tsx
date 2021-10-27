@@ -48,7 +48,11 @@ const Description = (props: Props) => {
       }}
     >
       <HeadingContainer container alignItems="center" marginvalue={margin}>
-        {Icon && <Icon />}
+        {Icon && (
+          <Icon
+            style={{ transform: heading === "Gaps" ? "rotate(90deg)" : "" }}
+          />
+        )}
         <StyledHeading textAlign="center" variant="h6">
           {heading}
         </StyledHeading>

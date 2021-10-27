@@ -9,7 +9,6 @@ import {
   ResponsiveContainer,
   Label,
 } from "recharts";
-
 interface Props {
   keyName: string;
   dataFromProps: any;
