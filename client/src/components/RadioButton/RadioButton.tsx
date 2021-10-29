@@ -1,14 +1,21 @@
 import * as React from "react";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
+import {
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  styled,
+} from "@mui/material";
 
 interface Options {
   label: string;
   value: string;
 }
+
+const StyledLabel = styled(FormControlLabel)(() => ({
+  backgroundColor: "transparent !important",
+}));
 interface Props {
   options: Options[];
 }
@@ -31,7 +38,7 @@ export default function ControlledRadioButtonsGroup(props: Props) {
         onChange={handleChange}
       >
         {options.map((option: Options) => (
-          <FormControlLabel
+          <StyledLabel
             key={option.value}
             value={option.value}
             control={<Radio />}
