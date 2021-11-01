@@ -1,14 +1,12 @@
 /* eslint-disable import/no-webpack-loader-syntax */
 import React, { useRef, useEffect, useState } from "react";
+import chroma from "chroma-js";
 
 // @ts-ignore
 import mapboxgl from "!mapbox-gl";
-import { styled, Container } from "@mui/material";
-import Legend from "./Legend/Legend";
-import { FilterRadioGroup } from "../../";
+import { styled } from "@mui/material";
+import Legend from "./Legend/Legend2D";
 import Counties from "./Geojsons/Counties";
-import Tracts from "./Geojsons/Tracts";
-import Regions from "./Geojsons/Regions";
 import "./Chloropleth.css";
 
 const StyledContainer = styled("div")(() => ({
@@ -37,7 +35,31 @@ interface Props {
   showRadio?: boolean;
 }
 
-const colors = ["#afc5ff", "#739aff", "#376eff", "#214299"];
+var row1 = chroma.scale(["#367BF5", "#12214D"]).colors(3);
+var row3 = chroma.scale(["#ff4538", "#610a0a"]).colors(3);
+var row2 = chroma
+  .scale([chroma.mix("#367BF5", "#ff4538"), chroma.mix("#12214D", "#610a0a")])
+  .colors(3);
+
+const colors = [...row3, ...row2, ...row1];
+const svi = [
+  0.3077,
+  1,
+  0.5385,
+  0.4615,
+  0.2308,
+  0.9231,
+  0,
+  0.6154,
+  0.1538,
+  0.6923,
+  0.7692,
+  0.3846,
+  0.8462,
+  0.0769,
+].sort((a: number, b: number) => a - b);
+
+console.log(svi, "svis");
 
 const ReplaceWithK = (number: number): string => {
   let numberStr = number.toString();
@@ -54,16 +76,12 @@ const getSteps = (data: any, property: string) => {
   if (all[0] === all[all.length - 1]) {
     return {
       steps: [],
-      ranges: [
-        {
-          color: colors[3],
-          text: `${all[0]}%`,
-        },
-      ],
+      ranges: colors,
     };
   }
 
   all[0] = Math.floor(all[0]);
+  console.log(all, "all data");
   all[all.length - 1] = Math.ceil(all[all.length - 1]);
   const mid = Math.floor((all[0] + all[all.length - 1]) / 2);
   const lowerMid = Math.floor((all[0] + mid) / 2);
@@ -81,40 +99,18 @@ const getSteps = (data: any, property: string) => {
   ];
   return {
     steps,
-    ranges: [
-      { color: colors[0], text: `${all[0]}-${ReplaceWithK(lowerMid - 1)}` },
-      {
-        color: colors[1],
-        text: `${ReplaceWithK(lowerMid)}-${ReplaceWithK(mid - 1)}`,
-      },
-      {
-        color: colors[2],
-        text: `${ReplaceWithK(mid)}-${ReplaceWithK(upperMid - 1)}`,
-      },
-      {
-        color: colors[3],
-        text: `${ReplaceWithK(upperMid)}-${ReplaceWithK(
-          Math.ceil(all[all.length - 1])
-        )}`,
-      },
-    ],
+    ranges: colors,
   };
 };
 
 const Choropleth = (props: Props) => {
-  const {
-    dataFromProps,
-    selectedRadioOption = "",
-    selectRadioOption = () => {},
-    selectedType,
-    options,
-    showRadio = true,
-  } = props;
+  const { dataFromProps, selectedType, options } = props;
   const mapContainer = useRef(null);
   const map: any = useRef(null);
   const [lng, setLng] = useState(-71.9143);
   const [lat, setLat] = useState(42.33);
   const [zoom, setZoom] = useState(7);
+
   const [steps, setSteps] = useState([
     "step",
     ["get", options.property],
@@ -126,28 +122,9 @@ const Choropleth = (props: Props) => {
     2,
     colors[3],
   ]);
-  const [ranges, setRanges] = useState([
-    { color: colors[0], text: `lo` },
-    { color: colors[1], text: `ad` },
-    { color: colors[2], text: `in` },
-    {
-      color: colors[3],
-      text: `g`,
-    },
-  ]);
+  const [ranges, setRanges] = useState(colors);
 
-  const RadioOptions = [
-    { value: "county", text: "By County" },
-    { value: "region", text: "By Region" },
-    { value: "census", text: "By Census" },
-  ];
-
-  const GeoJsonSource: any =
-    selectedType === "county"
-      ? Counties
-      : selectedType === "region"
-      ? Regions
-      : Tracts;
+  const GeoJsonSource: any = Counties;
 
   useEffect(() => {
     if (map.current) return;
@@ -172,17 +149,11 @@ const Choropleth = (props: Props) => {
    */
   const makeSource = () => {
     const defaultFeatures = GeoJsonSource.features;
-    const newFeatures: any[] = [];
+    let newFeatures: any[] = [];
     dataFromProps.forEach((data: any) => {
       let feature = defaultFeatures.find((elem: any) => {
         let condition: boolean = false;
-        if (selectedType === "county") {
-          condition = elem.properties.COUNTYFP === data.COUNTY;
-        } else if (selectedType === "region") {
-          condition = elem.properties.RegionName === data.EEC_REGIONNAME;
-        } else {
-          condition = elem.properties.TRACTCE === data.CENSUS_TRACT;
-        }
+        condition = elem.properties.COUNTYFP === data.COUNTY;
         return condition;
       }) || { properties: {} };
       feature = {
@@ -192,9 +163,13 @@ const Choropleth = (props: Props) => {
           [options.property]: data[options.property] | 0,
         },
       };
-
       newFeatures.push(feature);
     });
+
+    newFeatures = newFeatures.sort(
+      (a: any, b: any) =>
+        a.properties[options.property] - b.properties[options.property]
+    );
 
     GeoJsonSource.features = newFeatures;
     AddSource(GeoJsonSource);
@@ -256,20 +231,9 @@ const Choropleth = (props: Props) => {
 
   return (
     <StyledContainer>
-      <StyledRadioContainer>
-        {showRadio && (
-          <Container>
-            <FilterRadioGroup
-              name="graphtype"
-              options={RadioOptions}
-              selected={selectedRadioOption}
-              setSelected={selectRadioOption}
-            />
-          </Container>
-        )}
-      </StyledRadioContainer>
+      <StyledRadioContainer></StyledRadioContainer>
       <div ref={mapContainer} className="map-container" />
-      <Legend name={options.name} ranges={ranges} />
+      <Legend ranges={ranges} />
     </StyledContainer>
   );
 };

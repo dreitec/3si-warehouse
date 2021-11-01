@@ -163,3 +163,21 @@ export const getScatterData = async (keys?: string[]): Promise<any[]> => {
 
   return mapped;
 };
+
+export const getGeographicalUnservedData = async (keys?: string[]) => {
+  let querystring = getQueryString(keys);
+  const data = await axios.get(
+    `${baseUrl}/children/unserved/geographical${querystring}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const geographicalUnservedData: any = data.data;
+  const mapped: any = geographicalUnservedData.data.map((elem: any) => ({
+    ...elem,
+    percentage: parseFloat(elem.percentage),
+  }));
+  return mapped;
+};

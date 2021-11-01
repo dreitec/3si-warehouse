@@ -1,14 +1,8 @@
 import React from "react";
 import { Container, Grid, styled } from "@mui/material";
-import { Typography } from "@material-ui/core";
 
-interface Range {
-  color: string;
-  text: string;
-}
 interface Props {
-  name?: string;
-  ranges: Range[];
+  ranges: string[];
 }
 
 const ContainerStyled = styled(Container)(() => ({
@@ -16,18 +10,18 @@ const ContainerStyled = styled(Container)(() => ({
   top: "470px",
 }));
 const Legend = (props: Props) => {
-  const { name, ranges } = props;
-  const renderLegendKeys = (range: Range) => {
+  const { ranges } = props;
+  const renderLegendKeys = (range: string) => {
     return (
-      <div key={range.text}>
+      <div key={range}>
         <span
           style={{
-            backgroundColor: range.color,
+            backgroundColor: range,
             display: "inline-block",
             padding: 8,
           }}
         >
-          {range.text}
+          {" "}
         </span>
       </div>
     );
@@ -38,9 +32,6 @@ const Legend = (props: Props) => {
   return (
     <ContainerStyled>
       <Grid container>
-        <Grid item xs={12}>
-          {name && <Typography variant="h6">{name}</Typography>}
-        </Grid>
         <Grid container>{ranges.map(renderLegendKeys)}</Grid>
       </Grid>
     </ContainerStyled>

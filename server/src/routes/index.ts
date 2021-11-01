@@ -9,6 +9,7 @@ import {
   getGeographicalElgibility,
   getGeographicalServed,
   getScatterUnserved,
+  getGeographicalUnserved,
 } from "../controllers/children";
 import { getProvidersGraph, getProvidersTable } from "../controllers/providers";
 
@@ -39,3 +40,4 @@ addRoute("/children/served", getChildrenServed);
 addRoute("/children/eligibility/geographical", getGeographicalElgibility);
 addRoute("/children/served/geographical", getGeographicalServed);
 addRoute("/children/unserved/scatter", getScatterUnserved);
+addRoute("/children/unserved/geographical", getGeographicalUnserved);

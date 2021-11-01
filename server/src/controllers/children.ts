@@ -25,7 +25,6 @@ export const getOneChild = async () => {
 
 export const getAllChildren = async () => {
   const data = await PromisifiedQuery("select * from CHILDREN limit 100");
-
   return data;
 };
 
@@ -354,6 +353,63 @@ export const getScatterUnserved = async (req, res) => {
       group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
     };
   });
+
+  return { data };
+};
+
+export const getGeographicalUnserved = async (req, res) => {
+  let currentDate = new Date();
+  const currentYear: number = currentDate.getFullYear();
+  let selectedClauses: string[] = [];
+
+  // get latest month data was entered for
+  const MonthRow: any = await PromisifiedQuery(`select		
+			DATE(LOAD_DT) as date, 
+			MONTH(date) as month
+			from CHILDREN
+			order by LOAD_DT desc limit 1;`);
+
+  // build where conditions
+  selectedClauses.push(
+    `where month = ${MonthRow[0].MONTH} and year = ${currentYear}`
+  );
+  const clauses = { ...ServedClauses, ...CommonClauses };
+
+  selectedClauses = [...selectedClauses, ...MakeQueryArray(req.query, clauses)];
+
+  const conditions = MakeConditions(selectedClauses);
+
+  // get eligible children
+  const ServedChildrenByFilters: any =
+    await PromisifiedQuery(`select DATE(LOAD_DT) as date, 
+			MONTH(date) as month, 
+			YEAR(date) as year, count(CHILD_ID) as children, COUNTY from CHILDREN ${conditions} AND PROGRAM_NAME like 'Unserved'  group by COUNTY, month,LOAD_DT
+			order by LOAD_DT desc;`);
+
+  // get all children
+  const conditionsForTotal = [selectedClauses[0]];
+  const subConditions = MakeConditions(conditionsForTotal);
+  const totalChildren: any = await PromisifiedQuery(`
+			select DATE(LOAD_DT) as date, 
+			MONTH(date) as month, 
+			YEAR(date) as year, count(CHILD_ID) as children, COUNTY from CHILDREN ${subConditions}  group by COUNTY, month,LOAD_DT
+			order by LOAD_DT desc;`);
+
+  // calculate percentage of eligible children
+  const data = ServedChildrenByFilters.map(
+    (calculatedRow: any, index: number) => {
+      const TotalObj = totalChildren.find(
+        (elem) => elem.COUNTY === calculatedRow.COUNTY
+      );
+      return {
+        ...calculatedRow,
+        percentage: (
+          (calculatedRow.CHILDREN / TotalObj.CHILDREN) *
+          100
+        ).toFixed(2),
+      };
+    }
+  );
 
   return { data };
 };

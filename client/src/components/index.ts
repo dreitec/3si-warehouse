@@ -9,6 +9,7 @@ export { default as Switch } from "./Switch/Switch";
 export { default as FilterRadioGroup } from "./FilterRadioGroup/FilterRadioGroup";
 export { default as FilterCheckboxes } from "./FilterCheckboxes/FilterCheckboxes";
 export { default as Choropleth } from "./Charts/Choropleth/Choropleth";
+export { default as Choropleth2D } from "./Charts/Choropleth/Choropleth2D";
 export { default as Table } from "./Table/Table";
 export { default as ScatterChart } from "./Charts/Scatterplot/ScatterPlot";
 export { default as RadioButton } from "./RadioButton/RadioButton";

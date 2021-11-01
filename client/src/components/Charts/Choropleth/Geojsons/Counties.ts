@@ -6,14 +6,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "011",
-        COUNTYNS: "00606932",
-        AFFGEOID: "0500000US25011",
-        GEOID: "25011",
         NAME: "Franklin",
-        LSAD: "06",
-        ALAND: 1811271672,
+        RPL_THEMES: 0.3077,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -57,14 +52,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "013",
-        COUNTYNS: "00606933",
-        AFFGEOID: "0500000US25013",
-        GEOID: "25013",
         NAME: "Hampden",
-        LSAD: "06",
-        ALAND: 1598409204,
+        RPL_THEMES: 1,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -116,14 +106,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "023",
-        COUNTYNS: "00606938",
-        AFFGEOID: "0500000US25023",
-        GEOID: "25023",
         NAME: "Plymouth",
-        LSAD: "06",
-        ALAND: 1707122280,
+        RPL_THEMES: 0.5385,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -186,14 +171,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "015",
-        COUNTYNS: "00606934",
-        AFFGEOID: "0500000US25015",
-        GEOID: "25015",
         NAME: "Hampshire",
-        LSAD: "06",
-        ALAND: 1365598019,
+        RPL_THEMES: 0.4615,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -244,14 +224,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "021",
-        COUNTYNS: "00606937",
-        AFFGEOID: "0500000US25021",
-        GEOID: "25021",
         NAME: "Norfolk",
-        LSAD: "06",
-        ALAND: 1025927532,
+        RPL_THEMES: 0.2308,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -318,14 +293,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "025",
-        COUNTYNS: "00606939",
-        AFFGEOID: "0500000US25025",
-        GEOID: "25025",
         NAME: "Suffolk",
-        LSAD: "06",
-        ALAND: 150881016,
+        RPL_THEMES: 0.9231,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -366,14 +336,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "007",
-        COUNTYNS: "00606930",
-        AFFGEOID: "0500000US25007",
-        GEOID: "25007",
         NAME: "Dukes",
-        LSAD: "06",
-        ALAND: 267455894,
+        RPL_THEMES: 0,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -417,14 +382,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "003",
-        COUNTYNS: "00606928",
-        AFFGEOID: "0500000US25003",
-        GEOID: "25003",
         NAME: "Berkshire",
-        LSAD: "06",
-        ALAND: 2400491048,
+        RPL_THEMES: 0.6154,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -463,14 +423,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "019",
-        COUNTYNS: "00606936",
-        AFFGEOID: "0500000US25019",
-        GEOID: "25019",
         NAME: "Nantucket",
-        LSAD: "06",
-        ALAND: 119431671,
+        RPL_THEMES: 0.1538,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -494,14 +449,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "027",
-        COUNTYNS: "00606940",
-        AFFGEOID: "0500000US25027",
-        GEOID: "25027",
         NAME: "Worcester",
-        LSAD: "06",
-        ALAND: 3912698515,
+        RPL_THEMES: 0.6923,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -567,14 +517,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "009",
-        COUNTYNS: "00606931",
-        AFFGEOID: "0500000US25009",
-        GEOID: "25009",
         NAME: "Essex",
-        LSAD: "06",
-        ALAND: 1275669707,
+        RPL_THEMES: 0.7692,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -626,14 +571,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "017",
-        COUNTYNS: "00606935",
-        AFFGEOID: "0500000US25017",
-        GEOID: "25017",
         NAME: "Middlesex",
-        LSAD: "06",
-        ALAND: 2118147279,
+        RPL_THEMES: 0.3846,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -694,14 +634,9 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "005",
-        COUNTYNS: "00606929",
-        AFFGEOID: "0500000US25005",
-        GEOID: "25005",
         NAME: "Bristol",
-        LSAD: "06",
-        ALAND: 1432602435,
+        RPL_THEMES: 0.8462,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -759,14 +694,10 @@ const Massachusets = {
     {
       type: "Feature",
       properties: {
-        STATEFP: "25",
         COUNTYFP: "001",
-        COUNTYNS: "00606927",
-        AFFGEOID: "0500000US25001",
-        GEOID: "25001",
         NAME: "Barnstable",
-        LSAD: "06",
-        ALAND: 1019719638,
+
+        RPL_THEMES: 0.0769,
         ELIGIBLE: 0,
       },
       geometry: {
@@ -831,4 +762,5 @@ const Massachusets = {
     },
   ],
 };
+
 export default Massachusets;
