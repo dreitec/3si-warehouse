@@ -1,29 +1,43 @@
 import React from "react";
 import { Container, Grid, styled } from "@mui/material";
-
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import { theme } from "src/theme";
 interface Props {
   ranges: string[];
 }
 
-const ContainerStyled = styled(Container)(() => ({
+const ContainerStyled = styled(Container)(({ theme }) => ({
   position: "absolute",
-  top: "470px",
+  top: "430px",
+  paddingLeft: `${theme.spacing(7)} !important`,
+  maxWidth: `${theme.spacing(24)} !important`,
 }));
+
+const VerticalSpan = styled("span")(() => ({
+  position: "absolute",
+  transform: "rotate(270deg)",
+  left: -40,
+  bottom: 84,
+  fontSize: "smaller",
+}));
+
+const StyledArrow = styled(ArrowRightAltIcon)(() => ({
+  position: "relative",
+  top: theme.spacing(1),
+}));
+
 const Legend = (props: Props) => {
   const { ranges } = props;
   const renderLegendKeys = (range: string) => {
     return (
-      <div key={range}>
-        <span
-          style={{
-            backgroundColor: range,
-            display: "inline-block",
-            padding: 8,
-          }}
-        >
-          {" "}
-        </span>
-      </div>
+      <span
+        key={range}
+        style={{
+          backgroundColor: range,
+          display: "inline-block",
+          padding: 16,
+        }}
+      />
     );
   };
 
@@ -31,9 +45,15 @@ const Legend = (props: Props) => {
 
   return (
     <ContainerStyled>
-      <Grid container>
-        <Grid container>{ranges.map(renderLegendKeys)}</Grid>
-      </Grid>
+      <VerticalSpan>
+        Larger Service Gap <StyledArrow />
+      </VerticalSpan>
+      <Grid container>{ranges.slice(0, 3).map(renderLegendKeys)}</Grid>
+      <Grid container>{ranges.slice(3, 6).map(renderLegendKeys)}</Grid>
+      <Grid container>{ranges.slice(6, 9).map(renderLegendKeys)}</Grid>
+      <span>
+        Higher SVI <StyledArrow />
+      </span>
     </ContainerStyled>
   );
 };
