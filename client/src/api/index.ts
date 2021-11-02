@@ -181,3 +181,13 @@ export const getGeographicalUnservedData = async (keys?: string[]) => {
   }));
   return mapped;
 };
+
+export const getTableData = async (keys?: string[]) => {
+  let querystring = getQueryString(keys);
+  const response: any = await axios.get(`${baseUrl}/table${querystring}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data.data;
+};

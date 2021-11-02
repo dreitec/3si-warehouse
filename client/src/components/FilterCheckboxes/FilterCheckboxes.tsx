@@ -108,7 +108,6 @@ export default function IndeterminateCheckbox(props: Props) {
     parent: SelectValueProps,
     indent: number
   ): React.ReactElement => {
-    // console.log(parent, "check 1");
     return (
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <FormControlLabel

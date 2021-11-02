@@ -8,6 +8,7 @@ import {
   ProvidersSection,
   UnservedChildrenScatterGraphSection,
   UnservedChildrenChoroplethGraphSection,
+  ExportSection,
 } from "../Sections";
 
 import { Container } from "@mui/material";
@@ -48,6 +49,9 @@ const Homepage = () => {
       <Route path="/gaps">
         <UnservedChildrenChoroplethGraphSection />
         <UnservedChildrenScatterGraphSection />
+      </Route>
+      <Route path="/export">
+        <ExportSection />
       </Route>
     </Router>
   );

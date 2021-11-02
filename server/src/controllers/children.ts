@@ -413,3 +413,45 @@ export const getGeographicalUnserved = async (req, res) => {
 
   return { data };
 };
+
+export const getTableData = async (req, res) => {
+  let selectedClauses: string[] = [];
+  // get date data to get records of past 6 months
+  let currentDate = new Date();
+  const currentYear: number = currentDate.getFullYear();
+  const lastYear: number = currentDate.getFullYear() - 1;
+  const month: number = currentDate.getMonth() + 1;
+
+  if (month < 6) {
+    selectedClauses.push(
+      `where (month >= ${
+        12 - (6 - month)
+      } AND year = ${lastYear}) OR ( month <= ${month} AND year = ${currentYear})`
+    );
+  } else {
+    selectedClauses.push(
+      `where (month > ${month - 6})  AND ( year = ${currentYear})`
+    );
+  }
+  const clauses = { ...CommonClauses };
+  // make conditions array based on query parameters
+  const madeQueries = MakeQueryArray(req.query, clauses);
+  selectedClauses = [...selectedClauses, ...madeQueries];
+
+  const conditions = MakeConditions(selectedClauses);
+  const children: any = await PromisifiedQuery(
+    `select *, DATE(LOAD_DT) as date, 
+			MONTH(date) as month, 
+			YEAR(date) as year from CHILDREN ${conditions} limit 100;`
+  );
+
+  const data = children.map((calculatedRow: any, index: number) => {
+    delete calculatedRow.MONTH;
+    delete calculatedRow.YEAR;
+    return {
+      ...calculatedRow,
+    };
+  });
+
+  return { data };
+};

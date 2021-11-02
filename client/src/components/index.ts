@@ -13,3 +13,4 @@ export { default as Choropleth2D } from "./Charts/Choropleth/Choropleth2D";
 export { default as Table } from "./Table/Table";
 export { default as ScatterChart } from "./Charts/Scatterplot/ScatterPlot";
 export { default as RadioButton } from "./RadioButton/RadioButton";
+export { default as ExportTable } from "./ExportTable/ExportTable";

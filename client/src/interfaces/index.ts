@@ -50,3 +50,8 @@ export interface ProvidersData {
 export interface GapsState {
   filters: Filters;
 }
+
+export interface TableState {
+  programFilters: Filters;
+  otherFilters: Filters;
+}

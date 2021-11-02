@@ -9,11 +9,15 @@ const StyledChartItemContainer = styled(Grid)(({ theme }) => ({
   backgroundColor: "white",
   minHeight: "500px",
   boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+  maxHeight: "600px",
 }));
 
 const StyledCheckBoxesContainer = styled(Grid)(({ theme }) => ({
   marginTop: "-60px",
   padding: `${theme.spacing(0)}  0px ${theme.spacing(2)}  ${theme.spacing(2)}`,
+  maxHeight: "600px",
+  overflowY: "auto",
+  overflowX: "clip",
 }));
 
 const StyledHeadingContainer = styled(Grid)(({ theme }) => ({
@@ -37,6 +41,7 @@ interface ContainerProps extends GridProps {
   checkboxes: React.ReactNode;
   getData: Function;
   showOptionSelector?: boolean;
+  exportButton?: React.ReactNode;
 }
 
 const renderSwitch = (
@@ -60,6 +65,7 @@ const ChartContainer = (props: ContainerProps) => {
     checkboxes,
     getData,
     showOptionSelector = true,
+    exportButton,
   } = props;
 
   return (
@@ -67,11 +73,12 @@ const ChartContainer = (props: ContainerProps) => {
       <Grid container>
         <StyledHeadingContainer item xs={8}>
           <Grid container>
-            <Grid item xs={showButton ? 6 : 12}>
+            <Grid item xs={showButton || exportButton ? 6 : 12}>
               <Typography variant="h4">{title}</Typography>
             </Grid>
             <SwitchContainer item xs={6}>
               {showButton && renderSwitch(labels, checked, setChecked)}
+              {exportButton && exportButton}
             </SwitchContainer>
           </Grid>
         </StyledHeadingContainer>

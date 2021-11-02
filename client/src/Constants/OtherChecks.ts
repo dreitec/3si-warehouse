@@ -1,7 +1,7 @@
 export const OtherOptionTree = [
   {
     text: "label",
-    value: "Age",
+    value: "All income brackets",
   },
   {
     text: "<100% FPL",
