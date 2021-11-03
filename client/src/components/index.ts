@@ -14,3 +14,4 @@ export { default as Table } from "./Table/Table";
 export { default as ScatterChart } from "./Charts/Scatterplot/ScatterPlot";
 export { default as RadioButton } from "./RadioButton/RadioButton";
 export { default as ExportTable } from "./ExportTable/ExportTable";
+export { default as Select } from "./Select/Select";

@@ -10,9 +10,13 @@ import {
   getGeographicalServed,
   getScatterUnserved,
   getGeographicalUnserved,
-  getTableData,
+  getChildrenTableData,
 } from "../controllers/children";
-import { getProvidersGraph, getProvidersTable } from "../controllers/providers";
+import {
+  getProvidersGraph,
+  getProvidersTable,
+  getProvidersTableExportData,
+} from "../controllers/providers";
 
 export const routes = new Router();
 
@@ -43,4 +47,5 @@ addRoute("/children/served/geographical", getGeographicalServed);
 addRoute("/children/unserved/scatter", getScatterUnserved);
 addRoute("/children/unserved/geographical", getGeographicalUnserved);
 
-addRoute("/table", getTableData);
+addRoute("/table/children", getChildrenTableData);
+addRoute("/table/providers", getProvidersTableExportData);

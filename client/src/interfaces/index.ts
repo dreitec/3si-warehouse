@@ -54,4 +54,6 @@ export interface GapsState {
 export interface TableState {
   programFilters: Filters;
   otherFilters: Filters;
+  selectedViewBy: string;
+  siteFilters: Filters;
 }

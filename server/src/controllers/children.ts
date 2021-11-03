@@ -414,7 +414,7 @@ export const getGeographicalUnserved = async (req, res) => {
   return { data };
 };
 
-export const getTableData = async (req, res) => {
+export const getChildrenTableData = async (req, res) => {
   let selectedClauses: string[] = [];
   // get date data to get records of past 6 months
   let currentDate = new Date();

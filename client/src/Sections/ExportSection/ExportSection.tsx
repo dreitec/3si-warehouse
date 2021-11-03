@@ -1,19 +1,21 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 import Button from "@mui/material/Button";
 import {
   ChartContainer,
   ExportTable,
   FilterCheckboxes,
+  Select,
 } from "../../components";
 import { getTableData } from "../../api";
-import { TableReducer } from "../../state";
+import { ExportTableReducer } from "../../state";
 import { TableState } from "../../interfaces";
 import {
   UPDATE_PROGRAM_FILTERS,
-  UPDATE_BY_TYPE,
+  UPDATE_VIEW_BY,
   UPDATE_FILTER_TYPE,
   UPDATE_OTHER_FILTERS,
+  UPDATE_SITE_FILTERS,
 } from "../../state/types";
 import {
   StateObject as SelectedProgramsStateObject,
@@ -23,6 +25,7 @@ import {
   OtherStateObject as SelectedOtherStateObject,
   OtherOptionTree,
 } from "../../Constants/OtherChecks";
+import { SiteOptionTree, SitesStateObject } from "../../Constants/SiteChecks";
 import "./ExportSection.css";
 
 interface Props {}
@@ -32,15 +35,20 @@ const ExportSection = (props: Props) => {
   const initialArg: TableState = {
     programFilters: SelectedProgramsStateObject,
     otherFilters: SelectedOtherStateObject,
+    selectedViewBy: "children",
+    siteFilters: SitesStateObject,
   };
-  const [state, dispatch] = useReducer(TableReducer, initialArg);
+  const [state, dispatch] = useReducer(ExportTableReducer, initialArg);
   const populateTableData = async () => {
-    const keys: string[] = [
-      ...getFilters("programFilters"),
-      ...getFilters("otherFilters"),
-    ];
+    const keys: string[] = getFilters("programFilters");
+    if (state.selectedViewBy === "providers") {
+      keys.push(...getFilters("siteFilters"));
+    } else {
+      keys.push(...getFilters("otherFilters"));
+    }
+
     try {
-      const response: any = await getTableData(keys);
+      const response: any = await getTableData(state.selectedViewBy, keys);
       setTableData(response);
     } catch (error) {
       console.log(error);
@@ -51,7 +59,9 @@ const ExportSection = (props: Props) => {
     populateTableData();
   }, []);
 
-  const getFilters = (key: "programFilters" | "otherFilters") => {
+  const getFilters = (
+    key: "programFilters" | "otherFilters" | "siteFilters"
+  ) => {
     const notRequired = ["sp", "all"];
     return Object.keys(state[key]).filter(
       (elem: string) => state[key][elem] === true && !notRequired.includes(elem)
@@ -59,6 +69,20 @@ const ExportSection = (props: Props) => {
   };
 
   const checkboxes = [
+    <Select
+      label="View"
+      selectData={[
+        { value: "children", text: "By Child" },
+        { value: "providers", text: "By Provider" },
+      ]}
+      selected={state.selectedViewBy}
+      action={(payload: string) =>
+        dispatch({
+          type: UPDATE_VIEW_BY,
+          payload,
+        })
+      }
+    />,
     <FilterCheckboxes
       data={ProgramOptionTree}
       state={state.programFilters}
@@ -69,17 +93,37 @@ const ExportSection = (props: Props) => {
         })
       }
     />,
-    <FilterCheckboxes
-      data={OtherOptionTree}
-      state={state.otherFilters}
-      setState={(payload: any) =>
-        dispatch({
-          type: UPDATE_OTHER_FILTERS,
-          payload,
-        })
-      }
-    />,
   ];
+
+  if (state.selectedViewBy === "providers") {
+    checkboxes.splice(
+      1,
+      0,
+      <FilterCheckboxes
+        data={SiteOptionTree}
+        state={state.siteFilters}
+        setState={(payload: any) =>
+          dispatch({
+            type: UPDATE_SITE_FILTERS,
+            payload,
+          })
+        }
+      />
+    );
+  } else {
+    checkboxes.push(
+      <FilterCheckboxes
+        data={OtherOptionTree}
+        state={state.otherFilters}
+        setState={(payload: any) =>
+          dispatch({
+            type: UPDATE_OTHER_FILTERS,
+            payload,
+          })
+        }
+      />
+    );
+  }
   return (
     <ChartContainer
       showButton={false}
