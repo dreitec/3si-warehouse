@@ -11,11 +11,13 @@ import {
   getScatterUnserved,
   getGeographicalUnserved,
   getChildrenTableData,
+  getChildrensCSV,
 } from "../controllers/children";
 import {
   getProvidersGraph,
   getProvidersTable,
   getProvidersTableExportData,
+  getProvidersCSV,
 } from "../controllers/providers";
 
 export const routes = new Router();
@@ -25,6 +27,9 @@ const addRoute = (path, handler) => {
     const result = handler(req, res);
     if (result.then) {
       result.then((fulfilled) => {
+        if (fulfilled.type === "file") {
+          return res.download(fulfilled.path);
+        }
         return res.send(fulfilled);
       });
     } else {
@@ -49,3 +54,5 @@ addRoute("/children/unserved/geographical", getGeographicalUnserved);
 
 addRoute("/table/children", getChildrenTableData);
 addRoute("/table/providers", getProvidersTableExportData);
+addRoute("/table/providers/csv", getProvidersCSV);
+addRoute("/table/children/csv", getChildrensCSV);

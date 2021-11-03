@@ -1,3 +1,13 @@
+import fs from "fs";
+import path from "path";
+import { parseAsync } from "json2csv";
+import {
+  eligibilityClauses,
+  ServedClauses,
+  CommonClauses,
+} from "../data/clauses";
+import { PromisifiedQuery, MakeConditions, MakeQueryArray } from "../utils";
+
 const months = [
   "Jan",
   "Feb",
@@ -12,12 +22,7 @@ const months = [
   "Nov",
   "Dec",
 ];
-import {
-  eligibilityClauses,
-  ServedClauses,
-  CommonClauses,
-} from "../data/clauses";
-import { PromisifiedQuery, MakeConditions, MakeQueryArray } from "../utils";
+
 export const getOneChild = async () => {
   const data = await PromisifiedQuery("select * from CHILDREN LIMIT 1");
   return data;
@@ -416,7 +421,6 @@ export const getGeographicalUnserved = async (req, res) => {
 
 export const getChildrenTableData = async (req, res) => {
   let selectedClauses: string[] = [];
-  // get date data to get records of past 6 months
   let currentDate = new Date();
   const currentYear: number = currentDate.getFullYear();
   const lastYear: number = currentDate.getFullYear() - 1;
@@ -454,4 +458,58 @@ export const getChildrenTableData = async (req, res) => {
   });
 
   return { data };
+};
+
+export const getChildrensCSV = async (req, res) => {
+  let selectedClauses: string[] = [];
+  let currentDate = new Date();
+  const currentYear: number = currentDate.getFullYear();
+  const lastYear: number = currentDate.getFullYear() - 1;
+  const month: number = currentDate.getMonth() + 1;
+
+  if (month < 6) {
+    selectedClauses.push(
+      `where (month >= ${
+        12 - (6 - month)
+      } AND year = ${lastYear}) OR ( month <= ${month} AND year = ${currentYear})`
+    );
+  } else {
+    selectedClauses.push(
+      `where (month > ${month - 6})  AND ( year = ${currentYear})`
+    );
+  }
+  const clauses = { ...CommonClauses };
+  // make conditions array based on query parameters
+  const madeQueries = MakeQueryArray(req.query, clauses);
+  selectedClauses = [...selectedClauses, ...madeQueries];
+
+  const conditions = MakeConditions(selectedClauses);
+  const children: any = await PromisifiedQuery(
+    `select *, DATE(LOAD_DT) as date, 
+			MONTH(date) as month, 
+			YEAR(date) as year from CHILDREN ${conditions} limit 100;`
+  );
+
+  const data = children.map((calculatedRow: any, index: number) => {
+    delete calculatedRow.MONTH;
+    delete calculatedRow.YEAR;
+    return {
+      ...calculatedRow,
+    };
+  });
+  const fields = Object.keys(data[0]);
+  const opts = { fields };
+  const csv = await parseAsync(data, opts);
+  var dir = "csvs";
+  const dirToSaveIn = path.join(process.cwd(), dir);
+
+  if (!fs.existsSync(dirToSaveIn)) {
+    fs.mkdirSync(dirToSaveIn);
+  }
+  const dirPath = path.join(
+    dirToSaveIn,
+    `children-${new Date().toLocaleTimeString().replace(/:/g, "-")}.csv`
+  );
+  fs.writeFileSync(dirPath, csv);
+  return { type: "file", path: dirPath };
 };
