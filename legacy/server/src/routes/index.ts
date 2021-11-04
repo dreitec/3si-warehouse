@@ -2,8 +2,6 @@ import { Router } from "express";
 
 import { ping } from "../controllers/test";
 import {
-  getOneChild,
-  getAllChildren,
   getChildrenEligibility,
   getChildrenServed,
   getGeographicalElgibility,
@@ -41,9 +39,6 @@ const addRoute = (path, handler) => {
 addRoute("/ping", ping);
 addRoute("/providers/chart", getProvidersGraph);
 addRoute("/providers/table", getProvidersTable);
-
-addRoute("/children", getAllChildren);
-addRoute("/child", getOneChild);
 
 addRoute("/children/eligibility", getChildrenEligibility);
 addRoute("/children/served", getChildrenServed);

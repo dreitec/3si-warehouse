@@ -23,16 +23,6 @@ const months = [
   "Dec",
 ];
 
-export const getOneChild = async () => {
-  const data = await PromisifiedQuery("select * from CHILDREN LIMIT 1");
-  return data;
-};
-
-export const getAllChildren = async () => {
-  const data = await PromisifiedQuery("select * from CHILDREN limit 100");
-  return data;
-};
-
 export const getChildrenEligibility = async (req, res) => {
   // get date data to get records of past 6 months
   let currentDate = new Date();
