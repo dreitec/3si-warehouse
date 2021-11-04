@@ -4,32 +4,16 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { colors } from "../../mui/colors";
 
-const StyledPrimaryLightButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.primary.light,
-  borderColor: colors.border.main,
-  paddingLeft: ` ${theme.spacing(6)} !important`,
-  paddingRight: ` ${theme.spacing(6)} !important`,
-}));
-
 interface IButtonProps {
   loading?: boolean;
-  isLight?: boolean;
 }
 
 const CustomButton = (props: IButtonProps & ButtonProps) => {
-  const { children, loading = false, isLight = true, ...otherProps } = props;
-  if (isLight) {
-    return (
-      <StyledPrimaryLightButton {...otherProps}>
-        {children}
-      </StyledPrimaryLightButton>
-    );
-  }
+  const { children, loading = false, ...otherProps } = props;
 
   return (
     <Box
       sx={{
-        m: 1,
         position: "relative",
         width: "fit-content",
         display: "inline-block",

@@ -11,7 +11,11 @@ export const theme = createTheme({
           fontSize: "1rem",
         },
         outlined: {
-          backgroundColor: "white",
+          backgroundColor: "#E6EFFF",
+          border: "none",
+          "&:hover": {
+            border: "none",
+          },
         },
       },
     },

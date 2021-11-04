@@ -32,7 +32,7 @@ const HeadingContainer = styled(Grid)((props: StyleProps) => {
 });
 
 const ButtonContainer = styled("div")(({ theme }) => ({
-  margin: theme.spacing(3),
+  margin: `${theme.spacing(3)} 0px `,
 }));
 
 const Description = (props: Props) => {
@@ -44,6 +44,8 @@ const Description = (props: Props) => {
       sx={{
         color: "palette.primary",
         justifyContent: "left",
+        paddingTop: 3,
+        paddingBottom: 3,
       }}
     >
       <HeadingContainer container alignItems="center" marginvalue={margin}>
