@@ -4,7 +4,7 @@ import {
   CommonClauses,
 } from "../../../src/backend/data/clauses";
 import {
-  PromisifiedQuery,
+  PromisedQuery,
   MakeConditions,
   MakeQueryArray,
 } from "../../../src/backend/utils";
@@ -70,7 +70,7 @@ export default async function handler(
 
     const conditions = MakeConditions(selectedClauses);
     // get eligible children
-    const ConditionedResults: any = await PromisifiedQuery(`
+    const ConditionedResults: any = await PromisedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
@@ -85,7 +85,7 @@ export default async function handler(
     const conditionsForTotal = [selectedClauses[0]];
     const subConditions = MakeConditions(conditionsForTotal);
 
-    const TotalRecords: any = await PromisifiedQuery(`
+    const TotalRecords: any = await PromisedQuery(`
 			select  
 			DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
