@@ -7,23 +7,30 @@ import {
   Height as HeightIcon,
   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
-import { Grid, Typography, styled, Theme } from "@material-ui/core";
+import { Grid, Typography, styled, Theme } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface StyledDivProps extends React.HTMLAttributes<HTMLDivElement> {
-  active: boolean;
-  theme: Theme;
+  isActive: boolean;
+  theme?: Theme;
 }
 
 const StyledContainer = styled("div")(({ theme }) => ({
   marginTop: theme.spacing(8),
 }));
 
-const StyledDiv = styled("div")((props: StyledDivProps) => {
-  const { active, theme } = props;
+const StyledDiv = styled("div", {
+  shouldForwardProp: (prop: string) => prop !== "isActive",
+  name: "MyThemeComponent",
+})((props: StyledDivProps) => {
+  const { isActive, theme } = props;
+  if (!theme) {
+    return {};
+  }
   return {
-    color: active ? `#376EFF` : theme.palette.primary.dark,
-    border: active ? `4px solid #376EFF` : `1px solid #C3C7D5`,
+    color: isActive ? `#376EFF` : theme.palette.primary.dark,
+    border: isActive ? `4px solid #376EFF` : `1px solid #C3C7D5`,
     textAlign: "center",
     padding: theme.spacing(4),
     "& > svg": {
@@ -59,16 +66,18 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 const StyledLink = styled(Link)(() => ({
   textDecoration: "none",
 }));
-interface Props {
-  active?: boolean;
-}
 
-const TabBox = (props: Props) => {
+const TabBox = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = React.useState("/");
 
   const changeTab = (path: string) => {
     setActiveTab(path);
   };
+
+  React.useEffect(() => {
+    setActiveTab(router.pathname);
+  }, [router.pathname]);
 
   return (
     <StyledContainer>
@@ -76,7 +85,7 @@ const TabBox = (props: Props) => {
         <Grid item xs={12} sm={5} md={2}>
           <StyledLink href="/">
             <StyledDiv
-              active={activeTab === "/"}
+              isActive={activeTab === "/"}
               onClick={() => changeTab("/")}
             >
               <PeopleOutlineIcon />
@@ -87,7 +96,7 @@ const TabBox = (props: Props) => {
         <Grid item xs={12} sm={5} md={2}>
           <StyledLink href="/service">
             <StyledDiv
-              active={activeTab === "/service"}
+              isActive={activeTab === "/service"}
               onClick={() => changeTab("/service")}
             >
               <PieChartIcon />
@@ -98,7 +107,7 @@ const TabBox = (props: Props) => {
         <Grid item xs={12} sm={5} md={2}>
           <StyledLink href="/providers">
             <StyledDiv
-              active={activeTab === "/providers"}
+              isActive={activeTab === "/providers"}
               onClick={() => changeTab("/providers")}
             >
               <MapIcon />
@@ -109,7 +118,7 @@ const TabBox = (props: Props) => {
         <Grid item xs={12} sm={5} md={2}>
           <StyledLink href="/gaps">
             <StyledDiv
-              active={activeTab === "/gaps"}
+              isActive={activeTab === "/gaps"}
               onClick={() => changeTab("/gaps")}
             >
               <HeightIcon style={{ transform: "rotate(90deg)" }} />
@@ -120,7 +129,7 @@ const TabBox = (props: Props) => {
         <Grid item xs={12} sm={5} md={2}>
           <StyledLink href="/export">
             <StyledDiv
-              active={activeTab === "/export"}
+              isActive={activeTab === "/export"}
               onClick={() => changeTab("/export")}
             >
               <SaveAltIcon />
