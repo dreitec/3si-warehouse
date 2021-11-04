@@ -467,15 +467,17 @@ export const getChildrensCSV = async (req, res) => {
   const lastYear: number = currentDate.getFullYear() - 1;
   const month: number = currentDate.getMonth() + 1;
 
-  if (month < 6) {
+  if (month < 3) {
     selectedClauses.push(
-      `where (month >= ${
-        12 - (6 - month)
-      } AND year = ${lastYear}) OR ( month <= ${month} AND year = ${currentYear})`
+      `where (MONTH(DATE(LOAD_DT)) >= ${
+        12 - (9 - month)
+      } AND YEAR(DATE(LOAD_DT)) = ${lastYear}) OR ( MONTH(DATE(LOAD_DT)) <= ${month} AND YEAR(DATE(LOAD_DT)) = ${currentYear})`
     );
   } else {
     selectedClauses.push(
-      `where (month > ${month - 6})  AND ( year = ${currentYear})`
+      `where (MONTH(DATE(LOAD_DT)) > ${
+        month - 3
+      })  AND (  YEAR(DATE(LOAD_DT))  = ${currentYear})`
     );
   }
   const clauses = { ...CommonClauses };
@@ -484,32 +486,37 @@ export const getChildrensCSV = async (req, res) => {
   selectedClauses = [...selectedClauses, ...madeQueries];
 
   const conditions = MakeConditions(selectedClauses);
-  const children: any = await PromisifiedQuery(
-    `select *, DATE(LOAD_DT) as date, 
-			MONTH(date) as month, 
-			YEAR(date) as year from CHILDREN ${conditions} limit 100;`
+  console.log(conditions);
+  const count = await PromisifiedQuery(
+    `select count(child_id) as total from CHILDREN ${conditions};`
   );
+  if (!count || !Array.isArray(count)) {
+    throw new Error("Count not found");
+  }
+  const total = count[0].TOTAL;
 
-  const data = children.map((calculatedRow: any, index: number) => {
-    delete calculatedRow.MONTH;
-    delete calculatedRow.YEAR;
-    return {
-      ...calculatedRow,
-    };
-  });
-  const fields = Object.keys(data[0]);
-  const opts = { fields };
-  const csv = await parseAsync(data, opts);
   var dir = "csvs";
   const dirToSaveIn = path.join(process.cwd(), dir);
-
-  if (!fs.existsSync(dirToSaveIn)) {
-    fs.mkdirSync(dirToSaveIn);
-  }
-  const dirPath = path.join(
+  const filePath = path.join(
     dirToSaveIn,
     `children-${new Date().toLocaleTimeString().replace(/:/g, "-")}.csv`
   );
-  fs.writeFileSync(dirPath, csv);
-  return { type: "file", path: dirPath };
+  if (!fs.existsSync(dirToSaveIn)) {
+    fs.mkdirSync(dirToSaveIn);
+  }
+  console.log(total);
+  for (let i = 0; i < total; i += 100000) {
+    console.log(i, total - i);
+    const children: any = await PromisifiedQuery(
+      `select * from CHILDREN ${conditions} limit ${i + 10000} offset ${i} ;`
+    );
+
+    const fields = Object.keys(children[0]);
+    const opts = { fields };
+    const csv = await parseAsync(children, opts);
+
+    fs.appendFileSync(filePath, csv);
+  }
+
+  return { type: "file", path: filePath };
 };

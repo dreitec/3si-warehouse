@@ -54,5 +54,6 @@ addRoute("/children/unserved/geographical", getGeographicalUnserved);
 
 addRoute("/table/children", getChildrenTableData);
 addRoute("/table/providers", getProvidersTableExportData);
-addRoute("/table/providers/csv", getProvidersCSV);
-addRoute("/table/children/csv", getChildrensCSV);
+
+addRoute("/csv/providers", getProvidersCSV);
+addRoute("/csv/children", getChildrensCSV);
