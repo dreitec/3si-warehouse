@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import { Description, FullWidth, Compact } from "../components";
 
 const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Eligible</title>
         <meta
@@ -14,7 +14,26 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>Page data</main>
+      <main>
+        <FullWidth>
+          <Compact>
+            <Description button={true}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+              auctor consequat mauris. Vestibulum ornare vel odio ac hendrerit.
+              Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit
+              amet sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum
+              dolor sit amet, consectetur adipiscing elit. Quisque auctor
+              consequat mauris. Vestibulum ornare vel odio ac hendrerit.
+              Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit
+              amet sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum
+              dolor sit amet, consectetur adipiscing elit. Quisque auctor
+              consequat mauris. Vestibulum ornare vel odio ac hendrerit.
+              Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit
+              amet sapien dapibus eleifend. Nunc quis augue nulla.
+            </Description>
+          </Compact>
+        </FullWidth>
+      </main>
     </div>
   );
 };

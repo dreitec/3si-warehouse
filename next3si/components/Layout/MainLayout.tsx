@@ -1,11 +1,8 @@
 import React from "react";
 
-import { Container, styled } from "@mui/material";
-import { Navbar } from "../";
+import { Container } from "@mui/material";
+import { Navbar, Compact } from "../";
 
-const StyledMain = styled("main")(({ theme }) => ({
-  padding: `${theme.spacing(8)} 0px`,
-}));
 interface Props {
   children: any;
 }
@@ -14,9 +11,9 @@ const MainLayout = (props: Props) => {
   return (
     <Container>
       <Navbar />
-      <StyledMain>
+      <Compact>
         <Container>{props.children}</Container>
-      </StyledMain>
+      </Compact>
     </Container>
   );
 };

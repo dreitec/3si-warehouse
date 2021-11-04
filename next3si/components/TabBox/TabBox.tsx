@@ -7,7 +7,7 @@ import {
   Height as HeightIcon,
   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
-import { Grid, Typography, styled, Theme } from "@mui/material";
+import { Grid, Typography, styled, Theme, Box, BoxProps } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -16,8 +16,10 @@ interface StyledDivProps extends React.HTMLAttributes<HTMLDivElement> {
   theme?: Theme;
 }
 
-const StyledContainer = styled("div")(({ theme }) => ({
+const StyledContainer = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(8),
+  maxWidth: "100%",
+  overflowX: "auto",
 }));
 
 const StyledDiv = styled("div", {
@@ -32,7 +34,7 @@ const StyledDiv = styled("div", {
     color: isActive ? `#376EFF` : theme.palette.primary.dark,
     textAlign: "center",
     backgroundColor: isActive ? "white" : "transparent",
-    padding: `${theme.spacing(3)} ${theme.spacing(4)}`,
+    padding: `${theme.spacing(3)}   ${theme.spacing(4)}`,
     "&  > h6": {
       "& > svg": {
         fontSize: "2rem",
@@ -46,13 +48,10 @@ const StyledDiv = styled("div", {
       backgroundColor: "white",
     },
     [theme.breakpoints.down("sm")]: {
-      border: `3px solid #376EFF`,
       fontSize: "2rem",
-      margin: theme.spacing(2),
     },
     [theme.breakpoints.down("xs")]: {
       fontSize: "1rem",
-      margin: theme.spacing(1),
     },
   };
 });
@@ -70,6 +69,22 @@ const StyledLink = styled(Link)(() => ({
   textDecoration: "none",
 }));
 
+function Item(props: BoxProps) {
+  const { sx, ...other } = props;
+  return (
+    <Box
+      sx={{
+        borderRadius: 1,
+        textAlign: "center",
+        fontSize: "1rem",
+        fontWeight: "700",
+        ...sx,
+      }}
+      {...other}
+    />
+  );
+}
+
 const TabBox = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = React.useState("/");
@@ -83,74 +98,72 @@ const TabBox = () => {
   }, [router.pathname]);
 
   return (
-    <StyledContainer>
-      <StyledGrid container justifyContent="center" spacing={0}>
-        <Grid item xs={12} sm={5} md={2}>
-          <StyledLink href="/">
-            <StyledDiv
-              isActive={activeTab === "/"}
-              onClick={() => changeTab("/")}
-            >
-              <StyledHeading variant="h6">
-                <PeopleOutlineIcon />
-                Eligibility
-              </StyledHeading>
-            </StyledDiv>
-          </StyledLink>
-        </Grid>
-        <Grid item xs={12} sm={5} md={2}>
-          <StyledLink href="/service">
-            <StyledDiv
-              isActive={activeTab === "/service"}
-              onClick={() => changeTab("/service")}
-            >
-              <StyledHeading variant="h6">
-                <PieChartIcon />
-                Service
-              </StyledHeading>
-            </StyledDiv>
-          </StyledLink>
-        </Grid>
-        <Grid item xs={12} sm={5} md={2}>
-          <StyledLink href="/providers">
-            <StyledDiv
-              isActive={activeTab === "/providers"}
-              onClick={() => changeTab("/providers")}
-            >
-              <StyledHeading variant="h6">
-                <MapIcon />
-                Provider
-              </StyledHeading>
-            </StyledDiv>
-          </StyledLink>
-        </Grid>
-        <Grid item xs={12} sm={5} md={2}>
-          <StyledLink href="/gaps">
-            <StyledDiv
-              isActive={activeTab === "/gaps"}
-              onClick={() => changeTab("/gaps")}
-            >
-              <StyledHeading variant="h6">
-                <HeightIcon style={{ transform: "rotate(90deg)" }} />
-                Gaps
-              </StyledHeading>
-            </StyledDiv>
-          </StyledLink>
-        </Grid>
-        <Grid item xs={12} sm={5} md={2}>
-          <StyledLink href="/export">
-            <StyledDiv
-              isActive={activeTab === "/export"}
-              onClick={() => changeTab("/export")}
-            >
-              <StyledHeading variant="h6">
-                <SaveAltIcon />
-                Export
-              </StyledHeading>
-            </StyledDiv>
-          </StyledLink>
-        </Grid>
-      </StyledGrid>
+    <StyledContainer sx={{ display: "flex", bgcolor: "transparent" }}>
+      <Item sx={{ width: "100%" }}>
+        <StyledLink href="/">
+          <StyledDiv
+            isActive={activeTab === "/"}
+            onClick={() => changeTab("/")}
+          >
+            <StyledHeading variant="h6">
+              <PeopleOutlineIcon />
+              Eligibility
+            </StyledHeading>
+          </StyledDiv>
+        </StyledLink>
+      </Item>
+      <Item sx={{ width: "100%" }}>
+        <StyledLink href="/service">
+          <StyledDiv
+            isActive={activeTab === "/service"}
+            onClick={() => changeTab("/service")}
+          >
+            <StyledHeading variant="h6">
+              <PieChartIcon />
+              Service
+            </StyledHeading>
+          </StyledDiv>
+        </StyledLink>
+      </Item>
+      <Item sx={{ width: "100%" }}>
+        <StyledLink href="/providers">
+          <StyledDiv
+            isActive={activeTab === "/providers"}
+            onClick={() => changeTab("/providers")}
+          >
+            <StyledHeading variant="h6">
+              <MapIcon />
+              Provider
+            </StyledHeading>
+          </StyledDiv>
+        </StyledLink>
+      </Item>
+      <Item sx={{ width: "100%" }}>
+        <StyledLink href="/gaps">
+          <StyledDiv
+            isActive={activeTab === "/gaps"}
+            onClick={() => changeTab("/gaps")}
+          >
+            <StyledHeading variant="h6">
+              <HeightIcon style={{ transform: "rotate(90deg)" }} />
+              Gaps
+            </StyledHeading>
+          </StyledDiv>
+        </StyledLink>
+      </Item>
+      <Item sx={{ width: "100%" }}>
+        <StyledLink href="/export">
+          <StyledDiv
+            isActive={activeTab === "/export"}
+            onClick={() => changeTab("/export")}
+          >
+            <StyledHeading variant="h6">
+              <SaveAltIcon />
+              Export
+            </StyledHeading>
+          </StyledDiv>
+        </StyledLink>
+      </Item>
     </StyledContainer>
   );
 };
