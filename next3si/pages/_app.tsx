@@ -5,7 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import Head from "next/head";
-import createEmotionCache from "../helpers/createEmotionCache";
+import createEmotionCache from "../src/frontend/helpers/createEmotionCache";
 import { MainLayout, TabBox } from "../components";
 import { theme } from "../mui";
 

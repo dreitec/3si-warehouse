@@ -950,6 +950,13 @@
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.2.tgz#1a62f89525723dde24ba1b01b092bf5df8ad4d39"
   integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
 
+"@types/snowflake-sdk@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@types/snowflake-sdk/-/snowflake-sdk-1.6.1.tgz#90f0ad7c4632c9e8f715b9d951c04b8de554b32b"
+  integrity sha512-eftM0eWFiphyrbQFLNOacx7CjYGlwEQXDQxixhn8m/hi0DSdPmlSEv272OInVFLnju80ZVE6JOnNfiX8gyHS1Q==
+  dependencies:
+    "@types/node" "*"
+
 "@types/tunnel@^0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@types/tunnel/-/tunnel-0.0.3.tgz#f109e730b072b3136347561fc558c9358bb8c6e9"
