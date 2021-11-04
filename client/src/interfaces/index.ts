@@ -56,4 +56,5 @@ export interface TableState {
   otherFilters: Filters;
   selectedViewBy: string;
   siteFilters: Filters;
+  exporting: boolean;
 }

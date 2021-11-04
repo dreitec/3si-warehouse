@@ -5,6 +5,7 @@ import {
   UPDATE_OTHER_FILTERS,
   UPDATE_VIEW_BY,
   UPDATE_SITE_FILTERS,
+  UPDATE_EXPORTING,
 } from "./types";
 
 import { TableState, Filters } from "../interfaces";
@@ -33,9 +34,14 @@ type Action =
   | {
       payload: string;
       type: typeof UPDATE_VIEW_BY;
+    }
+  | {
+      payload: boolean;
+      type: typeof UPDATE_EXPORTING;
     };
 
 export const reducer = (state: TableState, action: Action): TableState => {
+  console.log(action, state);
   switch (action.type) {
     case UPDATE_PROGRAM_FILTERS:
       return {
@@ -66,6 +72,12 @@ export const reducer = (state: TableState, action: Action): TableState => {
       return {
         ...state,
         selectedViewBy: action.payload,
+      };
+    case UPDATE_EXPORTING:
+      console.log("should update");
+      return {
+        ...state,
+        exporting: action.payload,
       };
     default:
       return state;

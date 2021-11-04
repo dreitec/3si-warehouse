@@ -194,3 +194,18 @@ export const getTableData = async (table: string, keys?: string[]) => {
   );
   return response.data.data;
 };
+
+export const exportCsv = async (table: string, keys?: string[]) => {
+  let querystring = getQueryString(keys);
+  const result: any = await axios({
+    url: `${baseUrl}/csv/${table}${querystring}`,
+    method: "GET",
+    responseType: "blob",
+  });
+  const url = window.URL.createObjectURL(new Blob([result.data]));
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", "file.csv"); //or any other extension
+  document.body.appendChild(link);
+  link.click();
+};

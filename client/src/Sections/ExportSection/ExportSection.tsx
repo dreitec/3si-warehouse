@@ -1,13 +1,13 @@
 import React, { useReducer, useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
-import Button from "@mui/material/Button";
+import { Button } from "../../components";
 import {
   ChartContainer,
   ExportTable,
   FilterCheckboxes,
   Select,
 } from "../../components";
-import { getTableData } from "../../api";
+import { getTableData, exportCsv } from "../../api";
 import { ExportTableReducer } from "../../state";
 import { TableState } from "../../interfaces";
 import {
@@ -16,6 +16,7 @@ import {
   UPDATE_FILTER_TYPE,
   UPDATE_OTHER_FILTERS,
   UPDATE_SITE_FILTERS,
+  UPDATE_EXPORTING,
 } from "../../state/types";
 import {
   StateObject as SelectedProgramsStateObject,
@@ -37,6 +38,7 @@ const ExportSection = (props: Props) => {
     otherFilters: SelectedOtherStateObject,
     selectedViewBy: "children",
     siteFilters: SitesStateObject,
+    exporting: false,
   };
   const [state, dispatch] = useReducer(ExportTableReducer, initialArg);
   const populateTableData = async () => {
@@ -68,6 +70,27 @@ const ExportSection = (props: Props) => {
     );
   };
 
+  const handleCsvExport = async () => {
+    dispatch({
+      type: UPDATE_EXPORTING,
+      payload: true,
+    });
+    await exportCsv(state.selectedViewBy);
+    dispatch({
+      type: UPDATE_EXPORTING,
+      payload: false,
+    });
+  };
+
+  const handleFilterChange = (payload: string) => {
+    console.log("changing filter", payload);
+    dispatch({
+      type: UPDATE_VIEW_BY,
+      payload,
+    });
+    setTableData([]);
+  };
+
   const checkboxes = [
     <Select
       label="View"
@@ -76,12 +99,7 @@ const ExportSection = (props: Props) => {
         { value: "providers", text: "By Provider" },
       ]}
       selected={state.selectedViewBy}
-      action={(payload: string) =>
-        dispatch({
-          type: UPDATE_VIEW_BY,
-          payload,
-        })
-      }
+      action={handleFilterChange}
     />,
     <FilterCheckboxes
       data={ProgramOptionTree}
@@ -124,22 +142,24 @@ const ExportSection = (props: Props) => {
       />
     );
   }
+
+  console.log(state.exporting);
+
   return (
     <ChartContainer
       showButton={false}
       exportButton={
-        <CSVLink
-          data={tableData}
-          className="csvlink"
-          filename={`3si-export-${new Date().toLocaleTimeString()}.csv`}
+        <Button
+          variant="contained"
+          isLight={false}
+          loading={state.exporting}
+          onClick={handleCsvExport}
         >
-          <Button variant="contained"> Export </Button>
-        </CSVLink>
+          Export
+        </Button>
       }
       title="Table Preview"
-      selectFiltersType={(payload: string) =>
-        dispatch({ type: UPDATE_FILTER_TYPE, payload })
-      }
+      selectFiltersType={handleFilterChange}
       checkboxes={checkboxes}
       getData={populateTableData}
       showOptionSelector={false}

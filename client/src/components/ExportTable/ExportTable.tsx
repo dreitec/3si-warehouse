@@ -39,9 +39,13 @@ export default function BasicTable(props: Props) {
     return Object.keys(data);
   };
   React.useEffect(() => {
-    if (dataFromProps.length === 0) return;
-    const headers = extractHeaders(dataFromProps[0]);
-    setState({ headers, data: dataFromProps });
+    if (state.data.length === 0 && dataFromProps.length === 0) return;
+    if (dataFromProps.length === 0) {
+      setState({ headers: ["Please query data"], data: [] });
+    } else {
+      const headers = extractHeaders(dataFromProps[0]);
+      setState({ headers, data: dataFromProps });
+    }
   }, [dataFromProps]);
   return (
     <TableContainer
