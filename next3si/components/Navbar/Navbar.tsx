@@ -1,16 +1,14 @@
 import React from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  List,
-  ListItem,
-  Grid,
-  SwipeableDrawer,
-  Link as MUILink,
-  styled,
-  Box,
-} from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Grid from "@mui/material/Grid";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import MUILink from "@mui/material/Link";
+import Box from "@mui/material/Box";
+import styled from "@mui/system/styled";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "../";
 

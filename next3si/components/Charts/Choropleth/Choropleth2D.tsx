@@ -4,7 +4,7 @@ import chroma from "chroma-js";
 
 // @ts-ignore
 import mapboxgl from "!mapbox-gl";
-import { styled } from "@mui/material";
+import styled from "@mui/system/styled";
 import Legend from "./Legend/Legend2D";
 import Counties from "./Geojsons/Counties";
 import "./Chloropleth.css";

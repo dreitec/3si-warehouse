@@ -1,6 +1,9 @@
 import React from "react";
-import { Box, FormControlLabel, styled, Checkbox } from "@mui/material";
-import { Typography } from "@material-ui/core";
+import Box from "@mui/material/Box";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
+import styled from "@mui/system/styled";
 interface SelectValueProps {
   value: string;
   text: string;

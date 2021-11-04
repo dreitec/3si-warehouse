@@ -1,6 +1,8 @@
 import React from "react";
-import { Container, Grid, styled } from "@mui/material";
-import { Typography } from "@material-ui/core";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import styled from "@mui/system/styled";
 
 interface Range {
   color: string;

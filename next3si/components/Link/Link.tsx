@@ -1,4 +1,6 @@
-import { Typography, Link, styled } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import styled from "@mui/system/styled";
 
 const StyledLink = styled(Link)(({ theme }) => ({
   color: theme.palette.text.primary,

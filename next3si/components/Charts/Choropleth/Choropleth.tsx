@@ -1,9 +1,9 @@
 /* eslint-disable import/no-webpack-loader-syntax */
 import React, { useRef, useEffect, useState } from "react";
-
 // @ts-ignore
 import mapboxgl from "!mapbox-gl";
-import { styled, Container } from "@mui/material";
+import Container from "@mui/material/Container";
+import styled from "@mui/system/styled";
 import Legend from "./Legend/Legend";
 import { FilterRadioGroup } from "../../";
 import Counties from "./Geojsons/Counties";

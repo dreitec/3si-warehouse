@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Container } from "@mui/material";
+import Container from "@mui/material/Container";
 import { Navbar, Compact } from "../";
 
 interface Props {

@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Container, styled } from "@mui/material";
-import { Navbar } from "../";
+import Container from "@mui/material/Container";
+import styled from "@mui/system/styled";
 
 const StyledMain = styled("div")(({ theme }) => ({
   padding: `0`,

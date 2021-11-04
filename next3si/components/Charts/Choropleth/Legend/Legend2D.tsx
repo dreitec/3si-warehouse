@@ -1,7 +1,9 @@
 import React from "react";
-import { Container, Grid, styled } from "@mui/material";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import styled from "@mui/system/styled";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import { theme } from "src/theme";
+import { theme } from "../../../../mui";
 interface Props {
   ranges: string[];
 }

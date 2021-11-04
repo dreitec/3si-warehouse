@@ -1,4 +1,6 @@
-import { Grid, styled, GridProps, Typography } from "@mui/material";
+import Grid, { GridProps } from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import styled from "@mui/system/styled";
 import { Switch, FilterRadioGroup, Button } from "../";
 
 const StyledMainContainer = styled(Grid)(({ theme }) => ({
