@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { MainLayout } from "../components";
+import { MainLayout, TabBox } from "../components";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -16,7 +16,9 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <MainLayout>Hello</MainLayout>
+        <MainLayout>
+          <TabBox />
+        </MainLayout>
       </main>
     </div>
   );
