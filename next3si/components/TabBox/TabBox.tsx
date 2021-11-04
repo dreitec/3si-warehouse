@@ -30,17 +30,21 @@ const StyledDiv = styled("div", {
   }
   return {
     color: isActive ? `#376EFF` : theme.palette.primary.dark,
-    border: isActive ? `4px solid #376EFF` : `1px solid #C3C7D5`,
     textAlign: "center",
-    padding: theme.spacing(4),
-    "& > svg": {
-      fontSize: "3rem",
+    backgroundColor: isActive ? "white" : "transparent",
+    padding: `${theme.spacing(3)} ${theme.spacing(4)}`,
+    "&  > h6": {
+      "& > svg": {
+        fontSize: "2rem",
+        position: "relative",
+        top: 6,
+        left: `-${theme.spacing(2)}`,
+      },
     },
     "&:hover": {
       color: "#376EFF",
-      border: `4px solid #376EFF`,
+      backgroundColor: "white",
     },
-    backgroundColor: "white",
     [theme.breakpoints.down("sm")]: {
       border: `3px solid #376EFF`,
       fontSize: "2rem",
@@ -58,7 +62,6 @@ const StyledHeading = styled(Typography)(() => ({
 }));
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
-  justifyContent: "space-between",
   [theme.breakpoints.down("sm")]: {
     justifyContent: "center",
   },
@@ -81,15 +84,17 @@ const TabBox = () => {
 
   return (
     <StyledContainer>
-      <StyledGrid container>
+      <StyledGrid container justifyContent="center" spacing={0}>
         <Grid item xs={12} sm={5} md={2}>
           <StyledLink href="/">
             <StyledDiv
               isActive={activeTab === "/"}
               onClick={() => changeTab("/")}
             >
-              <PeopleOutlineIcon />
-              <StyledHeading variant="h6">Eligibility</StyledHeading>
+              <StyledHeading variant="h6">
+                <PeopleOutlineIcon />
+                Eligibility
+              </StyledHeading>
             </StyledDiv>
           </StyledLink>
         </Grid>
@@ -99,8 +104,10 @@ const TabBox = () => {
               isActive={activeTab === "/service"}
               onClick={() => changeTab("/service")}
             >
-              <PieChartIcon />
-              <StyledHeading variant="h6">Service</StyledHeading>
+              <StyledHeading variant="h6">
+                <PieChartIcon />
+                Service
+              </StyledHeading>
             </StyledDiv>
           </StyledLink>
         </Grid>
@@ -110,8 +117,10 @@ const TabBox = () => {
               isActive={activeTab === "/providers"}
               onClick={() => changeTab("/providers")}
             >
-              <MapIcon />
-              <StyledHeading variant="h6">Provider</StyledHeading>
+              <StyledHeading variant="h6">
+                <MapIcon />
+                Provider
+              </StyledHeading>
             </StyledDiv>
           </StyledLink>
         </Grid>
@@ -121,8 +130,10 @@ const TabBox = () => {
               isActive={activeTab === "/gaps"}
               onClick={() => changeTab("/gaps")}
             >
-              <HeightIcon style={{ transform: "rotate(90deg)" }} />
-              <StyledHeading variant="h6">Gaps</StyledHeading>
+              <StyledHeading variant="h6">
+                <HeightIcon style={{ transform: "rotate(90deg)" }} />
+                Gaps
+              </StyledHeading>
             </StyledDiv>
           </StyledLink>
         </Grid>
@@ -132,8 +143,10 @@ const TabBox = () => {
               isActive={activeTab === "/export"}
               onClick={() => changeTab("/export")}
             >
-              <SaveAltIcon />
-              <StyledHeading variant="h6">Export</StyledHeading>
+              <StyledHeading variant="h6">
+                <SaveAltIcon />
+                Export
+              </StyledHeading>
             </StyledDiv>
           </StyledLink>
         </Grid>
