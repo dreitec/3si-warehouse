@@ -4,7 +4,7 @@ import { Container, styled } from "@mui/material";
 import { Navbar } from "../components";
 
 const StyledMain = styled("main")(({ theme }) => ({
-  marginTop: theme.spacing(8),
+  padding: `${theme.spacing(8)} 0px`,
 }));
 interface Props {
   children: any;
