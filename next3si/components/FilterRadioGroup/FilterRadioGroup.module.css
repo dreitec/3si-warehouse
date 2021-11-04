@@ -1,0 +1,33 @@
+.toggleInput {
+  position: absolute;
+  visibility: hidden;
+  display: none;
+}
+
+.btn {
+  width: 100%;
+  color: #9a929e;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 20px;
+  background-color: #eceef2;
+  font-size: 1rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  text-align: center;
+}
+
+input.toggle[type="radio"]:checked + label {
+  color: #080808;
+  background: white;
+}
+
+.radioGroup {
+  border: solid 2px #c3c7d5;
+  display: inline-block;
+  overflow: hidden;
+  width: 100%;
+}
+.inputDiv {
+  display: inline-block;
+}
