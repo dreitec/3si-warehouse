@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
-  eligibilityClauses,
+  ServedClauses,
   CommonClauses,
 } from "../../../src/backend/data/clauses";
 import {
@@ -36,13 +36,13 @@ export default async function handler(
     selectedClauses.push(
       `where month = ${MonthRow[0].MONTH} and year = ${currentYear}`
     );
-
-    const clauses = { ...eligibilityClauses, ...CommonClauses };
+    const clauses = { ...ServedClauses, ...CommonClauses };
 
     selectedClauses = [
       ...selectedClauses,
       ...MakeQueryArray(req.query, clauses),
     ];
+
     const GROUPOBJ: GenericObject = {
       county: "COUNTY",
       census: "CENSUS_TRACT",
@@ -56,9 +56,9 @@ export default async function handler(
     const conditions = MakeConditions(selectedClauses);
 
     // get eligible children
-    const ELgibileChildrenByFilters: any = await PromisedQuery(`select DATE(LOAD_DT) as date, 
+    const ServedChildrenByFilters: any = await PromisedQuery(`select DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
-			YEAR(date) as year, count(CHILD_ID) as children, ${GROUPBY} from CHILDREN ${conditions} group by ${GROUPBY}, month,LOAD_DT
+			YEAR(date) as year, count(CHILD_ID) as children, ${GROUPBY} from CHILDREN ${conditions}  AND PROGRAM_NAME not like 'Unserved'  group by ${GROUPBY}, month,LOAD_DT
 			order by LOAD_DT desc;`);
     // get all children
     const conditionsForTotal = [selectedClauses[0]];
@@ -70,14 +70,13 @@ export default async function handler(
 			order by LOAD_DT desc;`);
 
     // calculate percentage of eligible children
-    const data = ELgibileChildrenByFilters.map(
-      (calculatedRow: GenericObject, index: number) => {
+    const data = ServedChildrenByFilters.map(
+      (calculatedRow: any, index: number) => {
         const TotalObj = totalChildren.find(
           (elem: GenericObject) => elem[GROUPBY] === calculatedRow[GROUPBY]
         );
         return {
           ...calculatedRow,
-          totalChild: totalChildren[index].CHILDREN,
           percentage: (
             (calculatedRow.CHILDREN / TotalObj.CHILDREN) *
             100
