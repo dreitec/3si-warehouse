@@ -25,9 +25,6 @@ import {
   OtherOptionTree,
 } from "../src/frontend/Constants";
 
-import Container from "@mui/material/Container";
-import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
-
 const Home: NextPage = () => {
   const [eligibilityNotation, setEligibilityNotation] = React.useState(false);
   const [eligibilityData, setEligibilityData] = React.useState();
