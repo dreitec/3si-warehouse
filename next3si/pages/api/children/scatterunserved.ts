@@ -1,8 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  ServedClauses,
-  CommonClauses,
-} from "../../../src/backend/data/clauses";
+import { CommonClauses } from "../../../src/backend/data/clauses";
 import {
   PromisedQuery,
   MakeConditions,
