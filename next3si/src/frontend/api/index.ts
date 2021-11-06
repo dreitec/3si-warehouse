@@ -97,7 +97,7 @@ export const getProvidersChartData = async (
     querystring = `?groupBy=${groupBy}`;
   }
   const response = await axios.get<any[]>(
-    `${baseUrl}/providers/chart${querystring}`,
+    `${baseUrl}/providers/geo${querystring}`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -112,16 +112,17 @@ export const getProvidersChartData = async (
 
 export const getProvidersTableData = async (
   groupBy: string,
+  page: number,
   keys?: string[]
 ): Promise<any[]> => {
   let querystring = getQueryString(keys);
   if (querystring) {
-    querystring = `${querystring}&groupBy=${groupBy}`;
+    querystring = `${querystring}&groupBy=${groupBy}&page=${page}`;
   } else {
-    querystring = `?groupBy=${groupBy}`;
+    querystring = `?groupBy=${groupBy}&page=${page}`;
   }
   const response = await axios.get<ProvidersData>(
-    `${baseUrl}/providers/table${querystring}`,
+    `${baseUrl}/providers/table/sub${querystring}`,
     {
       headers: {
         "Content-Type": "application/json",

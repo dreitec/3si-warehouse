@@ -5,7 +5,7 @@ import {
   UPDATE_SITE_FILTERS,
   UPDATE_BY_TYPE,
 } from "./types";
-import { ProvidersState, Filters } from "../interfaces";
+import { ProvidersState, Filters } from "../src/frontend/Interfaces";
 
 type Action =
   | {

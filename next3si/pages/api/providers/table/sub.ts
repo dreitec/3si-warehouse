@@ -19,6 +19,11 @@ export default async function handler(
   res: NextApiResponse<{ data: GenericObject } | ErrorResponse>
 ) {
   try {
+    const recordsLimit = 10;
+    let page: number = 0;
+    if (req.query.page && typeof req.query.page === "string") {
+      page = parseInt(req.query.page);
+    }
     const SiteConditions = MakeConditions(
       MakeQueryArray(req.query, SiteClauses, false)
     );
@@ -30,7 +35,20 @@ export default async function handler(
     }
 
     const data: any = await PromisedQuery(
-      `Select providers.NAME, providers.PROVIDER_TYPE, providers.CAPACITY,  count(children.CHILD_ID) as enrollment from providers  INNER JOIN children ON children.PROVIDER_ID=providers.PROVIDER_ID ${SiteConditions} ${ChildrenConditions} group by providers.NAME, providers.PROVIDER_TYPE, providers.CAPACITY; `
+      `Select 
+	  providers.NAME, 
+	  providers.EEC_REGIONNAME, 
+	  providers.PROVIDER_TYPE, 
+	  providers.CAPACITY,  
+	  count(children.CHILD_ID) as enrollment from providers  
+	  INNER JOIN children ON children.PROVIDER_ID=providers.PROVIDER_ID 
+	  ${SiteConditions} ${ChildrenConditions} 
+	  group by providers.NAME, 
+	  providers.PROVIDER_TYPE, 
+	  providers.CAPACITY, 
+	  providers.EEC_REGIONNAME
+	  limit  ${recordsLimit}
+	  offset ${recordsLimit * page};`
     );
 
     return res.status(200).json({ data });
