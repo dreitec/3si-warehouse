@@ -73,14 +73,11 @@ export const getGeographicalServedData = async (
   } else {
     querystring = `?groupBy=${groupBy}`;
   }
-  const data = await axios.get(
-    `${baseUrl}/children/served/geographical/${querystring}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const data = await axios.get(`${baseUrl}/children/geoserved${querystring}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   const geographicalEligibilityData: any = data.data;
   const mapped: any = geographicalEligibilityData.data.map((elem: any) => ({
     ...elem,
