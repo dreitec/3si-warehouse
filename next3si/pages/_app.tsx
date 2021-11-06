@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/globals.css";
+import "mapbox-gl/dist/mapbox-gl.css";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";

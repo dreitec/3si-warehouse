@@ -48,7 +48,7 @@ export const getGeographicalEligibilityData = async (
     querystring = `?groupBy=${groupBy}`;
   }
   const data = await axios.get(
-    `${baseUrl}/children/eligibility/geographical/${querystring}`,
+    `${baseUrl}/children/geoeligibility/${querystring}`,
     {
       headers: {
         "Content-Type": "application/json",

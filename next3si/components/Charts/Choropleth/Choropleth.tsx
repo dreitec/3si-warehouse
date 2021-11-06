@@ -1,15 +1,15 @@
 /* eslint-disable import/no-webpack-loader-syntax */
 import React, { useRef, useEffect, useState } from "react";
+
 // @ts-ignore
 import mapboxgl from "!mapbox-gl";
-import Container from "@mui/material/Container";
-import styled from "@mui/system/styled";
+import { styled, Container } from "@mui/material";
 import Legend from "./Legend/Legend";
-import { FilterRadioGroup } from "../../";
+import { FilterRadioGroup } from "../..";
 import Counties from "./Geojsons/Counties";
 import Tracts from "./Geojsons/Tracts";
 import Regions from "./Geojsons/Regions";
-import "./Chloropleth.css";
+import styles from "./Chloropleth.module.css";
 
 const StyledContainer = styled("div")(() => ({
   position: "relative",
@@ -22,7 +22,7 @@ const StyledRadioContainer = styled("div")(() => ({
   zIndex: 1,
 }));
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY || "NA";
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY || "NA";
 
 interface Options {
   property: string;
@@ -268,7 +268,7 @@ const Choropleth = (props: Props) => {
           </Container>
         )}
       </StyledRadioContainer>
-      <div ref={mapContainer} className="map-container" />
+      <div ref={mapContainer} className={styles.mapContainer} />
       <Legend name={options.name} ranges={ranges} />
     </StyledContainer>
   );
