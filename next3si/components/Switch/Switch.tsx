@@ -73,13 +73,13 @@ const Root = styled("span")(`
     margin: 0;
   }`);
 interface StyledLabelProps {
-  highlight: boolean;
+  isHighlight: boolean;
 }
 const StyledLabel = styled(Typography)((props: StyledLabelProps) => {
-  const { highlight } = props;
+  const { isHighlight } = props;
   return {
     display: "inline",
-    color: highlight ? "#080808" : "#C3C7D5",
+    color: isHighlight ? "#080808" : "#C3C7D5",
   };
 });
 
@@ -95,7 +95,7 @@ export default function UnstyledSwitches(props: SwitchProps) {
 
   return (
     <div>
-      <StyledLabel variant="body1" highlight={!checked}>
+      <StyledLabel variant="body1" isHighlight={!checked}>
         {labels[0]}
       </StyledLabel>
       <SwitchUnstyled
@@ -106,7 +106,7 @@ export default function UnstyledSwitches(props: SwitchProps) {
         }}
         checked={checked}
       />
-      <StyledLabel variant="body1" highlight={checked}>
+      <StyledLabel variant="body1" isHighlight={checked}>
         {labels[1]}
       </StyledLabel>
     </div>
