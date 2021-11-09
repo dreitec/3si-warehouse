@@ -14,3 +14,30 @@ body {
   margin: 12px;
   border-radius: 4px;
 }
+
+div::-webkit-scrollbar {
+  display: none;
+}
+
+div:hover::-webkit-scrollbar {
+  display: block;
+  padding-left: 10px;
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+div:hover::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+div:hover::-webkit-scrollbar-thumb {
+  background: #376eff;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+div:hover::-webkit-scrollbar-thumb:hover {
+  background: #12214d;
+}
