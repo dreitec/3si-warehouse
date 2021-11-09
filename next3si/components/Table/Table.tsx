@@ -70,13 +70,18 @@ export default function StickyHeadTable(props: Props) {
             <TableBody>
               {data.map((row: any) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={`${row.NAME}-row`}
+                  >
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
                         <TableCell
                           sx={{ borderRight: "1px solid black" }}
-                          key={column.id}
+                          key={`${column.id}-${value}`}
                           align={column.align}
                         >
                           {column.format && typeof value === "number"
