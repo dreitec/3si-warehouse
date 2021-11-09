@@ -179,7 +179,7 @@ export const getGeographicalUnservedData = async (keys?: string[]) => {
 export const getTableData = async (table: string, keys?: string[]) => {
   let querystring = getQueryString(keys);
   const response: any = await axios.get(
-    `${baseUrl}/table/${table}${querystring}`,
+    `${baseUrl}/${table}/table/export/${querystring}`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -192,7 +192,7 @@ export const getTableData = async (table: string, keys?: string[]) => {
 export const exportCsv = async (table: string, keys?: string[]) => {
   let querystring = getQueryString(keys);
   const result: any = await axios({
-    url: `${baseUrl}/csv/${table}${querystring}`,
+    url: `${baseUrl}/${table}/csv/${querystring}`,
     method: "GET",
     responseType: "blob",
   });

@@ -16,3 +16,5 @@ export { default as FilterRadioGroup } from "./FilterRadioGroup/FilterRadioGroup
 export { default as Switch } from "./Switch/Switch";
 export { default as Table } from "./Table/Table";
 export { default as RadioButton } from "./RadioButton/RadioButton";
+export { default as Select } from "./Select/Select";
+export { default as ExportTable } from "./ExportTable/ExportTable";

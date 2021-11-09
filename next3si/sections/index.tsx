@@ -5,3 +5,4 @@ export { default as ServedGeographicalChartSection } from "./ServedGeographicalC
 export { default as ProvidersSection } from "./ProvidersSection/ProvidersSection";
 export { default as UnservedChoropleth } from "./UnservedChildrenChoroplethSection/UnservedChildrenChoroplethSection";
 export { default as UnservedScatter } from "./UnservedChildrenScatterGraphSection/UnservedChildrenScatterGraphSection";
+export { default as ExportSection } from "./ExportSection/ExportSection";
