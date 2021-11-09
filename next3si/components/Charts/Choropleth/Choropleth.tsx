@@ -10,6 +10,7 @@ import Counties from "./Geojsons/Counties";
 import Tracts from "./Geojsons/Tracts";
 import Regions from "./Geojsons/Regions";
 import styles from "./Chloropleth.module.css";
+import { Sleep } from "../../../src/frontend/helpers";
 
 const StyledContainer = styled("div")(() => ({
   position: "relative",
@@ -223,9 +224,15 @@ const Choropleth = (props: Props) => {
     map.current.removeSource("counties");
   };
 
-  const AddSource = (data: any) => {
+  const AddSource = async (data: any) => {
     if (map.current.getSource("counties")) {
       removeSource();
+    }
+    if (!map.current.isStyleLoaded()) {
+      console.log("not loaded going to sleep");
+      await Sleep();
+      AddSource(data);
+      return;
     }
     map.current.addSource("counties", {
       type: "geojson",

@@ -8,14 +8,16 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import "./Scatter.css";
+import styles from "./Scatter.module.css";
 
 interface Props {
   dataFromProps: any;
 }
 
 const CustomizedDot = (props: any) => {
-  return <circle className="circle" cx={props.cx} cy={props.cy} r={10} />;
+  return (
+    <circle className={styles.circle} cx={props.cx} cy={props.cy} r={10} />
+  );
 };
 
 const ScatterChartCustom = (props: Props) => {

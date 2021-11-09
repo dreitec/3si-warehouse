@@ -51,7 +51,7 @@ export interface GapsState {
   filters: Filters;
 }
 
-export interface TableState {
+export interface ITableState {
   programFilters: Filters;
   otherFilters: Filters;
   selectedViewBy: string;

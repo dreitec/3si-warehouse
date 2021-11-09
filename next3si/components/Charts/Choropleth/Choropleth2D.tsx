@@ -7,7 +7,8 @@ import mapboxgl from "!mapbox-gl";
 import styled from "@mui/system/styled";
 import Legend from "./Legend/Legend2D";
 import Counties from "./Geojsons/Counties";
-import "./Chloropleth.css";
+import styles from "./Chloropleth.module.css";
+import { Sleep } from "../../../src/frontend/helpers";
 
 const StyledContainer = styled("div")(() => ({
   position: "relative",
@@ -20,7 +21,7 @@ const StyledRadioContainer = styled("div")(() => ({
   zIndex: 1,
 }));
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY || "NA";
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY || "NA";
 
 interface Options {
   property: string;
@@ -58,14 +59,6 @@ const svi = [
   0.8462,
   0.0769,
 ].sort((a: number, b: number) => a - b);
-
-console.log(svi, "svis");
-
-const ReplaceWithK = (number: number): string => {
-  let numberStr = number.toString();
-  if (numberStr.length > 4) return number.toString().slice(0, -3) + "K";
-  return numberStr;
-};
 
 const getSteps = (data: any, property: string) => {
   const all: any[] = [];
@@ -198,9 +191,15 @@ const Choropleth = (props: Props) => {
     map.current.removeSource("counties");
   };
 
-  const AddSource = (data: any) => {
+  const AddSource = async (data: any) => {
     if (map.current.getSource("counties")) {
       removeSource();
+    }
+    if (!map.current.isStyleLoaded()) {
+      console.log("not loaded going to sleep");
+      await Sleep();
+      AddSource(data);
+      return;
     }
     map.current.addSource("counties", {
       type: "geojson",
@@ -232,7 +231,7 @@ const Choropleth = (props: Props) => {
   return (
     <StyledContainer>
       <StyledRadioContainer></StyledRadioContainer>
-      <div ref={mapContainer} className="map-container" />
+      <div ref={mapContainer} className={styles.mapContainer} />
       <Legend ranges={ranges} />
     </StyledContainer>
   );

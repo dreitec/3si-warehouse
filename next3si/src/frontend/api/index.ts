@@ -141,7 +141,7 @@ export const getScatterData = async (keys?: string[]): Promise<any[]> => {
     querystring = `${querystring}`;
   }
   const response = await axios.get<ProvidersData>(
-    `${baseUrl}/children/unserved/scatter${querystring}`,
+    `${baseUrl}/children/scatterunserved${querystring}`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -161,7 +161,7 @@ export const getScatterData = async (keys?: string[]): Promise<any[]> => {
 export const getGeographicalUnservedData = async (keys?: string[]) => {
   let querystring = getQueryString(keys);
   const data = await axios.get(
-    `${baseUrl}/children/unserved/geographical${querystring}`,
+    `${baseUrl}/children/geounserved${querystring}`,
     {
       headers: {
         "Content-Type": "application/json",

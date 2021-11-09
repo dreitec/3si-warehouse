@@ -75,7 +75,9 @@ const Root = styled("span")(`
 interface StyledLabelProps {
   isHighlight: boolean;
 }
-const StyledLabel = styled(Typography)((props: StyledLabelProps) => {
+const StyledLabel = styled(Typography, {
+  shouldForwardProp: (prop: string) => prop !== "isHighlight",
+})((props: StyledLabelProps) => {
   const { isHighlight } = props;
   return {
     display: "inline",
