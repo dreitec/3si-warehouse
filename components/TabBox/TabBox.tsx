@@ -7,7 +7,7 @@ import {
   Height as HeightIcon,
   SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
-import { Grid, Typography, styled, Theme, Box, BoxProps } from "@mui/material";
+import { Typography, styled, Theme, Box, BoxProps } from "@mui/material";
 import Link from "next/link";
 import { Link as CommonLink } from "../";
 import { useRouter } from "next/router";
