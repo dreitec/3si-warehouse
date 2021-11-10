@@ -61,11 +61,6 @@ const StyledHeading = styled(Typography)(() => ({
   width: "100%",
 }));
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
-  [theme.breakpoints.down("sm")]: {
-    justifyContent: "center",
-  },
-}));
 const StyledLink = styled(Link)(() => ({
   textDecoration: "none",
 }));
@@ -136,6 +131,16 @@ const TabBox = () => {
           </StyledLink>
         </Item>
         <Item sx={{ width: "100%" }}>
+          <StyledLink href="/providers">
+            <StyledDiv isActive={activeTab === "/providers"}>
+              <StyledHeading variant="h6">
+                <MapIcon />
+                Providers
+              </StyledHeading>
+            </StyledDiv>
+          </StyledLink>
+        </Item>
+        <Item sx={{ width: "100%" }}>
           <StyledLink href="/service">
             <StyledDiv isActive={activeTab === "/service"}>
               <StyledHeading variant="h6">
@@ -145,16 +150,7 @@ const TabBox = () => {
             </StyledDiv>
           </StyledLink>
         </Item>
-        <Item sx={{ width: "100%" }}>
-          <StyledLink href="/providers">
-            <StyledDiv isActive={activeTab === "/providers"}>
-              <StyledHeading variant="h6">
-                <MapIcon />
-                Provider
-              </StyledHeading>
-            </StyledDiv>
-          </StyledLink>
-        </Item>
+
         <Item sx={{ width: "100%" }}>
           <StyledLink href="/gaps">
             <StyledDiv isActive={activeTab === "/gaps"}>
