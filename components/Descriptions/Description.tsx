@@ -10,9 +10,14 @@ interface Props {
   Icon?: any;
   button?: boolean;
   margin?: number;
+  justify?: "right" | "left" | "inherit" | "center" | "justify" | undefined;
+  headingJustify?: "right" | "left" | "inherit" | "center" | "justify";
+  color?: string;
 }
 interface StyleProps extends GridProps {
-  marginvalue: number;
+  marginValue: number;
+  headingJustify: "right" | "left" | "inherit" | "center" | "justify";
+  color?: string;
 }
 
 const StyledHeading = styled(Typography)(({ theme }) => ({
@@ -20,14 +25,16 @@ const StyledHeading = styled(Typography)(({ theme }) => ({
   width: "100%",
 }));
 
-const HeadingContainer = styled(Grid)((props: StyleProps) => {
-  const { marginvalue } = props;
+const HeadingContainer = styled(Grid, {
+  shouldForwardProp: (prop: string) => prop !== "headingJustify",
+})((props: StyleProps) => {
+  const { marginValue, headingJustify, color } = props;
   return {
-    color: theme.palette.primary.main,
-    justifyContent: "center",
-    marginTop: theme.spacing(marginvalue | 0),
+    color: color ? color : theme.palette.primary.main,
+    justifyContent: headingJustify,
+    marginTop: theme.spacing(marginValue | 0),
     "& svg": {
-      fontSize: "4rem",
+      fontSize: "2rem",
       marginBottom: theme.spacing(1),
     },
   };
@@ -39,31 +46,45 @@ const ButtonContainer = styled("div")(({ theme }) => ({
 
 const Description = (props: Props) => {
   //todo: handle image
-  const { heading, children, Icon, button, margin = 0 } = props;
+  const {
+    heading,
+    children,
+    Icon,
+    button,
+    margin = 0,
+    justify = "left",
+    headingJustify = "center",
+    color,
+  } = props;
 
   return (
     <Grid
       sx={{
-        color: "palette.primary",
-        justifyContent: "left",
+        color: color ? color : "palette.primary",
+        justifyContent: justify,
         paddingTop: 3,
         paddingBottom: 3,
       }}
     >
-      <HeadingContainer container alignItems="center" marginvalue={margin}>
+      <HeadingContainer
+        container
+        headingJustify={headingJustify}
+        marginValue={margin}
+        color={color}
+      >
         {Icon && (
           <Icon
             style={{ transform: heading === "Gaps" ? "rotate(90deg)" : "" }}
           />
         )}
-        <StyledHeading textAlign="center" variant="h6">
+        <StyledHeading textAlign={headingJustify} variant="h6">
           {heading}
         </StyledHeading>
       </HeadingContainer>
       <Typography
         component="p"
-        textAlign="left"
-        justifyContent="left"
+        textAlign={justify}
+        justifyContent={justify}
         variant="body1"
       >
         {children}

@@ -6,13 +6,14 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Grid from "@mui/material/Grid";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import MUILink from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import styled from "@mui/system/styled";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "../";
+import NextLink from "next/link";
 
-const StyledBrand = styled(MUILink)(() => ({
+const StyledBrand = styled("a")(({ theme }) => ({
+  color: theme.palette.primary.main,
   textDecoration: "none",
   letterSpacing: 1,
   fontSize: "1.75rem",
@@ -28,6 +29,7 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
   "& > p": {
     width: "100%",
     "& > a": {
+      textDecoration: "none",
       width: "100%",
       display: "block",
       textAlign: "center",
@@ -36,7 +38,12 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
   },
 }));
 
-export default function Navbar() {
+interface INavbar {
+  activeTab: string;
+}
+
+export default function Navbar(props: INavbar) {
+  const { activeTab } = props;
   const [state, setState] = React.useState({
     drawerActivate: false,
     drawer: false,
@@ -90,10 +97,11 @@ export default function Navbar() {
                 }}
               />
 
-              <StyledBrand href="#">
-                Third <StyledBoldSpan> Sector Intelligence </StyledBoldSpan>
-              </StyledBrand>
-              <Typography color="inherit" variant="h6"></Typography>
+              <NextLink href="/" passHref>
+                <StyledBrand>
+                  Third <StyledBoldSpan> Sector Intelligence </StyledBoldSpan>
+                </StyledBrand>
+              </NextLink>
             </Grid>
           </Toolbar>
         </AppBar>
@@ -123,14 +131,18 @@ export default function Navbar() {
               }}
             >
               <StyledListItem>
-                <Link href="#" align="left">
-                  Key insights
-                </Link>
+                <Typography variant="h6" component="p" align="left">
+                  <Link href="/" active={activeTab === "/"}>
+                    Key insights
+                  </Link>
+                </Typography>
               </StyledListItem>
               <StyledListItem>
-                <Link href="#" align="left">
-                  Export
-                </Link>
+                <Typography variant="h6" component="p" align="left">
+                  <Link href="/export" active={activeTab === "/export"}>
+                    Export
+                  </Link>
+                </Typography>
               </StyledListItem>
             </List>
           </div>
@@ -155,26 +167,33 @@ export default function Navbar() {
             <Grid container>
               <Grid item xs={6}>
                 <Typography variant="h4" component="div">
-                  <StyledBrand href="#">
-                    Third <StyledBoldSpan> Sector Intelligence </StyledBoldSpan>
-                  </StyledBrand>
+                  <NextLink href="/" passHref>
+                    <StyledBrand>
+                      Third{" "}
+                      <StyledBoldSpan> Sector Intelligence </StyledBoldSpan>
+                    </StyledBrand>
+                  </NextLink>
                 </Typography>
               </Grid>
               <Grid item xs={6}>
                 <Grid container direction="row" justifyContent="flex-end">
                   <Grid item xs={3}>
-                    <Link href="#" align="right">
-                      Key insights
-                    </Link>
+                    <Typography variant="h6" component="p" align="left">
+                      <Link href="/" active={activeTab === "/"}>
+                        Key insights
+                      </Link>
+                    </Typography>
                   </Grid>
                   <Grid item xs={3}>
-                    <Link href="#" align="right">
-                      Export
-                    </Link>
+                    <Typography variant="h6" component="p" align="left">
+                      <Link href="/export" active={activeTab === "/export"}>
+                        Export
+                      </Link>
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>{" "}
+            </Grid>
           </Toolbar>
         </AppBar>
       </Box>

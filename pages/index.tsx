@@ -1,53 +1,101 @@
 import React from "react";
-import type { NextPage } from "next";
-import Head from "next/head";
-import { Description, FullWidth, Compact } from "../components";
+import { Description, ArrowLink } from "../components";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import PeopleOutlined from "@mui/icons-material/PeopleOutlined";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import PieChartOutlined from "@mui/icons-material/PieChartOutlined";
 
-import {
-  EligibilityLineSection,
-  EligibilityGeographicalChartSection,
-} from "../sections";
+import styled from "@mui/system/styled";
 
-const Home: NextPage = () => {
+const StyledMainContainer = styled("div")(({ theme }) => ({
+  margin: `${theme.spacing(17)} 0px`,
+}));
+
+const SectionGrid = styled(Grid)(({ theme }) => ({
+  backgroundColor: "white",
+  padding: theme.spacing(4),
+}));
+
+const StyledPaddedGrid = styled(Grid)(({ theme }) => ({
+  padding: `${theme.spacing(6)} 0px`,
+}));
+
+const BlueDiv = styled("div")(({ theme }) => ({
+  backgroundColor: theme.palette.primary.dark,
+  padding: `${theme.spacing(6)} 0px`,
+}));
+
+const index = () => {
   return (
-    <div>
-      <Head>
-        <title>Eligible</title>
-        <meta
-          name="description"
-          content="Charts and data export for eligible children"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <FullWidth>
-          <Compact>
-            <Description button={true}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              auctor consequat mauris. Vestibulum ornare vel odio ac hendrerit.
-              Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit
-              amet sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum
-              dolor sit amet, consectetur adipiscing elit. Quisque auctor
-              consequat mauris. Vestibulum ornare vel odio ac hendrerit.
-              Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit
-              amet sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum
-              dolor sit amet, consectetur adipiscing elit. Quisque auctor
-              consequat mauris. Vestibulum ornare vel odio ac hendrerit.
-              Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit
-              amet sapien dapibus eleifend. Nunc quis augue nulla.
+    <StyledMainContainer>
+      <Container>
+        <StyledPaddedGrid container justifyContent="center" alignItems="center">
+          <Grid item xs={6}>
+            <Description
+              Icon={PeopleOutlined}
+              heading="POPULATION"
+              justify="left"
+              headingJustify="left"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel
+              convallis odio, at interdum sem. Donec dapibus vel elit non
+              imperdiet. Donec ornare egestas ex eget bibendum. Aliquam
+              ullamcorper nisi a magna mattis, at pharetra ligula pulvinar.
             </Description>
-          </Compact>
-        </FullWidth>
-        <Compact>
-          <EligibilityLineSection />
-        </Compact>
-        <Compact>
-          <EligibilityGeographicalChartSection />
-        </Compact>
-      </main>
-    </div>
+          </Grid>
+          <SectionGrid item xs={6}>
+            <div
+              style={{ width: "100%", height: 300, border: "1px solid black" }}
+            ></div>
+            <ArrowLink href="#">Explore more</ArrowLink>
+          </SectionGrid>
+        </StyledPaddedGrid>
+      </Container>
+      <BlueDiv>
+        <Container maxWidth="xs" sx={{ textAlign: "center" }}>
+          <Description
+            Icon={PersonAddAltIcon}
+            heading="POPULATION"
+            justify="center"
+            headingJustify="center"
+            color="white"
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel
+            convallis odio, at interdum sem. Donec dapibus vel elit non
+            imperdiet. Donec ornare egestas ex eget bibendum. Aliquam
+            ullamcorper nisi a magna mattis, at pharetra ligula pulvinar.
+          </Description>
+          <ArrowLink href="#" color="white">
+            Explore more
+          </ArrowLink>
+        </Container>
+      </BlueDiv>
+      <Container>
+        <StyledPaddedGrid container justifyContent="center" alignItems="center">
+          <Grid item xs={6}>
+            <Description
+              Icon={PieChartOutlined}
+              heading="PROVIDER CAPACITY"
+              justify="left"
+              headingJustify="left"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel
+              convallis odio, at interdum sem. Donec dapibus vel elit non
+              imperdiet. Donec ornare egestas ex eget bibendum. Aliquam
+              ullamcorper nisi a magna mattis, at pharetra ligula pulvinar.
+            </Description>
+          </Grid>
+          <SectionGrid item xs={6}>
+            <div
+              style={{ width: "100%", height: 300, border: "1px solid black" }}
+            ></div>
+            <ArrowLink href="#">Explore more</ArrowLink>
+          </SectionGrid>
+        </StyledPaddedGrid>
+      </Container>
+    </StyledMainContainer>
   );
 };
 
-export default Home;
+export default index;

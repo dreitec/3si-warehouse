@@ -9,7 +9,9 @@ import {
 } from "@mui/icons-material";
 import { Grid, Typography, styled, Theme, Box, BoxProps } from "@mui/material";
 import Link from "next/link";
+import { Link as CommonLink } from "../";
 import { useRouter } from "next/router";
+import Container from "@mui/material/Container";
 
 interface StyledDivProps extends React.HTMLAttributes<HTMLDivElement> {
   isActive: boolean;
@@ -24,7 +26,6 @@ const StyledContainer = styled(Box)(({ theme }) => ({
 
 const StyledDiv = styled("div", {
   shouldForwardProp: (prop: string) => prop !== "isActive",
-  name: "MyThemeComponent",
 })((props: StyledDivProps) => {
   const { isActive, theme } = props;
   if (!theme) {
@@ -68,6 +69,9 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 const StyledLink = styled(Link)(() => ({
   textDecoration: "none",
 }));
+const SubLinksContainer = styled(Container)(() => ({
+  backgroundColor: "white",
+}));
 
 function Item(props: BoxProps) {
   const { sx, ...other } = props;
@@ -85,86 +89,95 @@ function Item(props: BoxProps) {
   );
 }
 
+const GetSubMenu = (path: string) => {
+  if (path.includes("/eligibility")) {
+    return (
+      <SubLinksContainer>
+        <CommonLink
+          href="/eligibility"
+          color="primary"
+          active={path === "/eligibility"}
+          variant="spaced"
+        >
+          Eligibility over time
+        </CommonLink>
+        <CommonLink
+          href="/eligibility/geographically"
+          color="primary"
+          active={path === "/eligibility/geographically"}
+          variant="spaced"
+        >
+          Eligibility geographically
+        </CommonLink>
+      </SubLinksContainer>
+    );
+  }
+};
+
 const TabBox = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = React.useState("/");
-
-  const changeTab = (path: string) => {
-    setActiveTab(path);
-  };
 
   React.useEffect(() => {
     setActiveTab(router.pathname);
   }, [router.pathname]);
 
   return (
-    <StyledContainer sx={{ display: "flex", bgcolor: "transparent" }}>
-      <Item sx={{ width: "100%" }}>
-        <StyledLink href="/">
-          <StyledDiv
-            isActive={activeTab === "/"}
-            onClick={() => changeTab("/")}
-          >
-            <StyledHeading variant="h6">
-              <PeopleOutlineIcon />
-              Eligibility
-            </StyledHeading>
-          </StyledDiv>
-        </StyledLink>
-      </Item>
-      <Item sx={{ width: "100%" }}>
-        <StyledLink href="/service">
-          <StyledDiv
-            isActive={activeTab === "/service"}
-            onClick={() => changeTab("/service")}
-          >
-            <StyledHeading variant="h6">
-              <PieChartIcon />
-              Service
-            </StyledHeading>
-          </StyledDiv>
-        </StyledLink>
-      </Item>
-      <Item sx={{ width: "100%" }}>
-        <StyledLink href="/providers">
-          <StyledDiv
-            isActive={activeTab === "/providers"}
-            onClick={() => changeTab("/providers")}
-          >
-            <StyledHeading variant="h6">
-              <MapIcon />
-              Provider
-            </StyledHeading>
-          </StyledDiv>
-        </StyledLink>
-      </Item>
-      <Item sx={{ width: "100%" }}>
-        <StyledLink href="/gaps">
-          <StyledDiv
-            isActive={activeTab === "/gaps"}
-            onClick={() => changeTab("/gaps")}
-          >
-            <StyledHeading variant="h6">
-              <HeightIcon style={{ transform: "rotate(90deg)" }} />
-              Gaps
-            </StyledHeading>
-          </StyledDiv>
-        </StyledLink>
-      </Item>
-      <Item sx={{ width: "100%" }}>
-        <StyledLink href="/export">
-          <StyledDiv
-            isActive={activeTab === "/export"}
-            onClick={() => changeTab("/export")}
-          >
-            <StyledHeading variant="h6">
-              <SaveAltIcon />
-              Export
-            </StyledHeading>
-          </StyledDiv>
-        </StyledLink>
-      </Item>
-    </StyledContainer>
+    <>
+      <StyledContainer sx={{ display: "flex", bgcolor: "transparent" }}>
+        <Item sx={{ width: "100%" }}>
+          <StyledLink href="/eligibility">
+            <StyledDiv isActive={activeTab.includes("/eligibility")}>
+              <StyledHeading variant="h6">
+                <PeopleOutlineIcon />
+                Eligibility
+              </StyledHeading>
+            </StyledDiv>
+          </StyledLink>
+        </Item>
+        <Item sx={{ width: "100%" }}>
+          <StyledLink href="/service">
+            <StyledDiv isActive={activeTab === "/service"}>
+              <StyledHeading variant="h6">
+                <PieChartIcon />
+                Service
+              </StyledHeading>
+            </StyledDiv>
+          </StyledLink>
+        </Item>
+        <Item sx={{ width: "100%" }}>
+          <StyledLink href="/providers">
+            <StyledDiv isActive={activeTab === "/providers"}>
+              <StyledHeading variant="h6">
+                <MapIcon />
+                Provider
+              </StyledHeading>
+            </StyledDiv>
+          </StyledLink>
+        </Item>
+        <Item sx={{ width: "100%" }}>
+          <StyledLink href="/gaps">
+            <StyledDiv isActive={activeTab === "/gaps"}>
+              <StyledHeading variant="h6">
+                <HeightIcon style={{ transform: "rotate(90deg)" }} />
+                Gaps
+              </StyledHeading>
+            </StyledDiv>
+          </StyledLink>
+        </Item>
+        <Item sx={{ width: "100%" }}>
+          <StyledLink href="/export">
+            <StyledDiv isActive={activeTab === "/export"}>
+              <StyledHeading variant="h6">
+                <SaveAltIcon />
+                Export
+              </StyledHeading>
+            </StyledDiv>
+          </StyledLink>
+        </Item>
+      </StyledContainer>
+      {GetSubMenu(activeTab)}
+    </>
   );
 };
 
