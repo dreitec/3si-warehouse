@@ -106,6 +106,27 @@ const GetSubMenu = (path: string) => {
         </CommonLink>
       </SubLinksContainer>
     );
+  } else if (path.includes("/service")) {
+    return (
+      <SubLinksContainer>
+        <CommonLink
+          href="/service"
+          color="primary"
+          active={path === "/service"}
+          variant="spaced"
+        >
+          Serviced over time
+        </CommonLink>
+        <CommonLink
+          href="/service/geographically"
+          color="primary"
+          active={path === "/service/geographically"}
+          variant="spaced"
+        >
+          Serviced geographically
+        </CommonLink>
+      </SubLinksContainer>
+    );
   }
 };
 
@@ -157,16 +178,6 @@ const TabBox = () => {
               <StyledHeading variant="h6">
                 <HeightIcon style={{ transform: "rotate(90deg)" }} />
                 Gaps
-              </StyledHeading>
-            </StyledDiv>
-          </StyledLink>
-        </Item>
-        <Item sx={{ width: "100%" }}>
-          <StyledLink href="/export">
-            <StyledDiv isActive={activeTab === "/export"}>
-              <StyledHeading variant="h6">
-                <SaveAltIcon />
-                Export
               </StyledHeading>
             </StyledDiv>
           </StyledLink>

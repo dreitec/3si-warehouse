@@ -1,12 +1,9 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Description, FullWidth, Compact } from "../components";
+import { Description, FullWidth, Compact } from "../../components";
 
-import {
-  ServedLineChartSection,
-  ServedGeographicalChartSection,
-} from "../sections";
+import { ServedLineChartSection } from "../../sections";
 
 const Home: NextPage = () => {
   return (
@@ -41,9 +38,6 @@ const Home: NextPage = () => {
         </FullWidth>
         <Compact>
           <ServedLineChartSection />
-        </Compact>
-        <Compact>
-          <ServedGeographicalChartSection />
         </Compact>
       </main>
     </div>
