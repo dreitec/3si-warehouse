@@ -1,9 +1,11 @@
 import React, { useReducer } from "react";
+import { CSVLink } from "react-csv";
 import {
   ChartContainer,
   FilterCheckboxes,
   RadioButton,
   Choropleth2D as Choropleth,
+  Button,
 } from "../../components";
 import { getGeographicalUnservedData } from "../../src/frontend/api";
 import { GapsReducer } from "../../state";
@@ -76,6 +78,17 @@ const UnservedChildrenChoroplethSection = () => {
         labels={["Percent", "Number"]}
         checked={dataNotation}
         setChecked={setDataNotation}
+        exportButton={
+          <CSVLink
+            data={Array.isArray(gapsData) ? gapsData : []}
+            filename={"unserved-geographical-chart.csv"}
+            target="_blank"
+          >
+            <Button variant="outlined" color="primary">
+              Export
+            </Button>
+          </CSVLink>
+        }
       >
         <Choropleth
           dataFromProps={gapsData}

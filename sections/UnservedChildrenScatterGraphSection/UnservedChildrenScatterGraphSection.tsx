@@ -1,10 +1,12 @@
 import React, { useReducer } from "react";
+import { CSVLink } from "react-csv";
 import {
   ChartContainer,
   ScatterPlot,
   FilterCheckboxes,
   Description,
   RadioButton,
+  Button,
 } from "../../components";
 import { getScatterData } from "../../src/frontend/api";
 import { GapsReducer } from "../../state";
@@ -91,6 +93,17 @@ const UnservedChildrenScatterGraphSection = (props: Props) => {
         getData={populateGapsData}
         showButton={false}
         showOptionSelector={false}
+        exportButton={
+          <CSVLink
+            data={Array.isArray(gapsData) ? gapsData : []}
+            filename={"unserved-scatter-chart.csv"}
+            target="_blank"
+          >
+            <Button variant="outlined" color="primary">
+              Export
+            </Button>
+          </CSVLink>
+        }
       >
         <ScatterPlot
           //   keyName={eligibilityNotation ? "number" : "percentage"}
