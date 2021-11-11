@@ -173,7 +173,7 @@ const TabBox = () => {
         </Item>
         <Item sx={{ width: "100%" }}>
           <StyledLink href="/providers">
-            <StyledDiv isActive={activeTab === "/providers"}>
+            <StyledDiv isActive={activeTab.includes("/providers")}>
               <StyledHeading variant="h6">
                 <MapIcon />
                 Providers
@@ -183,7 +183,7 @@ const TabBox = () => {
         </Item>
         <Item sx={{ width: "100%" }}>
           <StyledLink href="/service">
-            <StyledDiv isActive={activeTab === "/service"}>
+            <StyledDiv isActive={activeTab.includes("/service")}>
               <StyledHeading variant="h6">
                 <PieChartIcon />
                 Service
