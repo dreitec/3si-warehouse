@@ -3,7 +3,7 @@ import {
   UPDATE_FILTER_TYPE,
   UPDATE_OTHER_FILTERS,
 } from "./types";
-import { FiltersBaseState, Filters } from "../interfaces";
+import { FiltersBaseState, Filters } from "../src/frontend/Interfaces";
 
 type Action =
   | {

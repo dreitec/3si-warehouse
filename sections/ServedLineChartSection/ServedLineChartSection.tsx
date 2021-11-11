@@ -14,7 +14,6 @@ import {
   OtherStateObject,
   OtherOptionTree,
 } from "../../src/frontend/Constants";
-import Container from "@mui/material/Container";
 
 const EligibilityLineGraphSection = () => {
   const [servedNotation, setServedNotation] = React.useState(false);

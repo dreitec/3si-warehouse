@@ -5,7 +5,6 @@ import {
   PieChart as PieChartIcon,
   Map as MapIcon,
   Height as HeightIcon,
-  SaveAlt as SaveAltIcon,
 } from "@mui/icons-material";
 import { Typography, styled, Theme, Box, BoxProps } from "@mui/material";
 import Link from "next/link";
@@ -171,7 +170,6 @@ const TabBox = () => {
             </StyledDiv>
           </StyledLink>
         </Item>
-
         <Item sx={{ width: "100%" }}>
           <StyledLink href="/gaps">
             <StyledDiv isActive={activeTab === "/gaps"}>
