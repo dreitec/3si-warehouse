@@ -15,7 +15,6 @@ const StyledChartItemContainer = styled(Grid)(({ theme }) => ({
 }));
 
 const StyledCheckBoxesContainer = styled(Grid)(({ theme }) => ({
-  marginTop: "-60px",
   padding: `${theme.spacing(0)}  0px ${theme.spacing(2)}  ${theme.spacing(2)}`,
   maxHeight: "600px",
   overflowY: "auto",
@@ -73,15 +72,22 @@ const ChartContainer = (props: ContainerProps) => {
   return (
     <StyledMainContainer container>
       <Grid container>
-        <StyledHeadingContainer item xs={8}>
+        <StyledHeadingContainer item xs={12}>
           <Grid container>
             <Grid item xs={showButton || exportButton ? 6 : 12}>
               <Typography variant="h4">{title}</Typography>
             </Grid>
-            <SwitchContainer item xs={6}>
-              {showButton && renderSwitch(labels, checked, setChecked)}
-              {exportButton && exportButton}
-            </SwitchContainer>
+            <SwitchContainer item xs={2} />
+            {showButton && (
+              <SwitchContainer item xs={2}>
+                {renderSwitch(labels, checked, setChecked)}
+              </SwitchContainer>
+            )}
+            {exportButton && (
+              <SwitchContainer item xs={2}>
+                {exportButton}
+              </SwitchContainer>
+            )}
           </Grid>
         </StyledHeadingContainer>
       </Grid>
