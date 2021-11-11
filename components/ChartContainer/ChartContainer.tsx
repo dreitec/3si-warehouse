@@ -18,7 +18,6 @@ const StyledCheckBoxesContainer = styled(Grid)(({ theme }) => ({
   padding: `${theme.spacing(0)}  0px ${theme.spacing(2)}  ${theme.spacing(2)}`,
   maxHeight: "600px",
   overflowY: "auto",
-  overflowX: "clip",
 }));
 
 const StyledHeadingContainer = styled(Grid)(({ theme }) => ({
@@ -78,11 +77,9 @@ const ChartContainer = (props: ContainerProps) => {
               <Typography variant="h4">{title}</Typography>
             </Grid>
             <SwitchContainer item xs={2} />
-            {showButton && (
-              <SwitchContainer item xs={2}>
-                {renderSwitch(labels, checked, setChecked)}
-              </SwitchContainer>
-            )}
+            <SwitchContainer item xs={2}>
+              {showButton && renderSwitch(labels, checked, setChecked)}
+            </SwitchContainer>
             {exportButton && (
               <SwitchContainer item xs={2}>
                 {exportButton}
@@ -92,34 +89,34 @@ const ChartContainer = (props: ContainerProps) => {
         </StyledHeadingContainer>
       </Grid>
       <Grid container>
-        <StyledChartItemContainer item xs={8}>
+        <StyledChartItemContainer item xs={12}>
           {children}
         </StyledChartItemContainer>
-        <StyledCheckBoxesContainer item xs={4}>
-          {showOptionSelector && (
-            <FilterRadioGroup
-              name={`filtertype-${title.replace(/ /g, "")}`}
-              options={[
-                { value: "programFilters", text: "Program Types" },
-                { value: "otherFilters", text: "Other Types" },
-              ]}
-              selected={selectedFilterType}
-              setSelected={selectFiltersType}
-            />
-          )}
-
-          {checkboxes}
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => {
-              getData();
-            }}
-          >
-            Submit
-          </Button>
-        </StyledCheckBoxesContainer>
       </Grid>
+      {/* <StyledCheckBoxesContainer item xs={12}>
+        {showOptionSelector && (
+          <FilterRadioGroup
+            name={`filtertype-${title.replace(/ /g, "")}`}
+            options={[
+              { value: "programFilters", text: "Program Types" },
+              { value: "otherFilters", text: "Other Types" },
+            ]}
+            selected={selectedFilterType}
+            setSelected={selectFiltersType}
+          />
+        )}
+
+        {checkboxes}
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => {
+            getData();
+          }}
+        >
+          Submit
+        </Button>
+      </StyledCheckBoxesContainer> */}
     </StyledMainContainer>
   );
 };
