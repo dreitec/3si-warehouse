@@ -1,9 +1,9 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Description, FullWidth, Compact } from "../components";
+import { Description, FullWidth, Compact } from "../../components";
 
-import { UnservedChoropleth, UnservedScatter } from "../sections";
+import { UnservedChoropleth } from "../../sections";
 
 const Home: NextPage = () => {
   return (
@@ -36,9 +36,6 @@ const Home: NextPage = () => {
             </Description>
           </Compact>
         </FullWidth>
-        <Compact>
-          <UnservedScatter />
-        </Compact>
         <Compact>
           <UnservedChoropleth />
         </Compact>

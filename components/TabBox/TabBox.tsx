@@ -126,6 +126,27 @@ const GetSubMenu = (path: string) => {
         </CommonLink>
       </SubLinksContainer>
     );
+  } else if (path.includes("/gaps")) {
+    return (
+      <SubLinksContainer>
+        <CommonLink
+          href="/gaps"
+          color="primary"
+          active={path === "/gaps"}
+          variant="spaced"
+        >
+          Children Unserved
+        </CommonLink>
+        <CommonLink
+          href="/gaps/risk"
+          color="primary"
+          active={path === "/gaps/risk"}
+          variant="spaced"
+        >
+          Unserved Children by Risk Factor
+        </CommonLink>
+      </SubLinksContainer>
+    );
   }
 };
 
@@ -172,7 +193,7 @@ const TabBox = () => {
         </Item>
         <Item sx={{ width: "100%" }}>
           <StyledLink href="/gaps">
-            <StyledDiv isActive={activeTab === "/gaps"}>
+            <StyledDiv isActive={activeTab.includes("/gaps")}>
               <StyledHeading variant="h6">
                 <HeightIcon style={{ transform: "rotate(90deg)" }} />
                 Gaps
