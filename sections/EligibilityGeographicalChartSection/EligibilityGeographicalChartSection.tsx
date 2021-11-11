@@ -1,5 +1,12 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { ChartContainer, Choropleth, FilterCheckboxes } from "../../components";
+import { CSVLink } from "react-csv";
+
+import {
+  ChartContainer,
+  Choropleth,
+  FilterCheckboxes,
+  Button,
+} from "../../components";
 import { getGeographicalEligibilityData } from "../../src/frontend/api";
 import { GeographicalEligibilityReducer } from "../../state";
 import { GeographicalEligibilityState } from "../../src/frontend/Interfaces";
@@ -100,6 +107,21 @@ const GeographicalELigibility = (props: Props) => {
       selectedFilterType={state.selectedFilterType}
       checkboxes={checkboxes}
       getData={populateGeographicalEligibilityData}
+      exportButton={
+        <CSVLink
+          data={
+            Array.isArray(geographicalEligibilityData)
+              ? geographicalEligibilityData
+              : []
+          }
+          filename={"eligibility-choropleth-chart.csv"}
+          target="_blank"
+        >
+          <Button variant="outlined" color="primary">
+            Export
+          </Button>
+        </CSVLink>
+      }
     >
       <Choropleth
         dataFromProps={geographicalEligibilityData}

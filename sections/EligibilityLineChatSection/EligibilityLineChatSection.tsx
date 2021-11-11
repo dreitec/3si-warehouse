@@ -1,10 +1,12 @@
 import React, { useReducer } from "react";
 import type { NextPage } from "next";
+import { CSVLink } from "react-csv";
 import {
   Compact,
   ChartContainer,
   LineChart,
   FilterCheckboxes,
+  Button,
 } from "../../components";
 
 import { getEligibilityData } from "../../src/frontend/api";
@@ -96,6 +98,17 @@ const Home: NextPage = () => {
           selectedFilterType={state.selectedFilterType}
           checkboxes={checkboxes}
           getData={populateEligibilityData}
+          exportButton={
+            <CSVLink
+              data={Array.isArray(eligibilityData) ? eligibilityData : []}
+              filename={"eligibility-line-chart.csv"}
+              target="_blank"
+            >
+              <Button variant="outlined" color="primary">
+                Export
+              </Button>
+            </CSVLink>
+          }
         >
           <LineChart
             keyName={eligibilityNotation ? "number" : "percentage"}
