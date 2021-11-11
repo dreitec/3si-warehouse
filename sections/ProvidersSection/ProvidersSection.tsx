@@ -1,9 +1,12 @@
 import React, { useReducer, useEffect, useState } from "react";
+import { CSVLink } from "react-csv";
+
 import {
   ChartContainer,
   Choropleth,
   Table,
   FilterCheckboxes,
+  Button,
 } from "../../components";
 
 import {
@@ -179,6 +182,17 @@ const GeographicalELigibility = () => {
       selectedFilterType={state.selectedFilterType}
       checkboxes={checkboxes}
       getData={populateProvidersData}
+      exportButton={
+        <CSVLink
+          data={Array.isArray(providersData.chart) ? providersData.chart : []}
+          filename={"service-sites-graph.csv"}
+          target="_blank"
+        >
+          <Button variant="outlined" color="primary">
+            Export
+          </Button>
+        </CSVLink>
+      }
     >
       <Choropleth
         dataFromProps={providersData.chart}
