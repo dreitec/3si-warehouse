@@ -50,8 +50,17 @@ const columns: readonly Column[] = [
 ];
 
 export default function StickyHeadTable(props: Props) {
-  const { data, paginationProps } = props;
+  const {
+    data,
+    paginationProps: { onPageChange, ...otherProps },
+  } = props;
 
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    onPageChange(newPage);
+  };
   return (
     <Container sx={{ backgroundColor: "white" }}>
       <Typography variant="h6">Providers</Typography>
@@ -98,7 +107,8 @@ export default function StickyHeadTable(props: Props) {
             <TableFooter>
               <TableRow>
                 <TablePagination
-                  {...paginationProps}
+                  {...otherProps}
+                  onPageChange={handleChangePage}
                   rowsPerPageOptions={[{ label: "10", value: 10 }]}
                 />
               </TableRow>

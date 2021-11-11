@@ -8,7 +8,7 @@ import {
   UPDATE_EXPORTING,
 } from "./types";
 
-import { TableState, Filters } from "../interfaces";
+import { ITableState, Filters } from "../src/frontend/Interfaces";
 
 type Action =
   | {
@@ -40,7 +40,7 @@ type Action =
       type: typeof UPDATE_EXPORTING;
     };
 
-export const reducer = (state: TableState, action: Action): TableState => {
+export const reducer = (state: ITableState, action: Action): ITableState => {
   console.log(action, state);
   switch (action.type) {
     case UPDATE_PROGRAM_FILTERS:

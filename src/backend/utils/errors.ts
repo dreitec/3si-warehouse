@@ -1,3 +1,6 @@
+import type { NextApiRequest, NextApiResponse } from "next";
+import { ErrorResponse } from "../../../src/backend/Interfaces";
+
 export class NotFoundError extends Error {
   constructor(message?: any) {
     super(message);
@@ -9,8 +12,17 @@ export class NotFoundError extends Error {
   }
 }
 
-export const notFoundHandler = (req, res, next) => next(new NotFoundError());
+export const notFoundHandler = (
+  req: NextApiRequest,
+  res: NextApiResponse<any | ErrorResponse>,
+  next: any
+) => next(new NotFoundError());
 
-export const errorHandler = (err, req, res, next) => {
+export const errorHandler = (
+  err: any,
+  req: NextApiRequest,
+  res: NextApiResponse<any | ErrorResponse>,
+  next: any
+) => {
   res.status(500).json({ error: err.message });
 };

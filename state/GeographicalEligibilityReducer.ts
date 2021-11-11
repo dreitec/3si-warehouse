@@ -5,7 +5,10 @@ import {
   UPDATE_OTHER_FILTERS,
 } from "./types";
 
-import { GeographicalEligibilityState, Filters } from "../interfaces";
+import {
+  GeographicalEligibilityState,
+  Filters,
+} from "../src/frontend/Interfaces";
 
 type Action =
   | {

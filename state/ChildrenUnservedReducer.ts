@@ -1,5 +1,5 @@
 import { UPDATE_FILTERS } from "./types";
-import { GapsState, Filters } from "../interfaces";
+import { GapsState, Filters } from "../src/frontend/Interfaces";
 
 type Action = {
   payload: Filters;

@@ -5,7 +5,10 @@ import {
   UPDATE_OTHER_FILTERS,
 } from "./types";
 
-import { GeographicalFiltersBaseState, Filters } from "../interfaces";
+import {
+  GeographicalFiltersBaseState,
+  Filters,
+} from "../src/frontend/Interfaces";
 
 type Action =
   | {
