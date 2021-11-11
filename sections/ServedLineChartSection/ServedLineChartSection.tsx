@@ -1,5 +1,11 @@
 import React, { useReducer } from "react";
-import { ChartContainer, LineChart, FilterCheckboxes } from "../../components";
+import { CSVLink } from "react-csv";
+import {
+  ChartContainer,
+  LineChart,
+  FilterCheckboxes,
+  Button,
+} from "../../components";
 import { getServedData } from "../../src/frontend/api";
 import { ServedReducer } from "../../state";
 import { FiltersBaseState } from "../../src/frontend/Interfaces";
@@ -73,6 +79,17 @@ const EligibilityLineGraphSection = () => {
       selectedFilterType={state.selectedFilterType}
       checkboxes={checkboxes}
       getData={populateServedData}
+      exportButton={
+        <CSVLink
+          data={Array.isArray(servedData) ? servedData : []}
+          filename={"served-line-chart.csv"}
+          target="_blank"
+        >
+          <Button variant="outlined" color="primary">
+            Export
+          </Button>
+        </CSVLink>
+      }
     >
       <LineChart
         keyName={servedNotation ? "number" : "percentage"}

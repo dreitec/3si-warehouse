@@ -1,5 +1,11 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { ChartContainer, Choropleth, FilterCheckboxes } from "../../components";
+import { CSVLink } from "react-csv";
+import {
+  ChartContainer,
+  Choropleth,
+  FilterCheckboxes,
+  Button,
+} from "../../components";
 import { getGeographicalServedData } from "../../src/frontend/api";
 import { GeographicalServedReducer } from "../../state";
 import { GeographicalFiltersBaseState } from "../../src/frontend/Interfaces";
@@ -91,6 +97,19 @@ const GeographicalELigibility = () => {
       selectedFilterType={state.selectedFilterType}
       checkboxes={checkboxes}
       getData={populateGeographicalServedData}
+      exportButton={
+        <CSVLink
+          data={
+            Array.isArray(geographicalServedData) ? geographicalServedData : []
+          }
+          filename={"served-geographical-chart.csv"}
+          target="_blank"
+        >
+          <Button variant="outlined" color="primary">
+            Export
+          </Button>
+        </CSVLink>
+      }
     >
       <Choropleth
         dataFromProps={geographicalServedData}
