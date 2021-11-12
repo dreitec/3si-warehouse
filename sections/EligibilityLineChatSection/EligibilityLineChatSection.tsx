@@ -5,8 +5,8 @@ import {
   Compact,
   ChartContainer,
   LineChart,
-  FilterCheckboxes,
   Button,
+  FilterSelect,
 } from "../../components";
 
 import { getEligibilityData } from "../../src/frontend/api";
@@ -28,12 +28,11 @@ const Home: NextPage = () => {
   const [eligibilityNotation, setEligibilityNotation] = React.useState(false);
   const [eligibilityData, setEligibilityData] = React.useState();
   const populateEligibilityData = async () => {
-    const keys: string[] =
-      getFilters(
-        state.selectedFilterType === "programFilters"
-          ? "programFilters"
-          : "otherFilters"
-      ) || [];
+    const keys: string[] = [
+      ...getFilters("programFilters"),
+      ...getFilters("otherFilters"),
+    ];
+
     try {
       const response: any = await getEligibilityData(keys);
       setEligibilityData(response);
@@ -60,24 +59,26 @@ const Home: NextPage = () => {
     );
   };
   const checkboxes = [
-    <FilterCheckboxes
-      key="program-filters-line"
-      data={
-        state.selectedFilterType === "programFilters"
-          ? ProgramOptionTree
-          : OtherOptionTree
-      }
-      state={
-        state.selectedFilterType === "programFilters"
-          ? state.programFilters
-          : state.otherFilters
-      }
+    <FilterSelect
+      key="filter-program-check"
+      name="Program Filters"
+      data={ProgramOptionTree}
+      selected={state.programFilters}
       setState={(payload: any) =>
         dispatch({
-          type:
-            state.selectedFilterType === "programFilters"
-              ? UPDATE_PROGRAM_FILTERS
-              : UPDATE_OTHER_FILTERS,
+          type: UPDATE_PROGRAM_FILTERS,
+          payload,
+        })
+      }
+    />,
+    <FilterSelect
+      key="filter-other-check"
+      name="Other Filters"
+      data={OtherOptionTree}
+      selected={state.otherFilters}
+      setState={(payload: any) =>
+        dispatch({
+          type: UPDATE_OTHER_FILTERS,
           payload,
         })
       }
@@ -92,12 +93,22 @@ const Home: NextPage = () => {
           setChecked={setEligibilityNotation}
           labels={["Percent", "Number"]}
           title="Eligibility Over Time"
-          selectFiltersType={(payload: string) =>
-            dispatch({ type: UPDATE_FILTER_TYPE, payload })
-          }
-          selectedFilterType={state.selectedFilterType}
           checkboxes={checkboxes}
           getData={populateEligibilityData}
+          selectedFilters={{ ...state.programFilters, ...state.otherFilters }}
+          programDelete={(filterValue: any) =>
+            dispatch({
+              type: UPDATE_PROGRAM_FILTERS,
+
+              payload: { [filterValue]: false },
+            })
+          }
+          otherDelete={(filterValue: any) =>
+            dispatch({
+              type: UPDATE_OTHER_FILTERS,
+              payload: { [filterValue]: false },
+            })
+          }
           exportButton={
             <CSVLink
               data={Array.isArray(eligibilityData) ? eligibilityData : []}

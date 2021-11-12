@@ -18,6 +18,10 @@ export interface Filters {
   [key: string]: boolean;
 }
 
+export interface FiltersValueText {
+  [key: string]: string;
+}
+
 export interface Option {
   value: string;
   text: string;

@@ -20,3 +20,4 @@ export { default as RadioButton } from "./RadioButton/RadioButton";
 export { default as Select } from "./Select/Select";
 export { default as ExportTable } from "./ExportTable/ExportTable";
 export { default as Wave } from "./Wave/Wave";
+export { default as FilterSelect } from "./FilterDropdown/FilterDropdown";

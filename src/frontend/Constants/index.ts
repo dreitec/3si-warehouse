@@ -1,5 +1,13 @@
-export { ProgramOptionTree, ProgramStateObject } from "./ProgramChecks";
-export { OtherOptionTree, OtherStateObject } from "./OtherChecks";
+export {
+  ProgramOptionTree,
+  ProgramStateObject,
+  ProgramValueToTextObject,
+} from "./ProgramChecks";
+export {
+  OtherOptionTree,
+  OtherStateObject,
+  OtherValueToText,
+} from "./OtherChecks";
 export {
   OtherChecksWithoutEmploymentOptionTree,
   OtherChecksWithoutEmploymentStateObject,

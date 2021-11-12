@@ -1,7 +1,14 @@
 import Grid, { GridProps } from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import styled from "@mui/system/styled";
-import { Switch, FilterRadioGroup, Button } from "../";
+import { Switch, Button } from "../";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import {
+  ProgramValueToTextObject,
+  OtherValueToText,
+} from "../../src/frontend/Constants";
+import { Filters } from "../../src/frontend/Interfaces";
 
 const StyledMainContainer = styled(Grid)(({ theme }) => ({
   margin: `${theme.spacing(6)} 0px `,
@@ -14,16 +21,16 @@ const StyledChartItemContainer = styled(Grid)(({ theme }) => ({
   maxHeight: "600px",
 }));
 
-const StyledCheckBoxesContainer = styled(Grid)(({ theme }) => ({
-  padding: `${theme.spacing(0)}  0px ${theme.spacing(2)}  ${theme.spacing(2)}`,
-  maxHeight: "600px",
-  overflowY: "auto",
-}));
-
 const StyledHeadingContainer = styled(Grid)(({ theme }) => ({
   backgroundColor: "white",
   padding: theme.spacing(4),
-  boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+  boxShadow:
+    "12px 0 15px -4px rgba(149, 157, 165, 0.2), -12px 0 8px -4px rgba(149, 157, 165, 0.2)",
+}));
+const WhiteBgGrid = styled(Grid)(({ theme }) => ({
+  backgroundColor: "white",
+  boxShadow:
+    "12px 0 15px -4px rgba(149, 157, 165, 0.2), -12px 0 8px -4px rgba(149, 157, 165, 0.2)",
 }));
 
 const SwitchContainer = styled(Grid)(() => ({
@@ -36,13 +43,22 @@ interface ContainerProps extends GridProps {
   setChecked?: Function;
   title: string;
   showButton?: boolean;
-  selectFiltersType?: Function;
-  selectedFilterType?: string;
   checkboxes: React.ReactNode;
   getData: Function;
   showOptionSelector?: boolean;
   exportButton?: React.ReactNode;
+  selectedFilters: Filters;
+  programDelete?: Function;
+  otherDelete?: Function;
 }
+
+const StyledStack = styled(Stack)(() => ({
+  flexWrap: "wrap",
+}));
+
+const StyledChip = styled(Chip)(({ theme }) => ({
+  margin: theme.spacing(1),
+}));
 
 const renderSwitch = (
   labels: string[],
@@ -60,13 +76,17 @@ const ChartContainer = (props: ContainerProps) => {
     setChecked = () => {},
     title,
     showButton = true,
-    selectFiltersType = () => {},
-    selectedFilterType = "program",
     checkboxes,
     getData,
-    showOptionSelector = true,
     exportButton,
+    selectedFilters,
+    programDelete,
+    otherDelete,
   } = props;
+
+  const selectedKeys = Object.keys(selectedFilters).filter(
+    (elem: string) => selectedFilters[elem]
+  );
 
   return (
     <StyledMainContainer container>
@@ -87,36 +107,49 @@ const ChartContainer = (props: ContainerProps) => {
             )}
           </Grid>
         </StyledHeadingContainer>
+        <WhiteBgGrid item xs={12}>
+          {checkboxes}
+          <Button
+            variant="outlined"
+            sx={{ margin: "15%" }}
+            onClick={() => getData()}
+          >
+            Update
+          </Button>
+        </WhiteBgGrid>
+        <WhiteBgGrid xs={12}>
+          <StyledStack direction="row">
+            {selectedKeys.map((elem: any) => {
+              if (ProgramValueToTextObject[elem]) {
+                return (
+                  <StyledChip
+                    key={elem}
+                    label={`Programs: ${ProgramValueToTextObject[elem]}`}
+                    variant="outlined"
+                    onDelete={() => programDelete && programDelete(elem)}
+                    color="primary"
+                  />
+                );
+              } else if (OtherValueToText[elem]) {
+                return (
+                  <StyledChip
+                    key={elem}
+                    label={`Others: ${OtherValueToText[elem]}`}
+                    variant="outlined"
+                    onDelete={() => otherDelete && otherDelete(elem)}
+                    color="primary"
+                  />
+                );
+              }
+            })}
+          </StyledStack>
+        </WhiteBgGrid>
       </Grid>
       <Grid container>
         <StyledChartItemContainer item xs={12}>
           {children}
         </StyledChartItemContainer>
       </Grid>
-      {/* <StyledCheckBoxesContainer item xs={12}>
-        {showOptionSelector && (
-          <FilterRadioGroup
-            name={`filtertype-${title.replace(/ /g, "")}`}
-            options={[
-              { value: "programFilters", text: "Program Types" },
-              { value: "otherFilters", text: "Other Types" },
-            ]}
-            selected={selectedFilterType}
-            setSelected={selectFiltersType}
-          />
-        )}
-
-        {checkboxes}
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => {
-            getData();
-          }}
-        >
-          Submit
-        </Button>
-      </StyledCheckBoxesContainer> */}
     </StyledMainContainer>
   );
 };
