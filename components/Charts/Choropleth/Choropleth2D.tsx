@@ -16,11 +16,8 @@ const StyledContainer = styled("div")(() => ({
   position: "relative",
 }));
 
-const StyledRadioContainer = styled("div")(() => ({
-  position: "absolute",
-  width: "60%",
-  top: "70px",
-  zIndex: 1,
+const StyledRadioContainer = styled(Container)(() => ({
+  textAlign: "right",
 }));
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_KEY || "NA";

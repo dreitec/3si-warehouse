@@ -15,7 +15,7 @@ interface Props {
 
 const ContainerStyled = styled(Container)(() => ({
   position: "absolute",
-  top: "470px",
+  top: "35px",
 }));
 const Legend = (props: Props) => {
   const { name, ranges } = props;

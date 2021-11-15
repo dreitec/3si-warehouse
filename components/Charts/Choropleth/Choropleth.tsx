@@ -20,6 +20,7 @@ const StyledRadioContainer = styled("div")(() => ({
   position: "absolute",
   width: "60%",
   top: "70px",
+  right: 0,
   zIndex: 1,
 }));
 

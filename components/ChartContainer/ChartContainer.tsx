@@ -81,7 +81,7 @@ const ChartContainer = (props: ContainerProps) => {
             <Grid item xs={exportButton ? 6 : 12}>
               <Typography variant="h4">{title}</Typography>
             </Grid>
-            <SwitchContainer item xs={2} />
+            <SwitchContainer item xs={4} />
             {exportButton && (
               <SwitchContainer item xs={2}>
                 {exportButton}

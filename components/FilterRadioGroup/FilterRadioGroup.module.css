@@ -17,7 +17,12 @@
   text-align: center;
 }
 
-input.toggle[type="radio"]:checked + label {
+.toggleInput[type="radio"]:checked + label {
+  color: #080808;
+  background: white;
+}
+
+.toggleInput[type="radio"]:hover + label {
   color: #080808;
   background: white;
 }
@@ -30,4 +35,5 @@ input.toggle[type="radio"]:checked + label {
 }
 .inputDiv {
   display: inline-block;
+  border: solid 2px #c3c7d5;
 }
