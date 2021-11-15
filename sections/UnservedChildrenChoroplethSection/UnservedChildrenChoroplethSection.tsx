@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import { CSVLink } from "react-csv";
 import {
   ChartContainer,
-  FilterCheckboxes,
+  FilterSelect,
   RadioButton,
   Choropleth2D as Choropleth,
   Button,
@@ -10,7 +10,7 @@ import {
 import { getGeographicalUnservedData } from "../../src/frontend/api";
 import { GapsReducer } from "../../state";
 import { GapsState } from "../../src/frontend/Interfaces";
-import { UPDATE_FILTERS, UPDATE_BY_TYPE } from "../../state/types";
+import { UPDATE_FILTERS } from "../../state/types";
 import {
   OtherOptionTree,
   OtherStateObject,
@@ -48,17 +48,18 @@ const UnservedChildrenChoroplethSection = () => {
     );
   };
   const checkboxes = [
-    <RadioButton
-      key="unserved-choropleth-options-radio"
-      options={[
-        { label: "Social Vulnerability Index", value: "svi" },
-        { label: "Race", value: "race" },
-      ]}
-    />,
-    <FilterCheckboxes
-      key="unserved-choropleth-options-check-boxes"
+    // <RadioButton
+    //   key="unserved-choropleth-options-radio"
+    //   options={[
+    //     { label: "Social Vulnerability Index", value: "svi" },
+    //     { label: "Race", value: "race" },
+    //   ]}
+    // />,
+    <FilterSelect
+      key="filter-other-check"
+      name="Other Filters"
       data={OtherOptionTree}
-      state={state.filters}
+      selected={state.filters}
       setState={(payload: any) =>
         dispatch({
           type: UPDATE_FILTERS,
@@ -78,6 +79,20 @@ const UnservedChildrenChoroplethSection = () => {
         labels={["Percent", "Number"]}
         checked={dataNotation}
         setChecked={setDataNotation}
+        selectedFilters={{ ...state.filters }}
+        programDelete={(filterValue: any) =>
+          dispatch({
+            type: UPDATE_FILTERS,
+
+            payload: { [filterValue]: false },
+          })
+        }
+        otherDelete={(filterValue: any) =>
+          dispatch({
+            type: UPDATE_FILTERS,
+            payload: { [filterValue]: false },
+          })
+        }
         exportButton={
           <CSVLink
             data={Array.isArray(gapsData) ? gapsData : []}
