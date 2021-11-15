@@ -3,7 +3,7 @@ import { CSVLink } from "react-csv";
 import {
   ChartContainer,
   ScatterPlot,
-  FilterCheckboxes,
+  FilterSelect,
   Description,
   RadioButton,
   Button,
@@ -19,12 +19,11 @@ import {
 import { Container } from "@material-ui/core";
 import { Height as HeightIcon } from "@mui/icons-material";
 
-interface Props {}
-const UnservedChildrenScatterGraphSection = (props: Props) => {
+const UnservedChildrenScatterGraphSection = () => {
   const [gapsData, setGapsData] = React.useState();
 
   const populateGapsData = async () => {
-    const keys: string[] = getFilters() || [];
+    const keys: string[] = [...getFilters()] || [];
     try {
       const response: any = await getScatterData(keys);
       setGapsData(response);
@@ -50,17 +49,18 @@ const UnservedChildrenScatterGraphSection = (props: Props) => {
     );
   };
   const checkboxes = [
-    <RadioButton
-      key="unserved-scatter-radio"
-      options={[
-        { label: "Social Vulnerability Index", value: "svi" },
-        { label: "Race", value: "race" },
-      ]}
-    />,
-    <FilterCheckboxes
-      key="unserved-scatter-checks"
+    // <RadioButton
+    //   key="unserved-scatter-radio"
+    //   options={[
+    //     { label: "Social Vulnerability Index", value: "svi" },
+    //     { label: "Race", value: "race" },
+    //   ]}
+    // />,
+    <FilterSelect
+      key="filter-other-check"
+      name="Other Filters"
       data={OtherOptionTree}
-      state={state.filters}
+      selected={state.filters}
       setState={(payload: any) =>
         dispatch({
           type: UPDATE_FILTERS,
@@ -93,6 +93,20 @@ const UnservedChildrenScatterGraphSection = (props: Props) => {
         getData={populateGapsData}
         showButton={false}
         showOptionSelector={false}
+        selectedFilters={{ ...state.filters }}
+        programDelete={(filterValue: any) =>
+          dispatch({
+            type: UPDATE_FILTERS,
+
+            payload: { [filterValue]: false },
+          })
+        }
+        otherDelete={(filterValue: any) =>
+          dispatch({
+            type: UPDATE_FILTERS,
+            payload: { [filterValue]: false },
+          })
+        }
         exportButton={
           <CSVLink
             data={Array.isArray(gapsData) ? gapsData : []}
