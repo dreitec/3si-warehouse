@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import styled from "@mui/system/styled";
 
 const StyledMain = styled("div")(({ theme }) => ({
-  padding: `0`,
+  padding: 0,
 }));
 interface Props {
   children: any;
@@ -13,7 +13,7 @@ interface Props {
 const MainLayout = (props: Props) => {
   return (
     <StyledMain>
-      <Container>{props.children}</Container>
+      <Container sx={{ padding: 0 }}>{props.children}</Container>
     </StyledMain>
   );
 };

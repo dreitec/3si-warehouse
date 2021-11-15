@@ -160,7 +160,9 @@ const TabBox = () => {
 
   return (
     <>
-      <StyledContainer sx={{ display: "flex", bgcolor: "transparent" }}>
+      <StyledContainer
+        sx={{ display: "flex", bgcolor: "transparent", padding: 0 }}
+      >
         <Item sx={{ width: "100%" }}>
           <StyledLink href="/eligibility">
             <StyledDiv isActive={activeTab.includes("/eligibility")}>

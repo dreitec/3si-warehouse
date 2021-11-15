@@ -12,6 +12,7 @@ const StyledContainer = styled("div")((props: IDivProps) => {
   return {
     width: "100%",
     backgroundColor: homeTab ? "white" : "transparent",
+    padding: 0,
   };
 });
 interface Props {
@@ -42,11 +43,11 @@ const MainLayout = (props: Props) => {
             </Description>
           </Container>
         )}
-        <Compact>
-          <Container>{props.children}</Container>
-        </Compact>
       </Container>
-      {activeTab === "/" && <Wave />}
+      <Compact>
+        <Container sx={{ padding: 0 }}>{props.children}</Container>
+      </Compact>
+      {activeTab === "/" || activeTab === "/export" ? <Wave /> : ""}
     </StyledContainer>
   );
 };
