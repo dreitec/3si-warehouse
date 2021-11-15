@@ -31,26 +31,24 @@ export default function BasicSelect(props: IProps) {
   };
 
   return (
-    <Box sx={{ minWidth: 120, paddingTop: 10 }}>
-      <FormControl fullWidth>
-        <StyledLabel id="select-label" htmlFor="select">
-          {label}
-        </StyledLabel>
-        <Select
-          labelId="select-label"
-          id="select"
-          value={selected}
-          label={label}
-          onChange={handleChange}
-          variant="outlined"
-        >
-          {selectData.map((elem: ISelectData) => (
-            <MenuItem key={elem.value} value={elem.value}>
-              {elem.text}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Box>
+    <FormControl sx={{ m: 1, minWidth: 200 }}>
+      <StyledLabel id="select-label" htmlFor="select">
+        {label}
+      </StyledLabel>
+      <Select
+        labelId="select-label"
+        id="select"
+        value={selected}
+        label={label}
+        onChange={handleChange}
+        variant="outlined"
+      >
+        {selectData.map((elem: ISelectData) => (
+          <MenuItem key={elem.value} value={elem.value}>
+            {elem.text}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }

@@ -3,7 +3,7 @@ import { Button } from "../../components";
 import {
   ChartContainer,
   ExportTable,
-  FilterCheckboxes,
+  FilterSelect,
   Select,
 } from "../../components";
 import { getTableData, exportCsv } from "../../src/frontend/api";
@@ -26,9 +26,7 @@ import {
   SitesStateObject,
 } from "../../src/frontend/Constants";
 
-interface Props {}
-
-const ExportSection = (props: Props) => {
+const ExportSection = () => {
   const [tableData, setTableData] = useState([]);
   const initialArg: ITableState = {
     programFilters: ProgramStateObject,
@@ -39,12 +37,12 @@ const ExportSection = (props: Props) => {
   };
   const [state, dispatch] = useReducer(ExportTableReducer, initialArg);
   const populateTableData = async () => {
-    const keys: string[] = getFilters("programFilters");
-    if (state.selectedViewBy === "providers") {
-      keys.push(...getFilters("siteFilters"));
-    } else {
-      keys.push(...getFilters("otherFilters"));
-    }
+    const keys: string[] =
+      [
+        ...getFilters("programFilters"),
+        ...getFilters("siteFilters"),
+        ...getFilters("otherFilters"),
+      ] || [];
 
     try {
       const response: any = await getTableData(state.selectedViewBy, keys);
@@ -99,10 +97,11 @@ const ExportSection = (props: Props) => {
       selected={state.selectedViewBy}
       action={handleFilterChange}
     />,
-    <FilterCheckboxes
-      key="export-program-filters"
+    <FilterSelect
+      key="filter-program-check"
+      name="Program Filters"
       data={ProgramOptionTree}
-      state={state.programFilters}
+      selected={state.programFilters}
       setState={(payload: any) =>
         dispatch({
           type: UPDATE_PROGRAM_FILTERS,
@@ -116,10 +115,11 @@ const ExportSection = (props: Props) => {
     checkboxes.splice(
       1,
       0,
-      <FilterCheckboxes
+      <FilterSelect
         key="export-site-filters"
+        name="Site Filters"
         data={SiteOptionTree}
-        state={state.siteFilters}
+        selected={state.siteFilters}
         setState={(payload: any) =>
           dispatch({
             type: UPDATE_SITE_FILTERS,
@@ -130,10 +130,11 @@ const ExportSection = (props: Props) => {
     );
   } else {
     checkboxes.push(
-      <FilterCheckboxes
+      <FilterSelect
         key="export-other-filters"
+        name="Other Filters"
         data={OtherOptionTree}
-        state={state.otherFilters}
+        selected={state.otherFilters}
         setState={(payload: any) =>
           dispatch({
             type: UPDATE_OTHER_FILTERS,
@@ -143,8 +144,6 @@ const ExportSection = (props: Props) => {
       />
     );
   }
-
-  console.log(state.exporting);
 
   return (
     <ChartContainer
@@ -159,7 +158,24 @@ const ExportSection = (props: Props) => {
         </Button>
       }
       title="Table Preview"
-      selectFiltersType={handleFilterChange}
+      selectedFilters={{
+        ...state.programFilters,
+        ...state.otherFilters,
+        ...state.siteFilters,
+      }}
+      programDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_PROGRAM_FILTERS,
+
+          payload: { [filterValue]: false },
+        })
+      }
+      otherDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_OTHER_FILTERS,
+          payload: { [filterValue]: false },
+        })
+      }
       checkboxes={checkboxes}
       getData={populateTableData}
       showOptionSelector={false}
