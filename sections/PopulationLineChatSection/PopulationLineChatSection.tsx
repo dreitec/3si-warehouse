@@ -66,7 +66,6 @@ const Home: NextPage = () => {
     <main>
       <Compact>
         <ChartContainer
-          showButton={false}
           title="Population Over Time"
           checkboxes={checkboxes}
           getData={populatePopulationData}

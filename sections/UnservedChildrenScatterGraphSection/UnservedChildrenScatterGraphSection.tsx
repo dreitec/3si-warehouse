@@ -91,7 +91,6 @@ const UnservedChildrenScatterGraphSection = () => {
         title="Unserved Children by Risk Factor"
         checkboxes={checkboxes}
         getData={populateGapsData}
-        showButton={false}
         showOptionSelector={false}
         selectedFilters={{ ...state.filters }}
         programDelete={(filterValue: any) =>

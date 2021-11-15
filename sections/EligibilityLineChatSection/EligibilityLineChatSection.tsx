@@ -88,9 +88,6 @@ const Home: NextPage = () => {
     <main>
       <Compact>
         <ChartContainer
-          checked={eligibilityNotation}
-          setChecked={setEligibilityNotation}
-          labels={["Percent", "Number"]}
           title="Eligibility Over Time"
           checkboxes={checkboxes}
           getData={populateEligibilityData}
@@ -123,6 +120,11 @@ const Home: NextPage = () => {
           <LineChart
             keyName={eligibilityNotation ? "number" : "percentage"}
             dataFromProps={eligibilityData}
+            toggle={{
+              checked: eligibilityNotation,
+              onToggle: setEligibilityNotation,
+              labels: ["Percent", "Number"],
+            }}
           />
         </ChartContainer>
       </Compact>

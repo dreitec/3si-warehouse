@@ -74,11 +74,7 @@ const UnservedChildrenChoroplethSection = () => {
         title="Unserved Children by Risk Factor"
         checkboxes={checkboxes}
         getData={populateGapsData}
-        showButton={true}
         showOptionSelector={false}
-        labels={["Percent", "Number"]}
-        checked={dataNotation}
-        setChecked={setDataNotation}
         selectedFilters={{ ...state.filters }}
         programDelete={(filterValue: any) =>
           dispatch({
@@ -109,6 +105,11 @@ const UnservedChildrenChoroplethSection = () => {
           dataFromProps={gapsData}
           showRadio={false}
           options={{ name: "% Children Served", property: "percentage" }}
+          toggle={{
+            checked: dataNotation,
+            onToggle: setDataNotation,
+            labels: ["Percent", "Number"],
+          }}
         />
       </ChartContainer>
     </>

@@ -173,7 +173,6 @@ const GeographicalELigibility = () => {
   ];
   return (
     <ChartContainer
-      showButton={false}
       title="Service Sites"
       checkboxes={checkboxes}
       getData={populateProvidersData}

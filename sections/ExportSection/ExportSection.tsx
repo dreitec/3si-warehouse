@@ -147,7 +147,6 @@ const ExportSection = () => {
 
   return (
     <ChartContainer
-      showButton={false}
       exportButton={
         <Button
           variant="contained"

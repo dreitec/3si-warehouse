@@ -88,7 +88,6 @@ const GeographicalELigibility = () => {
   ];
   return (
     <ChartContainer
-      showButton={false}
       title="Served Geographically"
       checkboxes={checkboxes}
       getData={populateGeographicalServedData}

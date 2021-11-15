@@ -98,7 +98,6 @@ const GeographicalELigibility = (props: Props) => {
   ];
   return (
     <ChartContainer
-      showButton={false}
       title="Eligibility Geographically"
       selectedFilters={{ ...state.programFilters, ...state.otherFilters }}
       programDelete={(filterValue: any) =>

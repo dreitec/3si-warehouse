@@ -5,10 +5,12 @@ import chroma from "chroma-js";
 // @ts-ignore
 import mapboxgl from "!mapbox-gl";
 import styled from "@mui/system/styled";
+import Container from "@mui/material/Container";
 import Legend from "./Legend/Legend2D";
 import Counties from "./Geojsons/Counties";
 import styles from "./Chloropleth.module.css";
 import { Sleep } from "../../../src/frontend/helpers";
+import { Switch } from "../../";
 
 const StyledContainer = styled("div")(() => ({
   position: "relative",
@@ -27,6 +29,11 @@ interface Options {
   property: string;
   name: string;
 }
+interface IToggle {
+  onToggle: Function;
+  labels: string[];
+  checked: boolean;
+}
 interface Props {
   dataFromProps: any;
   selectedRadioOption?: string;
@@ -34,6 +41,7 @@ interface Props {
   selectedType?: string;
   options: Options;
   showRadio?: boolean;
+  toggle?: IToggle;
 }
 
 var row1 = chroma.scale(["#367BF5", "#12214D"]).colors(3);
@@ -96,8 +104,16 @@ const getSteps = (data: any, property: string) => {
   };
 };
 
+const renderSwitch = (
+  labels: string[],
+  checked: boolean,
+  onToggle: Function
+) => {
+  return <Switch labels={labels} checked={checked} setChecked={onToggle} />;
+};
+
 const Choropleth = (props: Props) => {
-  const { dataFromProps, selectedType, options } = props;
+  const { dataFromProps, options, toggle } = props;
   const mapContainer = useRef(null);
   const map: any = useRef(null);
   const [lng, setLng] = useState(-71.9143);
@@ -230,7 +246,11 @@ const Choropleth = (props: Props) => {
 
   return (
     <StyledContainer>
-      <StyledRadioContainer></StyledRadioContainer>
+      {toggle && (
+        <StyledRadioContainer>
+          {renderSwitch(toggle?.labels, toggle?.checked, toggle?.onToggle)}
+        </StyledRadioContainer>
+      )}
       <div ref={mapContainer} className={styles.mapContainer} />
       <Legend ranges={ranges} />
     </StyledContainer>

@@ -83,9 +83,6 @@ const EligibilityLineGraphSection = () => {
   ];
   return (
     <ChartContainer
-      checked={servedNotation}
-      setChecked={setServedNotation}
-      labels={["Percent", "Number"]}
       title="Served Over Time"
       checkboxes={checkboxes}
       getData={populateServedData}
@@ -118,6 +115,11 @@ const EligibilityLineGraphSection = () => {
       <LineChart
         keyName={servedNotation ? "number" : "percentage"}
         dataFromProps={servedData}
+        toggle={{
+          checked: servedNotation,
+          onToggle: setServedNotation,
+          labels: ["Percent", "Number"],
+        }}
       />
     </ChartContainer>
   );

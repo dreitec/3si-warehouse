@@ -39,11 +39,7 @@ const SwitchContainer = styled(Grid)(() => ({
 }));
 
 interface ContainerProps extends GridProps {
-  labels?: string[];
-  checked?: boolean;
-  setChecked?: Function;
   title: string;
-  showButton?: boolean;
   checkboxes: React.ReactNode;
   getData: Function;
   showOptionSelector?: boolean;
@@ -61,22 +57,10 @@ const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(1),
 }));
 
-const renderSwitch = (
-  labels: string[],
-  checked: boolean,
-  setChecked: Function
-) => {
-  return <Switch labels={labels} checked={checked} setChecked={setChecked} />;
-};
-
 const ChartContainer = (props: ContainerProps) => {
   const {
     children,
-    labels = [],
-    checked = false,
-    setChecked = () => {},
     title,
-    showButton = true,
     checkboxes,
     getData,
     exportButton,
@@ -94,13 +78,10 @@ const ChartContainer = (props: ContainerProps) => {
       <Grid container>
         <StyledHeadingContainer item xs={12}>
           <Grid container>
-            <Grid item xs={showButton || exportButton ? 6 : 12}>
+            <Grid item xs={exportButton ? 6 : 12}>
               <Typography variant="h4">{title}</Typography>
             </Grid>
             <SwitchContainer item xs={2} />
-            <SwitchContainer item xs={2}>
-              {showButton && renderSwitch(labels, checked, setChecked)}
-            </SwitchContainer>
             {exportButton && (
               <SwitchContainer item xs={2}>
                 {exportButton}
