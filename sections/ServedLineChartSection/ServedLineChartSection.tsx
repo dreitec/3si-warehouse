@@ -3,7 +3,7 @@ import { CSVLink } from "react-csv";
 import {
   ChartContainer,
   LineChart,
-  FilterCheckboxes,
+  FilterSelect,
   Button,
 } from "../../components";
 import { getServedData } from "../../src/frontend/api";
@@ -24,7 +24,11 @@ import {
 const EligibilityLineGraphSection = () => {
   const [servedNotation, setServedNotation] = React.useState(false);
   const [servedData, setServedData] = React.useState();
-  const populateServedData = async (keys?: string[]) => {
+  const populateServedData = async () => {
+    const keys: string[] = [
+      ...getFilters("programFilters"),
+      ...getFilters("otherFilters"),
+    ];
     try {
       const response: any = await getServedData(keys);
       setServedData(response);
@@ -43,25 +47,35 @@ const EligibilityLineGraphSection = () => {
   React.useEffect(() => {
     populateServedData();
   }, []);
+
+  const getFilters = (key: "programFilters" | "otherFilters") => {
+    const notRequired = ["sp", "all"];
+    return Object.keys(state[key]).filter(
+      (elem: string) => state[key][elem] === true && !notRequired.includes(elem)
+    );
+  };
+
   const checkboxes = [
-    <FilterCheckboxes
-      key="children-served-line-chart"
-      data={
-        state.selectedFilterType === "programFilters"
-          ? ProgramOptionTree
-          : OtherOptionTree
-      }
-      state={
-        state.selectedFilterType === "programFilters"
-          ? state.programFilters
-          : state.otherFilters
-      }
+    <FilterSelect
+      key="filter-program-check"
+      name="Program Filters"
+      data={ProgramOptionTree}
+      selected={state.programFilters}
       setState={(payload: any) =>
         dispatch({
-          type:
-            state.selectedFilterType === "programFilters"
-              ? UPDATE_PROGRAM_FILTERS
-              : UPDATE_OTHER_FILTERS,
+          type: UPDATE_PROGRAM_FILTERS,
+          payload,
+        })
+      }
+    />,
+    <FilterSelect
+      key="filter-other-check"
+      name="Other Filters"
+      data={OtherOptionTree}
+      selected={state.otherFilters}
+      setState={(payload: any) =>
+        dispatch({
+          type: UPDATE_OTHER_FILTERS,
           payload,
         })
       }
@@ -73,12 +87,22 @@ const EligibilityLineGraphSection = () => {
       setChecked={setServedNotation}
       labels={["Percent", "Number"]}
       title="Served Over Time"
-      selectFiltersType={(payload: string) =>
-        dispatch({ type: UPDATE_FILTER_TYPE, payload })
-      }
-      selectedFilterType={state.selectedFilterType}
       checkboxes={checkboxes}
       getData={populateServedData}
+      selectedFilters={{ ...state.programFilters, ...state.otherFilters }}
+      programDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_PROGRAM_FILTERS,
+
+          payload: { [filterValue]: false },
+        })
+      }
+      otherDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_OTHER_FILTERS,
+          payload: { [filterValue]: false },
+        })
+      }
       exportButton={
         <CSVLink
           data={Array.isArray(servedData) ? servedData : []}
