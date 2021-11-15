@@ -5,3 +5,4 @@ export { reducer as GeographicalServedReducer } from "./GeographicallyServedRedu
 export { reducer as ProvidersReducer } from "./ProvidersReducer";
 export { reducer as GapsReducer } from "./GapsReducer";
 export { reducer as ExportTableReducer } from "./ExportTableReducer";
+export { reducer as PopulationReducer } from "./PopulationReducer";

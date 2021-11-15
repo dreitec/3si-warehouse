@@ -14,7 +14,6 @@ import { EligibilityReducer } from "../../state";
 import { FiltersBaseState } from "../../src/frontend/Interfaces";
 import {
   UPDATE_PROGRAM_FILTERS,
-  UPDATE_FILTER_TYPE,
   UPDATE_OTHER_FILTERS,
 } from "../../state/types";
 import {

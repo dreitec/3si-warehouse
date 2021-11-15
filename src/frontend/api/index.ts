@@ -3,6 +3,22 @@ import { getQueryString } from "./utilities";
 import { ProvidersData } from "../Interfaces";
 const URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
 
+export const getPopulationData = async (keys?: string[]) => {
+  const querystring = getQueryString(keys);
+  const response = await axios.get(
+    `${URL}/api/children/population/${querystring}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const data: any = response.data;
+  const mapped: any = data.data;
+  return mapped;
+};
+
 export const getEligibilityData = async (keys?: string[]) => {
   const querystring = getQueryString(keys);
   const data = await axios.get(

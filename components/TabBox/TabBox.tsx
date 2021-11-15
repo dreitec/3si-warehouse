@@ -1,11 +1,12 @@
 import React from "react";
 
 import {
-  PeopleOutline as PeopleOutlineIcon,
   PieChart as PieChartIcon,
   Map as MapIcon,
   Height as HeightIcon,
 } from "@mui/icons-material";
+import PersonSearchOutlinedIcon from "@mui/icons-material/PersonSearchOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import { Typography, styled, Theme, Box, BoxProps } from "@mui/material";
 import Link from "next/link";
 import { Link as CommonLink } from "../";
@@ -164,10 +165,20 @@ const TabBox = () => {
         sx={{ display: "flex", bgcolor: "transparent", padding: 0 }}
       >
         <Item sx={{ width: "100%" }}>
+          <StyledLink href="/population">
+            <StyledDiv isActive={activeTab.includes("/population")}>
+              <StyledHeading variant="h6">
+                <GroupsOutlinedIcon />
+                population
+              </StyledHeading>
+            </StyledDiv>
+          </StyledLink>
+        </Item>
+        <Item sx={{ width: "100%" }}>
           <StyledLink href="/eligibility">
             <StyledDiv isActive={activeTab.includes("/eligibility")}>
               <StyledHeading variant="h6">
-                <PeopleOutlineIcon />
+                <PersonSearchOutlinedIcon />
                 Eligibility
               </StyledHeading>
             </StyledDiv>
