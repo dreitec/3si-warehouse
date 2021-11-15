@@ -4,7 +4,7 @@ import { CSVLink } from "react-csv";
 import {
   ChartContainer,
   Choropleth,
-  FilterCheckboxes,
+  FilterSelect,
   Button,
 } from "../../components";
 import { getGeographicalEligibilityData } from "../../src/frontend/api";
@@ -23,6 +23,7 @@ import {
   OtherStateObject,
   OtherOptionTree,
 } from "../../src/frontend/Constants";
+
 interface Props {}
 
 const GeographicalELigibility = (props: Props) => {
@@ -41,12 +42,10 @@ const GeographicalELigibility = (props: Props) => {
     initialArg
   );
   const populateGeographicalEligibilityData = async () => {
-    const keys: string[] =
-      getFilters(
-        state.selectedFilterType === "programFilters"
-          ? "programFilters"
-          : "otherFilters"
-      ) || [];
+    const keys: string[] = [
+      ...getFilters("programFilters"),
+      ...getFilters("otherFilters"),
+    ];
     try {
       const response: any = await getGeographicalEligibilityData(
         state.selectedOption,
@@ -74,26 +73,26 @@ const GeographicalELigibility = (props: Props) => {
   };
 
   const checkboxes = [
-    <FilterCheckboxes
-      key="eligible-choropleth-program-filters"
-      data={
-        state.selectedFilterType === "programFilters"
-          ? ProgramOptionTree
-          : OtherOptionTree
-      }
-      state={
-        state.selectedFilterType === "programFilters"
-          ? state.programFilters
-          : state.otherFilters
-      }
+    <FilterSelect
+      key="filter-program-check"
+      name="Program Filters"
+      data={ProgramOptionTree}
+      selected={state.programFilters}
       setState={(payload: any) =>
         dispatch({
-          type:
-            state.selectedFilterType === "programFilters"
-              ? UPDATE_PROGRAM_FILTERS
-              : UPDATE_OTHER_FILTERS,
+          type: UPDATE_PROGRAM_FILTERS,
           payload,
         })
+      }
+    />,
+    ,
+    <FilterSelect
+      key="filter-other-check"
+      name="Other Filters"
+      data={OtherOptionTree}
+      selected={state.otherFilters}
+      setState={(payload: any) =>
+        dispatch({ type: UPDATE_OTHER_FILTERS, payload })
       }
     />,
   ];
@@ -101,10 +100,20 @@ const GeographicalELigibility = (props: Props) => {
     <ChartContainer
       showButton={false}
       title="Eligibility Geographically"
-      selectFiltersType={(payload: string) =>
-        dispatch({ type: UPDATE_FILTER_TYPE, payload })
+      selectedFilters={{ ...state.programFilters, ...state.otherFilters }}
+      programDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_PROGRAM_FILTERS,
+
+          payload: { [filterValue]: false },
+        })
       }
-      selectedFilterType={state.selectedFilterType}
+      otherDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_OTHER_FILTERS,
+          payload: { [filterValue]: false },
+        })
+      }
       checkboxes={checkboxes}
       getData={populateGeographicalEligibilityData}
       exportButton={
