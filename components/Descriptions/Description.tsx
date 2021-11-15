@@ -26,7 +26,8 @@ const StyledHeading = styled(Typography)(({ theme }) => ({
 }));
 
 const HeadingContainer = styled(Grid, {
-  shouldForwardProp: (prop: string) => prop !== "headingJustify",
+  shouldForwardProp: (prop: string) =>
+    prop !== "headingJustify" && prop !== "marginValue",
 })((props: StyleProps) => {
   const { marginValue, headingJustify, color } = props;
   return {

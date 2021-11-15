@@ -7,7 +7,9 @@ import styled from "@mui/system/styled";
 interface IDivProps extends React.HTMLAttributes<HTMLDivElement> {
   homeTab: boolean;
 }
-const StyledContainer = styled("div")((props: IDivProps) => {
+const StyledContainer = styled("div", {
+  shouldForwardProp: (prop) => prop !== "homeTab",
+})((props: IDivProps) => {
   const { homeTab } = props;
   return {
     width: "100%",

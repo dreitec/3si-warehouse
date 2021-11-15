@@ -118,7 +118,7 @@ const ChartContainer = (props: ContainerProps) => {
             Update
           </Button>
         </WhiteBgGrid>
-        <WhiteBgGrid xs={12}>
+        <WhiteBgGrid item xs={12}>
           <StyledStack direction="row">
             {selectedKeys.map((elem: any) => {
               if (ProgramValueToTextObject[elem]) {
