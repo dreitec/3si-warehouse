@@ -3,7 +3,7 @@ import { CSVLink } from "react-csv";
 import {
   ChartContainer,
   Choropleth,
-  FilterCheckboxes,
+  FilterSelect,
   Button,
 } from "../../components";
 import { getGeographicalServedData } from "../../src/frontend/api";
@@ -12,7 +12,6 @@ import { GeographicalFiltersBaseState } from "../../src/frontend/Interfaces";
 import {
   UPDATE_PROGRAM_FILTERS,
   UPDATE_BY_TYPE,
-  UPDATE_FILTER_TYPE,
   UPDATE_OTHER_FILTERS,
 } from "../../state/types";
 import {
@@ -32,12 +31,10 @@ const GeographicalELigibility = () => {
   };
   const [state, dispatch] = useReducer(GeographicalServedReducer, initialArg);
   const populateGeographicalServedData = async () => {
-    const keys: string[] =
-      getFilters(
-        state.selectedFilterType === "programFilters"
-          ? "programFilters"
-          : "otherFilters"
-      ) || [];
+    const keys: string[] = [
+      ...getFilters("programFilters"),
+      ...getFilters("otherFilters"),
+    ];
     try {
       const response: any = await getGeographicalServedData(
         state.selectedOption,
@@ -64,24 +61,26 @@ const GeographicalELigibility = () => {
     );
   };
   const checkboxes = [
-    <FilterCheckboxes
-      key="served-children-geographical-section-filters"
-      data={
-        state.selectedFilterType === "programFilters"
-          ? ProgramOptionTree
-          : OtherOptionTree
-      }
-      state={
-        state.selectedFilterType === "programFilters"
-          ? state.programFilters
-          : state.otherFilters
-      }
+    <FilterSelect
+      key="filter-program-check"
+      name="Program Filters"
+      data={ProgramOptionTree}
+      selected={state.programFilters}
       setState={(payload: any) =>
         dispatch({
-          type:
-            state.selectedFilterType === "programFilters"
-              ? UPDATE_PROGRAM_FILTERS
-              : UPDATE_OTHER_FILTERS,
+          type: UPDATE_PROGRAM_FILTERS,
+          payload,
+        })
+      }
+    />,
+    <FilterSelect
+      key="filter-other-check"
+      name="Other Filters"
+      data={OtherOptionTree}
+      selected={state.otherFilters}
+      setState={(payload: any) =>
+        dispatch({
+          type: UPDATE_OTHER_FILTERS,
           payload,
         })
       }
@@ -91,12 +90,22 @@ const GeographicalELigibility = () => {
     <ChartContainer
       showButton={false}
       title="Served Geographically"
-      selectFiltersType={(payload: string) =>
-        dispatch({ type: UPDATE_FILTER_TYPE, payload })
-      }
-      selectedFilterType={state.selectedFilterType}
       checkboxes={checkboxes}
       getData={populateGeographicalServedData}
+      selectedFilters={{ ...state.programFilters, ...state.otherFilters }}
+      programDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_PROGRAM_FILTERS,
+
+          payload: { [filterValue]: false },
+        })
+      }
+      otherDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_OTHER_FILTERS,
+          payload: { [filterValue]: false },
+        })
+      }
       exportButton={
         <CSVLink
           data={
