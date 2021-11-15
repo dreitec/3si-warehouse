@@ -32,6 +32,9 @@ const LineChartComponent = (props: Props) => {
           left: 20,
           bottom: 5,
         }}
+        style={{
+          paddingTop: 50,
+        }}
       >
         <CartesianGrid vertical={false} />
         <XAxis dataKey={"group"} padding={{ left: 60, right: 60 }} />
