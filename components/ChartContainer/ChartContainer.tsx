@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import {
   ProgramValueToTextObject,
   OtherValueToText,
+  SitesValueToTextObject,
 } from "../../src/frontend/Constants";
 import { Filters } from "../../src/frontend/Interfaces";
 
@@ -135,6 +136,16 @@ const ChartContainer = (props: ContainerProps) => {
                   <StyledChip
                     key={elem}
                     label={`Others: ${OtherValueToText[elem]}`}
+                    variant="outlined"
+                    onDelete={() => otherDelete && otherDelete(elem)}
+                    color="primary"
+                  />
+                );
+              } else if (SitesValueToTextObject[elem]) {
+                return (
+                  <StyledChip
+                    key={elem}
+                    label={`Sites: ${SitesValueToTextObject[elem]}`}
                     variant="outlined"
                     onDelete={() => otherDelete && otherDelete(elem)}
                     color="primary"

@@ -1,7 +1,10 @@
+import { FiltersValueText } from "../Interfaces";
+
 export const SiteOptionTree = [
   {
     text: "All Site Types",
     value: "allsites",
+    type: "label",
     children: [
       {
         text: "Large Group",
@@ -32,11 +35,19 @@ export const SiteOptionTree = [
 ];
 
 export const SitesStateObject = {
-  allsites: true,
   lg: true,
   sg: true,
   fcc: true,
   pubs: true,
   privs: true,
   other: true,
+};
+
+export const SitesValueToTextObject: FiltersValueText = {
+  lg: "Large Group",
+  sg: "Small Group",
+  fcc: "Family Child Care",
+  pubs: "Public School",
+  privs: "Private School",
+  other: "Other",
 };

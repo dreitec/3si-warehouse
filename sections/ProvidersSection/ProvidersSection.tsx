@@ -5,7 +5,7 @@ import {
   ChartContainer,
   Choropleth,
   Table,
-  FilterCheckboxes,
+  FilterSelect,
   Button,
 } from "../../components";
 
@@ -53,11 +53,7 @@ const GeographicalELigibility = () => {
   const [state, dispatch] = useReducer(ProvidersReducer, initialArg);
   const populateProvidersData = async () => {
     const keys: string[] =
-      getFilters(
-        state.selectedFilterType === "programFilters"
-          ? "programFilters"
-          : "otherFilters"
-      ) || [];
+      [...getFilters("programFilters"), ...getFilters("otherFilters")] || [];
     const siteKeys: string[] = getFilters("siteFilers");
     try {
       getProvidersChartData(state.selectedOption, [...keys, ...siteKeys]).then(
@@ -138,10 +134,11 @@ const GeographicalELigibility = () => {
   }, [paginationProps.page]);
 
   const checkboxes = [
-    <FilterCheckboxes
-      key="providers-section-site-filters"
+    <FilterSelect
+      key="providers-section-site-filtersk"
+      name="Site Filters"
       data={SiteOptionTree}
-      state={state.siteFilers}
+      selected={state.siteFilers}
       setState={(payload: any) =>
         dispatch({
           type: UPDATE_SITE_FILTERS,
@@ -149,24 +146,26 @@ const GeographicalELigibility = () => {
         })
       }
     />,
-    <FilterCheckboxes
-      key="providers-section-program-and-other-filters"
-      data={
-        state.selectedFilterType === "programFilters"
-          ? ProgramOptionTree
-          : OtherOptionTree
-      }
-      state={
-        state.selectedFilterType === "programFilters"
-          ? state.programFilters
-          : state.otherFilters
-      }
+    <FilterSelect
+      key="filter-program-check"
+      name="Program Filters"
+      data={ProgramOptionTree}
+      selected={state.programFilters}
       setState={(payload: any) =>
         dispatch({
-          type:
-            state.selectedFilterType === "programFilters"
-              ? UPDATE_PROGRAM_FILTERS
-              : UPDATE_OTHER_FILTERS,
+          type: UPDATE_PROGRAM_FILTERS,
+          payload,
+        })
+      }
+    />,
+    <FilterSelect
+      key="filter-other-check"
+      name="Other Filters"
+      data={OtherOptionTree}
+      selected={state.otherFilters}
+      setState={(payload: any) =>
+        dispatch({
+          type: UPDATE_OTHER_FILTERS,
           payload,
         })
       }
@@ -176,12 +175,26 @@ const GeographicalELigibility = () => {
     <ChartContainer
       showButton={false}
       title="Service Sites"
-      selectFiltersType={(payload: string) =>
-        dispatch({ type: UPDATE_FILTER_TYPE, payload })
-      }
-      selectedFilterType={state.selectedFilterType}
       checkboxes={checkboxes}
       getData={populateProvidersData}
+      selectedFilters={{
+        ...state.programFilters,
+        ...state.otherFilters,
+        ...state.siteFilers,
+      }}
+      programDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_PROGRAM_FILTERS,
+
+          payload: { [filterValue]: false },
+        })
+      }
+      otherDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_OTHER_FILTERS,
+          payload: { [filterValue]: false },
+        })
+      }
       exportButton={
         <CSVLink
           data={Array.isArray(providersData.chart) ? providersData.chart : []}

@@ -12,4 +12,8 @@ export {
   OtherChecksWithoutEmploymentOptionTree,
   OtherChecksWithoutEmploymentStateObject,
 } from "./OtherChecksWithoutEmployment";
-export { SiteOptionTree, SitesStateObject } from "./SiteChecks";
+export {
+  SiteOptionTree,
+  SitesStateObject,
+  SitesValueToTextObject,
+} from "./SiteChecks";
