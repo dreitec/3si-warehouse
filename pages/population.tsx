@@ -2,7 +2,7 @@ import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Description, FullWidth, Compact } from "../components";
-import { PoplationLineChatSection } from "../sections";
+import { PopulationLineChatSection } from "../sections";
 
 const Home: NextPage = () => {
   return (
@@ -32,7 +32,7 @@ const Home: NextPage = () => {
           </Compact>
         </FullWidth>
         <Compact>
-          <PoplationLineChatSection />
+          <PopulationLineChatSection />
         </Compact>
       </main>
     </div>
