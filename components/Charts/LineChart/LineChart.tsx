@@ -12,6 +12,7 @@ import {
 import styled from "@mui/system/styled";
 import Container from "@mui/material/Container";
 import { Switch } from "../../";
+import { numberToTextualFormatter } from "../../../src/frontend/helpers";
 
 const SwitchContainer = styled(Container)(() => ({
   textAlign: "right",
@@ -67,27 +68,7 @@ const LineChartComponent = (props: Props) => {
           <YAxis
             type="number"
             axisLine={false}
-            tickFormatter={(tick) => {
-              var si = [
-                { value: 1, symbol: "" },
-                { value: 1e3, symbol: "k" },
-                { value: 1e6, symbol: "M" },
-                { value: 1e9, symbol: "G" },
-                { value: 1e12, symbol: "T" },
-                { value: 1e15, symbol: "P" },
-                { value: 1e18, symbol: "E" },
-              ];
-              var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-              var i;
-              for (i = si.length - 1; i > 0; i--) {
-                if (tick >= si[i].value) {
-                  break;
-                }
-              }
-              return (
-                (tick / si[i].value).toFixed(0).replace(rx, "$1") + si[i].symbol
-              );
-            }}
+            tickFormatter={numberToTextualFormatter}
             domain={keyName === "percentage" ? [1, 100] : [0, 1500000]}
           >
             <Label

@@ -10,7 +10,7 @@ import Counties from "./Geojsons/Counties";
 import Tracts from "./Geojsons/Tracts";
 import Regions from "./Geojsons/Regions";
 import styles from "./Chloropleth.module.css";
-import { Sleep } from "../../../src/frontend/helpers";
+import { Sleep, numberToTextualFormatter } from "../../../src/frontend/helpers";
 
 const StyledContainer = styled("div")(() => ({
   position: "relative",
@@ -40,12 +40,6 @@ interface Props {
 }
 
 const colors = ["#afc5ff", "#739aff", "#376eff", "#214299"];
-
-const ReplaceWithK = (number: number): string => {
-  let numberStr = number.toString();
-  if (numberStr.length > 4) return number.toString().slice(0, -3) + "K";
-  return numberStr;
-};
 
 const getSteps = (data: any, property: string) => {
   const all: any[] = [];
@@ -84,18 +78,25 @@ const getSteps = (data: any, property: string) => {
   return {
     steps,
     ranges: [
-      { color: colors[0], text: `${all[0]}-${ReplaceWithK(lowerMid - 1)}` },
+      {
+        color: colors[0],
+        text: `${all[0]}-${numberToTextualFormatter(lowerMid - 1)}`,
+      },
       {
         color: colors[1],
-        text: `${ReplaceWithK(lowerMid)}-${ReplaceWithK(mid - 1)}`,
+        text: `${numberToTextualFormatter(lowerMid)}-${numberToTextualFormatter(
+          mid - 1
+        )}`,
       },
       {
         color: colors[2],
-        text: `${ReplaceWithK(mid)}-${ReplaceWithK(upperMid - 1)}`,
+        text: `${numberToTextualFormatter(mid)}-${numberToTextualFormatter(
+          upperMid - 1
+        )}`,
       },
       {
         color: colors[3],
-        text: `${ReplaceWithK(upperMid)}-${ReplaceWithK(
+        text: `${numberToTextualFormatter(upperMid)}-${numberToTextualFormatter(
           Math.ceil(all[all.length - 1])
         )}`,
       },
