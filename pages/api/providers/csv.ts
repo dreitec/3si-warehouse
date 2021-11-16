@@ -11,6 +11,7 @@ import {
   PromisedQuery,
   MakeConditions,
   MakeQueryArray,
+  Upload,
 } from "../../../src/backend/utils";
 import { ErrorResponse } from "../../../src/backend/Interfaces";
 
@@ -63,17 +64,18 @@ export default async function handler(
     }
     const filePath = path.join(
       dirToSaveIn,
-      `providers-${new Date().toLocaleTimeString().replace(/:/g, "-")}.csv`
+      `providers-${new Date()
+        .toLocaleTimeString()
+        .replace(/:/g, "-")
+        .replace(/ /g, "-")}.csv`
     );
 
     fs.writeFileSync(filePath, csv);
     try {
-      const csvBuffer = fs.createReadStream(filePath);
-      await new Promise(function (resolve) {
-        res.setHeader("Content-Type", "text/csv");
-        csvBuffer.pipe(res);
-        csvBuffer.on("end", resolve);
-      });
+      console.log("uploading");
+      const link = await Upload(filePath);
+      fs.unlink(filePath, () => {});
+      return res.send(link);
     } catch (e) {
       res
         .status(400)

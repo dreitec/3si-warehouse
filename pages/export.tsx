@@ -2,7 +2,6 @@ import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Description, FullWidth, Compact } from "../components";
-
 import { ExportSection } from "../sections";
 
 const Home: NextPage = () => {

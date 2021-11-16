@@ -7,6 +7,7 @@ import {
   PromisedQuery,
   MakeConditions,
   MakeQueryArray,
+  Upload,
 } from "../../../src/backend/utils";
 import { ErrorResponse } from "../../../src/backend/Interfaces";
 
@@ -53,7 +54,10 @@ export default async function handler(
     const dirToSaveIn = path.join(process.cwd(), dir);
     const filePath = path.join(
       dirToSaveIn,
-      `children-${new Date().toLocaleTimeString().replace(/:/g, "-")}.csv`
+      `children-${new Date()
+        .toLocaleTimeString()
+        .replace(/:/g, "-")
+        .replace(/ /g, "-")}.csv`
     );
     if (!fs.existsSync(dirToSaveIn)) {
       fs.mkdirSync(dirToSaveIn);
@@ -62,7 +66,7 @@ export default async function handler(
     for (let i = 0; i < total; i += 100000) {
       console.log(i, total - i);
       const children: any = await PromisedQuery(
-        `select * from CHILDREN ${conditions} limit ${i + 10000} offset ${i} ;`
+        `select * from CHILDREN ${conditions} limit ${i + 100000} offset ${i} ;`
       );
 
       const fields = Object.keys(children[0]);
@@ -73,12 +77,10 @@ export default async function handler(
     }
 
     try {
-      const csvBuffer = fs.createReadStream(filePath);
-      await new Promise(function (resolve) {
-        res.setHeader("Content-Type", "text/csv");
-        csvBuffer.pipe(res);
-        csvBuffer.on("end", resolve);
-      });
+      console.log("uploading");
+      const link = await Upload(filePath);
+      fs.unlink(filePath, () => {});
+      return res.send(link);
     } catch (e) {
       res
         .status(400)

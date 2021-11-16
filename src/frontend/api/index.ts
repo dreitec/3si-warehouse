@@ -210,12 +210,7 @@ export const exportCsv = async (table: string, keys?: string[]) => {
   const result: any = await axios({
     url: `${URL}/api/${table}/csv/${querystring}`,
     method: "GET",
-    responseType: "blob",
   });
-  const url = window.URL.createObjectURL(new Blob([result.data]));
-  const link = document.createElement("a");
-  link.href = url;
-  link.setAttribute("download", "file.csv"); //or any other extension
-  document.body.appendChild(link);
-  link.click();
+  console.log(result.data, "result");
+  window.open(result.data, "_blank")?.focus();
 };

@@ -35,7 +35,7 @@ export const initDb = () =>
 
 export const getDb = async () => {
   if (!db.connection) {
-    console.log("Already connected.");
+    console.log("not connected.");
     await initDb();
   }
   return db.connection;
