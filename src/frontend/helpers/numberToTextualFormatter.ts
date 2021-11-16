@@ -15,7 +15,7 @@ const numberToTextualFormatter = (number: number): string => {
       break;
     }
   }
-  return (number / si[i].value).toFixed(0).replace(rx, "$1") + si[i].symbol;
+  return (number / si[i].value).toFixed(1).replace(rx, "$1") + si[i].symbol;
 };
 
 export default numberToTextualFormatter;
