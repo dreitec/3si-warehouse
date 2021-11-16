@@ -18,7 +18,6 @@ import { ProvidersState } from "../../src/frontend/Interfaces";
 import {
   UPDATE_PROGRAM_FILTERS,
   UPDATE_BY_TYPE,
-  UPDATE_FILTER_TYPE,
   UPDATE_OTHER_FILTERS,
   UPDATE_SITE_FILTERS,
 } from "../../state/types";
@@ -30,6 +29,7 @@ import {
   SiteOptionTree,
   SitesStateObject,
 } from "../../src/frontend/Constants";
+import Container from "@mui/material/Container";
 
 const GeographicalELigibility = () => {
   const [providersData, setProvidersData] = useState<{
@@ -172,54 +172,57 @@ const GeographicalELigibility = () => {
     />,
   ];
   return (
-    <ChartContainer
-      title="Service Sites"
-      checkboxes={checkboxes}
-      getData={populateProvidersData}
-      selectedFilters={{
-        ...state.programFilters,
-        ...state.otherFilters,
-        ...state.siteFilers,
-      }}
-      programDelete={(filterValue: any) =>
-        dispatch({
-          type: UPDATE_PROGRAM_FILTERS,
+    <>
+      <ChartContainer
+        title="Service Sites"
+        checkboxes={checkboxes}
+        getData={populateProvidersData}
+        selectedFilters={{
+          ...state.programFilters,
+          ...state.otherFilters,
+          ...state.siteFilers,
+        }}
+        programDelete={(filterValue: any) =>
+          dispatch({
+            type: UPDATE_PROGRAM_FILTERS,
 
-          payload: { [filterValue]: false },
-        })
-      }
-      otherDelete={(filterValue: any) =>
-        dispatch({
-          type: UPDATE_OTHER_FILTERS,
-          payload: { [filterValue]: false },
-        })
-      }
-      exportButton={
-        <CSVLink
-          data={Array.isArray(providersData.chart) ? providersData.chart : []}
-          filename={"service-sites-graph.csv"}
-          target="_blank"
-        >
-          <Button variant="outlined" color="primary">
-            Export
-          </Button>
-        </CSVLink>
-      }
-    >
-      <Choropleth
-        dataFromProps={providersData.chart}
-        selectedType={state.selectedOption}
-        selectedRadioOption={state.selectedOption}
-        selectRadioOption={(payload: string) =>
-          dispatch({ type: UPDATE_BY_TYPE, payload })
+            payload: { [filterValue]: false },
+          })
         }
-        options={{ name: "# Service sites", property: "PROVIDERS" }}
-      />
+        otherDelete={(filterValue: any) =>
+          dispatch({
+            type: UPDATE_OTHER_FILTERS,
+            payload: { [filterValue]: false },
+          })
+        }
+        exportButton={
+          <CSVLink
+            data={Array.isArray(providersData.chart) ? providersData.chart : []}
+            filename={"service-sites-graph.csv"}
+            target="_blank"
+          >
+            <Button variant="outlined" color="primary">
+              Export
+            </Button>
+          </CSVLink>
+        }
+      >
+        <Choropleth
+          dataFromProps={providersData.chart}
+          selectedType={state.selectedOption}
+          selectedRadioOption={state.selectedOption}
+          selectRadioOption={(payload: string) =>
+            dispatch({ type: UPDATE_BY_TYPE, payload })
+          }
+          options={{ name: "# Service sites", property: "PROVIDERS" }}
+        />
+      </ChartContainer>
+
       <Table
         data={providersData.table}
         paginationProps={{ ...paginationProps, onPageChange }}
       />
-    </ChartContainer>
+    </>
   );
 };
 

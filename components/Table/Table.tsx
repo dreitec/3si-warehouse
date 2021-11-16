@@ -62,15 +62,21 @@ export default function StickyHeadTable(props: Props) {
     onPageChange(newPage);
   };
   return (
-    <Container sx={{ backgroundColor: "white" }}>
+    <Container
+      sx={{ backgroundColor: "transparent", padding: "0px !important" }}
+    >
       <Typography variant="h6">Providers</Typography>
-      <Container>
-        <TableContainer sx={{ maxHeight: 440 }}>
+      <Container sx={{ padding: "0px !important" }}>
+        <TableContainer>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 {columns.map((column) => (
-                  <TableCell key={column.id} align={column.align}>
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    sx={{ backgroundColor: "#f3f5fb" }}
+                  >
                     {column.label}
                   </TableCell>
                 ))}
