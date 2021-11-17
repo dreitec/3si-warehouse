@@ -23,6 +23,8 @@ import {
 
 const GeographicalELigibility = () => {
   const [geographicalServedData, setGeographicalServedData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const initialArg: GeographicalFiltersBaseState = {
     programFilters: ProgramStateObject,
     otherFilters: OtherStateObject,
@@ -31,6 +33,7 @@ const GeographicalELigibility = () => {
   };
   const [state, dispatch] = useReducer(GeographicalServedReducer, initialArg);
   const populateGeographicalServedData = async () => {
+    setLoading(true);
     const keys: string[] = [
       ...getFilters("programFilters"),
       ...getFilters("otherFilters"),
@@ -41,8 +44,10 @@ const GeographicalELigibility = () => {
         keys
       );
       setGeographicalServedData(response);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -91,6 +96,7 @@ const GeographicalELigibility = () => {
       title="Served Geographically"
       checkboxes={checkboxes}
       getData={populateGeographicalServedData}
+      loading={loading}
       selectedFilters={{ ...state.programFilters, ...state.otherFilters }}
       programDelete={(filterValue: any) =>
         dispatch({

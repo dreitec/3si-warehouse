@@ -29,13 +29,13 @@ import {
   SiteOptionTree,
   SitesStateObject,
 } from "../../src/frontend/Constants";
-import Container from "@mui/material/Container";
 
 const GeographicalELigibility = () => {
   const [providersData, setProvidersData] = useState<{
     chart: any[];
     table: any[];
   }>({ chart: [], table: [] });
+  const [loading, setLoading] = useState(false);
 
   const [paginationProps, setPaginationProps] = useState({
     rowsPerPage: 10,
@@ -52,6 +52,7 @@ const GeographicalELigibility = () => {
   };
   const [state, dispatch] = useReducer(ProvidersReducer, initialArg);
   const populateProvidersData = async () => {
+    setLoading(true);
     const keys: string[] =
       [...getFilters("programFilters"), ...getFilters("otherFilters")] || [];
     const siteKeys: string[] = getFilters("siteFilers");
@@ -68,12 +69,14 @@ const GeographicalELigibility = () => {
         ...keys,
         ...siteKeys,
       ]).then((table: any[]) => {
+        setLoading(false);
         setProvidersData((prevState) => {
           return { ...prevState, table };
         });
       });
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -177,6 +180,7 @@ const GeographicalELigibility = () => {
         title="Service Sites"
         checkboxes={checkboxes}
         getData={populateProvidersData}
+        loading={loading}
         selectedFilters={{
           ...state.programFilters,
           ...state.otherFilters,

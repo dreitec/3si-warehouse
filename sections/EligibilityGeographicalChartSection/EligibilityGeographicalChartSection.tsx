@@ -13,7 +13,6 @@ import { GeographicalEligibilityState } from "../../src/frontend/Interfaces";
 import {
   UPDATE_PROGRAM_FILTERS,
   UPDATE_BY_TYPE,
-  UPDATE_FILTER_TYPE,
   UPDATE_OTHER_FILTERS,
 } from "../../state/types";
 
@@ -31,6 +30,8 @@ const GeographicalELigibility = (props: Props) => {
     geographicalEligibilityData,
     setGeographicalEligibilityData,
   ] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const initialArg: GeographicalEligibilityState = {
     programFilters: ProgramStateObject,
     otherFilters: OtherStateObject,
@@ -42,6 +43,7 @@ const GeographicalELigibility = (props: Props) => {
     initialArg
   );
   const populateGeographicalEligibilityData = async () => {
+    setLoading(true);
     const keys: string[] = [
       ...getFilters("programFilters"),
       ...getFilters("otherFilters"),
@@ -52,8 +54,10 @@ const GeographicalELigibility = (props: Props) => {
         keys
       );
       setGeographicalEligibilityData(response);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -115,6 +119,7 @@ const GeographicalELigibility = (props: Props) => {
       }
       checkboxes={checkboxes}
       getData={populateGeographicalEligibilityData}
+      loading={loading}
       exportButton={
         <CSVLink
           data={

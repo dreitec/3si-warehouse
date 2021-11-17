@@ -11,7 +11,6 @@ import { ServedReducer } from "../../state";
 import { FiltersBaseState } from "../../src/frontend/Interfaces";
 import {
   UPDATE_PROGRAM_FILTERS,
-  UPDATE_FILTER_TYPE,
   UPDATE_OTHER_FILTERS,
 } from "../../state/types";
 import {
@@ -24,7 +23,10 @@ import {
 const EligibilityLineGraphSection = () => {
   const [servedNotation, setServedNotation] = React.useState(false);
   const [servedData, setServedData] = React.useState();
+  const [loading, setLoading] = React.useState(false);
+
   const populateServedData = async () => {
+    setLoading(true);
     const keys: string[] = [
       ...getFilters("programFilters"),
       ...getFilters("otherFilters"),
@@ -32,8 +34,10 @@ const EligibilityLineGraphSection = () => {
     try {
       const response: any = await getServedData(keys);
       setServedData(response);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -86,6 +90,7 @@ const EligibilityLineGraphSection = () => {
       title="Served Over Time"
       checkboxes={checkboxes}
       getData={populateServedData}
+      loading={loading}
       selectedFilters={{ ...state.programFilters, ...state.otherFilters }}
       programDelete={(filterValue: any) =>
         dispatch({

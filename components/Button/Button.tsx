@@ -9,7 +9,12 @@ interface IButtonProps {
 }
 
 const CustomButton = (props: IButtonProps & ButtonProps) => {
-  const { children, loading = false, ...otherProps } = props;
+  const {
+    children,
+    loading = false,
+    variant = "outlined",
+    ...otherProps
+  } = props;
 
   return (
     <Box
@@ -19,7 +24,7 @@ const CustomButton = (props: IButtonProps & ButtonProps) => {
         display: "inline-block",
       }}
     >
-      <Button variant="contained" disabled={loading} {...otherProps}>
+      <Button disabled={loading} variant={variant} {...otherProps}>
         {children}
       </Button>
       {loading && (
@@ -29,7 +34,7 @@ const CustomButton = (props: IButtonProps & ButtonProps) => {
             color: colors.primary.main,
             position: "absolute",
             top: "50%",
-            left: "50%",
+            left: variant === "outlined" ? "65%" : "50%",
             marginTop: "-12px",
             marginLeft: "-12px",
           }}

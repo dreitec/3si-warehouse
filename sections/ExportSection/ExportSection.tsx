@@ -28,6 +28,8 @@ import {
 
 const ExportSection = () => {
   const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const initialArg: ITableState = {
     programFilters: ProgramStateObject,
     otherFilters: OtherStateObject,
@@ -37,6 +39,7 @@ const ExportSection = () => {
   };
   const [state, dispatch] = useReducer(ExportTableReducer, initialArg);
   const populateTableData = async () => {
+    setLoading(true);
     const keys: string[] =
       [
         ...getFilters("programFilters"),
@@ -47,8 +50,10 @@ const ExportSection = () => {
     try {
       const response: any = await getTableData(state.selectedViewBy, keys);
       setTableData(response);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -177,6 +182,7 @@ const ExportSection = () => {
       }
       checkboxes={checkboxes}
       getData={populateTableData}
+      loading={loading}
       showOptionSelector={false}
     >
       <ExportTable dataFromProps={tableData} />

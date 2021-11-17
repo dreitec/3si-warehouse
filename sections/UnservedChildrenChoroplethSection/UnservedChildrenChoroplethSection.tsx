@@ -18,16 +18,20 @@ import {
 
 const UnservedChildrenChoroplethSection = () => {
   const [dataNotation, setDataNotation] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const [gapsData, setGapsData] = React.useState([]);
 
   const populateGapsData = async () => {
+    setLoading(true);
     const keys: string[] = getFilters() || [];
     try {
       const response: any = await getGeographicalUnservedData(keys);
       setGapsData(response);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -74,6 +78,7 @@ const UnservedChildrenChoroplethSection = () => {
         title="Unserved Children by Risk Factor"
         checkboxes={checkboxes}
         getData={populateGapsData}
+        loading={loading}
         showOptionSelector={false}
         selectedFilters={{ ...state.filters }}
         programDelete={(filterValue: any) =>

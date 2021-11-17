@@ -26,7 +26,10 @@ import {
 const Home: NextPage = () => {
   const [eligibilityNotation, setEligibilityNotation] = React.useState(false);
   const [eligibilityData, setEligibilityData] = React.useState();
+  const [loading, setLoading] = React.useState(false);
+
   const populateEligibilityData = async () => {
+    setLoading(true);
     const keys: string[] = [
       ...getFilters("programFilters"),
       ...getFilters("otherFilters"),
@@ -35,8 +38,10 @@ const Home: NextPage = () => {
     try {
       const response: any = await getEligibilityData(keys);
       setEligibilityData(response);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -91,6 +96,7 @@ const Home: NextPage = () => {
           title="Eligibility Over Time"
           checkboxes={checkboxes}
           getData={populateEligibilityData}
+          loading={loading}
           selectedFilters={{ ...state.programFilters, ...state.otherFilters }}
           programDelete={(filterValue: any) =>
             dispatch({

@@ -47,6 +47,7 @@ interface ContainerProps extends GridProps {
   selectedFilters: Filters;
   programDelete?: Function;
   otherDelete?: Function;
+  loading: boolean;
 }
 
 const StyledStack = styled(Stack)(() => ({
@@ -67,6 +68,7 @@ const ChartContainer = (props: ContainerProps) => {
     selectedFilters,
     programDelete,
     otherDelete,
+    loading,
   } = props;
 
   const selectedKeys = Object.keys(selectedFilters).filter(
@@ -95,6 +97,7 @@ const ChartContainer = (props: ContainerProps) => {
             variant="outlined"
             sx={{ margin: "15%" }}
             onClick={() => getData()}
+            loading={loading}
           >
             Update
           </Button>

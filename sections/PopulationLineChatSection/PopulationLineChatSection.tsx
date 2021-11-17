@@ -20,14 +20,18 @@ import {
 
 const Home: NextPage = () => {
   const [populationData, setPopulationData] = React.useState();
+  const [loading, setLoading] = React.useState(false);
   const populatePopulationData = async () => {
+    setLoading(true);
     const keys: string[] = [...getFilters()] || [];
 
     try {
       const response: any = await getPopulationData(keys);
       setPopulationData(response);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -69,6 +73,7 @@ const Home: NextPage = () => {
           title="Population Over Time"
           checkboxes={checkboxes}
           getData={populatePopulationData}
+          loading={loading}
           selectedFilters={{ ...state.filters }}
           otherDelete={(filterValue: any) =>
             dispatch({

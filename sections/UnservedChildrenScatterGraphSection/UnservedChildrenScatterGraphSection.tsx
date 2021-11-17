@@ -21,14 +21,17 @@ import { Height as HeightIcon } from "@mui/icons-material";
 
 const UnservedChildrenScatterGraphSection = () => {
   const [gapsData, setGapsData] = React.useState();
+  const [loading, setLoading] = React.useState(false);
 
   const populateGapsData = async () => {
     const keys: string[] = [...getFilters()] || [];
     try {
       const response: any = await getScatterData(keys);
       setGapsData(response);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -91,6 +94,7 @@ const UnservedChildrenScatterGraphSection = () => {
         title="Unserved Children by Risk Factor"
         checkboxes={checkboxes}
         getData={populateGapsData}
+        loading={loading}
         showOptionSelector={false}
         selectedFilters={{ ...state.filters }}
         programDelete={(filterValue: any) =>
