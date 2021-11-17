@@ -211,6 +211,5 @@ export const exportCsv = async (table: string, keys?: string[]) => {
     url: `${URL}/api/${table}/csv/${querystring}`,
     method: "GET",
   });
-  console.log(result.data, "result");
   window.open(result.data, "_blank")?.focus();
 };
