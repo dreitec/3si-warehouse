@@ -45,6 +45,7 @@ export interface ProvidersState extends FiltersBaseState {
   selectedFilterType: string;
   siteFilers: Filters;
   selectedOption: string;
+  search: string;
 }
 
 export interface ProvidersData {

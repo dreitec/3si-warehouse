@@ -4,6 +4,7 @@ import {
   UPDATE_OTHER_FILTERS,
   UPDATE_SITE_FILTERS,
   UPDATE_BY_TYPE,
+  UPDATE_SEARCH_QUERY,
 } from "./types";
 import { ProvidersState, Filters } from "../src/frontend/Interfaces";
 
@@ -27,6 +28,10 @@ type Action =
   | {
       payload: string;
       type: typeof UPDATE_BY_TYPE;
+    }
+  | {
+      payload: string;
+      type: typeof UPDATE_SEARCH_QUERY;
     };
 
 export const reducer = (
@@ -67,6 +72,11 @@ export const reducer = (
       return {
         ...state,
         selectedFilterType: action.payload,
+      };
+    case UPDATE_SEARCH_QUERY:
+      return {
+        ...state,
+        search: action.payload,
       };
     default:
       return state;

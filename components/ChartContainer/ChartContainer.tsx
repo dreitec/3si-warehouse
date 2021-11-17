@@ -1,7 +1,7 @@
 import Grid, { GridProps } from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import styled from "@mui/system/styled";
-import { Switch, Button } from "../";
+import { Button } from "../";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import {

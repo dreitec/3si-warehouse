@@ -7,10 +7,19 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
-
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import styled from "@mui/system/styled";
+import { Button } from "../";
 
+const ButtonsGridItem = styled(Grid)(() => ({
+  textAlign: "right",
+}));
 interface IPaginationProps {
   rowsPerPage: number;
   page: number;
@@ -18,9 +27,18 @@ interface IPaginationProps {
   onPageChange: Function;
 }
 
+interface SearchFunc {
+  (event: React.ChangeEvent<HTMLInputElement>): void;
+}
 interface Props {
   data: any[];
   paginationProps: IPaginationProps;
+  handleInputChange: SearchFunc;
+  inputValue: string;
+  getData: Function;
+  loading: boolean;
+  exportData: Function;
+  exportLoading: boolean;
 }
 
 interface Column {
@@ -52,13 +70,20 @@ const columns: readonly Column[] = [
 export default function StickyHeadTable(props: Props) {
   const {
     data,
+    handleInputChange,
+    inputValue,
     paginationProps: { onPageChange, ...otherProps },
+    getData,
+    loading,
+    exportData,
+    exportLoading,
   } = props;
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
+    console.log(newPage, otherProps, "handleChangepage");
     onPageChange(newPage);
   };
   return (
@@ -66,6 +91,48 @@ export default function StickyHeadTable(props: Props) {
       sx={{ backgroundColor: "transparent", padding: "0px !important" }}
     >
       <Typography variant="h6">Providers</Typography>
+      <Container sx={{ marginTop: 2, padding: "0px !important" }}>
+        <Grid container>
+          <Grid item xs={4}>
+            <TextField
+              label="Provider Name"
+              onChange={handleInputChange}
+              value={inputValue}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton>
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={8} justifyContent="flex-end">
+            <Grid container justifyContent="flex-end">
+              <ButtonsGridItem item xs={2}>
+                <Button
+                  variant="outlined"
+                  onClick={() => getData()}
+                  loading={loading}
+                >
+                  Update
+                </Button>
+              </ButtonsGridItem>
+              <ButtonsGridItem item xs={2}>
+                <Button
+                  variant="outlined"
+                  onClick={() => exportData()}
+                  loading={exportLoading}
+                >
+                  Export
+                </Button>
+              </ButtonsGridItem>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Container>
       <Container sx={{ padding: "0px !important" }}>
         <TableContainer>
           <Table stickyHeader aria-label="sticky table">

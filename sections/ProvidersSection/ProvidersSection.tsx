@@ -12,6 +12,7 @@ import {
 import {
   getProvidersChartData,
   getProvidersTableData,
+  exportProvidersSubCsv,
 } from "../../src/frontend/api";
 import { ProvidersReducer } from "../../state";
 import { ProvidersState } from "../../src/frontend/Interfaces";
@@ -20,6 +21,7 @@ import {
   UPDATE_BY_TYPE,
   UPDATE_OTHER_FILTERS,
   UPDATE_SITE_FILTERS,
+  UPDATE_SEARCH_QUERY,
 } from "../../state/types";
 import {
   ProgramStateObject,
@@ -35,7 +37,9 @@ const GeographicalELigibility = () => {
     chart: any[];
     table: any[];
   }>({ chart: [], table: [] });
-  const [loading, setLoading] = useState(false);
+  const [graphLoading, setGraphLoading] = useState(false);
+  const [tableLoading, setTableLoading] = useState(false);
+  const [tableExportLoading, setTableExportLoading] = useState(false);
 
   const [paginationProps, setPaginationProps] = useState({
     rowsPerPage: 10,
@@ -49,57 +53,90 @@ const GeographicalELigibility = () => {
     siteFilers: SitesStateObject,
     selectedFilterType: "programFilters",
     selectedOption: "county",
+    search: "",
   };
-  const [state, dispatch] = useReducer(ProvidersReducer, initialArg);
-  const populateProvidersData = async () => {
-    setLoading(true);
-    const keys: string[] =
-      [...getFilters("programFilters"), ...getFilters("otherFilters")] || [];
-    const siteKeys: string[] = getFilters("siteFilers");
-    try {
-      getProvidersChartData(state.selectedOption, [...keys, ...siteKeys]).then(
-        (chart: any[]) => {
-          setProvidersData((prevState) => {
-            return { ...prevState, chart };
-          });
-        }
-      );
 
-      getProvidersTableData(state.selectedOption, paginationProps.page, [
-        ...keys,
-        ...siteKeys,
-      ]).then((table: any[]) => {
-        setLoading(false);
-        setProvidersData((prevState) => {
-          return { ...prevState, table };
-        });
-      });
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
+  const [state, dispatch] = useReducer(ProvidersReducer, initialArg);
 
   useEffect(() => {
-    populateProvidersData();
+    loadGraphData();
+    loadTablesData();
   }, []);
 
-  useEffect(() => {
-    if (providersData.chart.length === 0) return;
+  const exportCsv = () => {
+    setTableExportLoading(true);
     const keys: string[] =
-      getFilters(
-        state.selectedFilterType === "programFilters"
-          ? "programFilters"
-          : "otherFilters"
-      ) || [];
-    const siteKeys: string[] = getFilters("siteFilers");
-    getProvidersChartData(state.selectedOption, [...keys, ...siteKeys])
+      [
+        ...getFilters("programFilters"),
+        ...getFilters("otherFilters"),
+        ...getFilters("siteFilers"),
+      ] || [];
+
+    exportProvidersSubCsv(
+      state.selectedOption,
+      paginationProps.page,
+      keys,
+      state.search
+    )
+      .then(() => {
+        setTableExportLoading(false);
+      })
+      .catch((error) => {
+        setTableExportLoading(false);
+        console.log(error);
+      });
+  };
+
+  const loadGraphData = () => {
+    setGraphLoading(true);
+    const keys: string[] =
+      [
+        ...getFilters("programFilters"),
+        ...getFilters("otherFilters"),
+        ...getFilters("siteFilers"),
+      ] || [];
+    loadTablesData();
+    getProvidersChartData(state.selectedOption, keys)
       .then((chart: any[]) => {
-        setProvidersData({ ...providersData, chart });
+        setProvidersData((prevState) => {
+          return { ...prevState, chart };
+        });
+        setGraphLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setGraphLoading(false);
       });
+  };
+
+  const loadTablesData = () => {
+    setTableLoading(true);
+    const keys: string[] =
+      [
+        ...getFilters("programFilters"),
+        ...getFilters("otherFilters"),
+        ...getFilters("siteFilers"),
+      ] || [];
+
+    getProvidersTableData(
+      state.selectedOption,
+      paginationProps.page,
+      keys,
+      state.search
+    )
+      .then((table: any[]) => {
+        setTableLoading(false);
+        setProvidersData({ ...providersData, table });
+      })
+      .catch((error) => {
+        setTableLoading(false);
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    if (providersData.chart.length === 0) return;
+    loadTablesData();
   }, [state.selectedOption]);
 
   const getFilters = (
@@ -111,34 +148,26 @@ const GeographicalELigibility = () => {
     );
   };
 
-  const onPageChange = (_: unknown, page: number) => {
+  const onPageChange = (page: number) => {
+    console.log(page, "page change");
     setPaginationProps({ ...paginationProps, page });
   };
 
   React.useEffect(() => {
     if (providersData.table.length === 0) return;
-    const keys: string[] =
-      getFilters(
-        state.selectedFilterType === "programFilters"
-          ? "programFilters"
-          : "otherFilters"
-      ) || [];
-    const siteKeys: string[] = getFilters("siteFilers");
-    getProvidersTableData(state.selectedOption, paginationProps.page, [
-      ...keys,
-      ...siteKeys,
-    ])
-      .then((table: any[]) => {
-        setProvidersData({ ...providersData, table });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    loadTablesData();
   }, [paginationProps.page]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({
+      type: UPDATE_SEARCH_QUERY,
+      payload: e.target.value,
+    });
+  };
 
   const checkboxes = [
     <FilterSelect
-      key="providers-section-site-filtersk"
+      key="providers-section-site-filters"
       name="Site Filters"
       data={SiteOptionTree}
       selected={state.siteFilers}
@@ -179,8 +208,8 @@ const GeographicalELigibility = () => {
       <ChartContainer
         title="Service Sites"
         checkboxes={checkboxes}
-        getData={populateProvidersData}
-        loading={loading}
+        getData={loadGraphData}
+        loading={graphLoading}
         selectedFilters={{
           ...state.programFilters,
           ...state.otherFilters,
@@ -225,6 +254,12 @@ const GeographicalELigibility = () => {
       <Table
         data={providersData.table}
         paginationProps={{ ...paginationProps, onPageChange }}
+        inputValue={state.search}
+        handleInputChange={handleInputChange}
+        getData={loadTablesData}
+        loading={tableLoading}
+        exportData={exportCsv}
+        exportLoading={tableExportLoading}
       />
     </>
   );

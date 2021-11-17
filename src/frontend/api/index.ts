@@ -129,13 +129,17 @@ export const getProvidersChartData = async (
 export const getProvidersTableData = async (
   groupBy: string,
   page: number,
-  keys?: string[]
+  keys?: string[],
+  search?: string
 ): Promise<any[]> => {
   let querystring = getQueryString(keys);
   if (querystring) {
     querystring = `${querystring}&groupBy=${groupBy}&page=${page}`;
   } else {
     querystring = `?groupBy=${groupBy}&page=${page}`;
+  }
+  if (search) {
+    querystring = `${querystring}&search=${search}`;
   }
   const response = await axios.get<ProvidersData>(
     `${URL}/api/providers/table/sub${querystring}`,
@@ -209,6 +213,29 @@ export const exportCsv = async (table: string, keys?: string[]) => {
   let querystring = getQueryString(keys);
   const result: any = await axios({
     url: `${URL}/api/${table}/csv/${querystring}`,
+    method: "GET",
+  });
+  window.open(result.data, "_blank")?.focus();
+};
+
+export const exportProvidersSubCsv = async (
+  groupBy: string,
+  page: number,
+  keys?: string[],
+  search?: string
+) => {
+  let querystring = getQueryString(keys);
+  if (querystring) {
+    querystring = `${querystring}&groupBy=${groupBy}&page=${page}`;
+  } else {
+    querystring = `?groupBy=${groupBy}&page=${page}`;
+  }
+  if (search) {
+    querystring = `${querystring}&search=${search}`;
+  }
+
+  const result: any = await axios({
+    url: `${URL}/api/providers/table/sub/csv${querystring}`,
     method: "GET",
   });
   window.open(result.data, "_blank")?.focus();
