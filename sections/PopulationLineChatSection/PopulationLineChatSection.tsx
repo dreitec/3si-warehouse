@@ -18,6 +18,11 @@ import {
   OtherOptionTree,
 } from "../../src/frontend/Constants";
 
+const headers = [
+  { label: "Population", key: "number" },
+  { label: "Date", key: "group" },
+];
+
 const Home: NextPage = () => {
   const [populationData, setPopulationData] = React.useState();
   const [loading, setLoading] = React.useState(false);
@@ -86,6 +91,7 @@ const Home: NextPage = () => {
               data={Array.isArray(populationData) ? populationData : []}
               filename={"population-line-chart.csv"}
               target="_blank"
+              headers={headers}
             >
               <Button variant="outlined" color="primary">
                 Export
