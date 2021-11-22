@@ -4,8 +4,6 @@ import {
   ChartContainer,
   ScatterPlot,
   FilterSelect,
-  Description,
-  RadioButton,
   Button,
 } from "../../components";
 import { getScatterData } from "../../src/frontend/api";
@@ -16,8 +14,6 @@ import {
   OtherOptionTree,
   OtherStateObject,
 } from "../../src/frontend/Constants";
-import { Container } from "@material-ui/core";
-import { Height as HeightIcon } from "@mui/icons-material";
 
 const headers = [
   { label: "Percentage", key: "percentage" },
@@ -78,62 +74,44 @@ const UnservedChildrenScatterGraphSection = () => {
     />,
   ];
   return (
-    <>
-      <Container>
-        <Description heading="Gaps" Icon={HeightIcon} button={true} margin={20}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-          auctor consequat mauris. Vestibulum ornare vel odio ac hendrerit.
-          Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit amet
-          sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum dolor sit
-          amet, consectetur adipiscing elit. Quisque auctor consequat mauris.
-          Vestibulum ornare vel odio ac hendrerit. Curabitur lacinia sem id
-          pharetra hendrerit. Nam quis lacus sit amet sapien dapibus eleifend.
-          Nunc quis augue nulla.Lorem ipsum dolor sit amet, consectetur
-          adipiscing elit. Quisque auctor consequat mauris. Vestibulum ornare
-          vel odio ac hendrerit. Curabitur lacinia sem id pharetra hendrerit.
-          Nam quis lacus sit amet sapien dapibus eleifend. Nunc quis augue
-          nulla.
-        </Description>
-      </Container>
-      <ChartContainer
-        title="Unserved Children by Risk Factor"
-        checkboxes={checkboxes}
-        getData={populateGapsData}
-        loading={loading}
-        showOptionSelector={false}
-        selectedFilters={{ ...state.filters }}
-        programDelete={(filterValue: any) =>
-          dispatch({
-            type: UPDATE_FILTERS,
+    <ChartContainer
+      title="Unserved Children by Risk Factor"
+      checkboxes={checkboxes}
+      getData={populateGapsData}
+      loading={loading}
+      showOptionSelector={false}
+      selectedFilters={{ ...state.filters }}
+      programDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_FILTERS,
 
-            payload: { [filterValue]: false },
-          })
-        }
-        otherDelete={(filterValue: any) =>
-          dispatch({
-            type: UPDATE_FILTERS,
-            payload: { [filterValue]: false },
-          })
-        }
-        exportButton={
-          <CSVLink
-            data={Array.isArray(gapsData) ? gapsData : []}
-            filename={"unserved-scatter-chart.csv"}
-            target="_blank"
-            headers={headers}
-          >
-            <Button variant="outlined" color="primary">
-              Export
-            </Button>
-          </CSVLink>
-        }
-      >
-        <ScatterPlot
-          //   keyName={eligibilityNotation ? "number" : "percentage"}
-          dataFromProps={gapsData}
-        />
-      </ChartContainer>
-    </>
+          payload: { [filterValue]: false },
+        })
+      }
+      otherDelete={(filterValue: any) =>
+        dispatch({
+          type: UPDATE_FILTERS,
+          payload: { [filterValue]: false },
+        })
+      }
+      exportButton={
+        <CSVLink
+          data={Array.isArray(gapsData) ? gapsData : []}
+          filename={"unserved-scatter-chart.csv"}
+          target="_blank"
+          headers={headers}
+        >
+          <Button variant="outlined" color="primary">
+            Export
+          </Button>
+        </CSVLink>
+      }
+    >
+      <ScatterPlot
+        //   keyName={eligibilityNotation ? "number" : "percentage"}
+        dataFromProps={gapsData}
+      />
+    </ChartContainer>
   );
 };
 export default UnservedChildrenScatterGraphSection;
