@@ -45,7 +45,7 @@ const data: IData = {
   },
   "/providers/sites": {
     nextLink: "/service",
-    nextLabel: "SERVICED OVERTIME",
+    nextLabel: "Children Served Over Time",
     nextDisabled: false,
     prevLink: "/providers",
     prevLabel: "PROVIDERS CAPACITY OVER TIME",
@@ -53,7 +53,7 @@ const data: IData = {
   },
   "/service": {
     nextLink: "/service/geographically",
-    nextLabel: "SERVICED GEOGRAPHICALLY",
+    nextLabel: "Children Served by Geography",
     nextDisabled: false,
     prevLink: "/providers/sites",
     prevLabel: "PROVIDERS CAPACITY GEOGRAPHICALLY",
@@ -64,7 +64,7 @@ const data: IData = {
     nextLabel: "CHILDREN UNSERVED",
     nextDisabled: false,
     prevLink: "/service",
-    prevLabel: "SERVICED OVERTIME",
+    prevLabel: "Children Served Over Time",
     prevDisabled: false,
   },
   "/gaps": {
@@ -72,7 +72,7 @@ const data: IData = {
     nextLabel: "BY RISK FACTOR",
     nextDisabled: false,
     prevLink: "/service/geographically",
-    prevLabel: "SERVICED GEOGRAPHICALLY",
+    prevLabel: "Children Served by Geography",
     prevDisabled: false,
   },
   "/gaps/risk": {
