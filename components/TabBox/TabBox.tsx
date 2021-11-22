@@ -106,6 +106,27 @@ const GetSubMenu = (path: string) => {
         </CommonLink>
       </SubLinksContainer>
     );
+  } else if (path.includes("/providers")) {
+    return (
+      <SubLinksContainer>
+        <CommonLink
+          href="/providers"
+          color="primary"
+          active={path === "/providers"}
+          variant="spaced"
+        >
+          Provider Capacity Over Time
+        </CommonLink>
+        <CommonLink
+          href="/providers/sites"
+          color="primary"
+          active={path === "/providers/sites"}
+          variant="spaced"
+        >
+          Provider Sites
+        </CommonLink>
+      </SubLinksContainer>
+    );
   } else if (path.includes("/service")) {
     return (
       <SubLinksContainer>
