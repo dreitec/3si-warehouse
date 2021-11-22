@@ -14,6 +14,11 @@ import { ProvidersCapacityState } from "../../src/frontend/Interfaces";
 import { UPDATE_SITE_FILTERS } from "../../state/types";
 import { SitesStateObject, SiteOptionTree } from "../../src/frontend/Constants";
 
+const headers = [
+  { label: "Sites", key: "number" },
+  { label: "Date", key: "group" },
+];
+
 const GeographicalELigibility = () => {
   const [capacityData, setCapacityData] = useState();
   const [loading, setLoading] = useState(false);
@@ -85,6 +90,7 @@ const GeographicalELigibility = () => {
             data={Array.isArray(capacityData) ? capacityData : []}
             filename={"service-sites-graph.csv"}
             target="_blank"
+            headers={headers}
           >
             <Button variant="outlined" color="primary">
               Export

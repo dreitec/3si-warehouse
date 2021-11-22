@@ -94,7 +94,7 @@ const GetSubMenu = (path: string) => {
           active={path === "/eligibility"}
           variant="spaced"
         >
-          Eligibility over time
+          Eligibility Over Time
         </CommonLink>
         <CommonLink
           href="/eligibility/geographically"
@@ -102,7 +102,7 @@ const GetSubMenu = (path: string) => {
           active={path === "/eligibility/geographically"}
           variant="spaced"
         >
-          Eligibility geographically
+          Eligibility Geographically
         </CommonLink>
       </SubLinksContainer>
     );

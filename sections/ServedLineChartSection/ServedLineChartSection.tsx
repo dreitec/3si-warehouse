@@ -20,6 +20,21 @@ import {
   OtherOptionTree,
 } from "../../src/frontend/Constants";
 
+const headers = [
+  {
+    label: "Number",
+    key: "number",
+  },
+  {
+    label: "Percentage",
+    key: "percentage",
+  },
+  {
+    label: "Date",
+    key: "group",
+  },
+];
+
 const EligibilityLineGraphSection = () => {
   const [servedNotation, setServedNotation] = React.useState(false);
   const [servedData, setServedData] = React.useState();
@@ -87,7 +102,7 @@ const EligibilityLineGraphSection = () => {
   ];
   return (
     <ChartContainer
-      title="Served Over Time"
+      title="Children Served Over Time"
       checkboxes={checkboxes}
       getData={populateServedData}
       loading={loading}
@@ -110,6 +125,7 @@ const EligibilityLineGraphSection = () => {
           data={Array.isArray(servedData) ? servedData : []}
           filename={"served-line-chart.csv"}
           target="_blank"
+          headers={headers}
         >
           <Button variant="outlined" color="primary">
             Export

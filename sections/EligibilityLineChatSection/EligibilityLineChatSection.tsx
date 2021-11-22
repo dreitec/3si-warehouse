@@ -23,6 +23,21 @@ import {
   OtherOptionTree,
 } from "../../src/frontend/Constants";
 
+const headers = [
+  {
+    label: "Number",
+    key: "number",
+  },
+  {
+    label: "Percentage",
+    key: "percentage",
+  },
+  {
+    label: "Date",
+    key: "group",
+  },
+];
+
 const Home: NextPage = () => {
   const [eligibilityNotation, setEligibilityNotation] = React.useState(false);
   const [eligibilityData, setEligibilityData] = React.useState();
@@ -116,6 +131,7 @@ const Home: NextPage = () => {
               data={Array.isArray(eligibilityData) ? eligibilityData : []}
               filename={"eligibility-line-chart.csv"}
               target="_blank"
+              headers={headers}
             >
               <Button variant="outlined" color="primary">
                 Export

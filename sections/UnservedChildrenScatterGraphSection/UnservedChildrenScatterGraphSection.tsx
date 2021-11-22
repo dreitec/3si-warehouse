@@ -19,6 +19,11 @@ import {
 import { Container } from "@material-ui/core";
 import { Height as HeightIcon } from "@mui/icons-material";
 
+const headers = [
+  { label: "Percentage", key: "percentage" },
+  { label: "Date", key: "group" },
+];
+
 const UnservedChildrenScatterGraphSection = () => {
   const [gapsData, setGapsData] = React.useState();
   const [loading, setLoading] = React.useState(false);
@@ -115,6 +120,7 @@ const UnservedChildrenScatterGraphSection = () => {
             data={Array.isArray(gapsData) ? gapsData : []}
             filename={"unserved-scatter-chart.csv"}
             target="_blank"
+            headers={headers}
           >
             <Button variant="outlined" color="primary">
               Export
