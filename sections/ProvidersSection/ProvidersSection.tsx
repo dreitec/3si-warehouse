@@ -228,6 +228,12 @@ const GeographicalELigibility = () => {
             payload: { [filterValue]: false },
           })
         }
+        sitesDelete={(filterValue: any) =>
+          dispatch({
+            type: UPDATE_SITE_FILTERS,
+            payload: { [filterValue]: false },
+          })
+        }
         exportButton={
           <CSVLink
             data={Array.isArray(providersData.chart) ? providersData.chart : []}

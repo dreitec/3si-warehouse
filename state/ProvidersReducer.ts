@@ -59,7 +59,7 @@ export const reducer = (
       return {
         ...state,
         siteFilers: {
-          ...state.otherFilters,
+          ...state.siteFilers,
           ...action.payload,
         },
       };
