@@ -136,7 +136,7 @@ const GetSubMenu = (path: string) => {
           active={path === "/service"}
           variant="spaced"
         >
-          Serviced over time
+          Children Served Over Time
         </CommonLink>
         <CommonLink
           href="/service/geographically"
@@ -144,7 +144,7 @@ const GetSubMenu = (path: string) => {
           active={path === "/service/geographically"}
           variant="spaced"
         >
-          Serviced geographically
+          Children Served by Geography
         </CommonLink>
       </SubLinksContainer>
     );
