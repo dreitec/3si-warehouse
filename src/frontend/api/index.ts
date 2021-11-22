@@ -102,6 +102,21 @@ export const getGeographicalServedData = async (
   return mapped;
 };
 
+export const getCapacityOverTimeData = async (keys?: string[]) => {
+  const querystring = getQueryString(keys);
+  const response = await axios.get(
+    `${URL}/api/providers/capacity/${querystring}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const data: any = response.data;
+  const mapped: any = data.data;
+  return mapped;
+};
+
 export const getProvidersChartData = async (
   groupBy: string,
   keys?: string[]

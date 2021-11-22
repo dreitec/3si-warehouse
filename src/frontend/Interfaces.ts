@@ -48,6 +48,10 @@ export interface ProvidersState extends FiltersBaseState {
   search: string;
 }
 
+export interface ProvidersCapacityState {
+  siteFilers: Filters;
+}
+
 export interface ProvidersData {
   data: any[];
 }

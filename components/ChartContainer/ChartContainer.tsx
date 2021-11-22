@@ -47,6 +47,7 @@ interface ContainerProps extends GridProps {
   selectedFilters: Filters;
   programDelete?: Function;
   otherDelete?: Function;
+  sitesDelete?: Function;
   loading: boolean;
 }
 
@@ -68,6 +69,7 @@ const ChartContainer = (props: ContainerProps) => {
     selectedFilters,
     programDelete,
     otherDelete,
+    sitesDelete,
     loading,
   } = props;
 
@@ -131,7 +133,7 @@ const ChartContainer = (props: ContainerProps) => {
                     key={elem}
                     label={`Sites: ${SitesValueToTextObject[elem]}`}
                     variant="outlined"
-                    onDelete={() => otherDelete && otherDelete(elem)}
+                    onDelete={() => sitesDelete && sitesDelete(elem)}
                     color="primary"
                   />
                 );

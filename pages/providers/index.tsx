@@ -8,7 +8,7 @@ import {
   BottomNavigation,
 } from "../../components";
 
-import { ProvidersSection } from "../../sections";
+import { ProvidersCapacitySection } from "../../sections";
 
 const Home: NextPage = () => {
   return (
@@ -42,7 +42,7 @@ const Home: NextPage = () => {
           </Compact>
         </FullWidth>
         <Compact>
-          <ProvidersSection />
+          <ProvidersCapacitySection />
           <BottomNavigation />
         </Compact>
       </main>
