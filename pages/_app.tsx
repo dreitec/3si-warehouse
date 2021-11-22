@@ -36,9 +36,7 @@ function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
 
-        <MainLayout>
-          <TabBox />
-        </MainLayout>
+        <MainLayout />
         <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>

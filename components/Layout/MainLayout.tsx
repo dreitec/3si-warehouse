@@ -1,11 +1,13 @@
 import React from "react";
 import Container from "@mui/material/Container";
-import { Navbar, Compact, Description, Wave } from "../";
+import { Navbar, Compact, Description, Wave, TabBox } from "../";
 import { useRouter } from "next/router";
 import styled from "@mui/system/styled";
+import { theme } from "../../mui";
 
 interface IDivProps extends React.HTMLAttributes<HTMLDivElement> {
   homeTab: boolean;
+  exportPage: boolean;
 }
 const StyledContainer = styled("div", {
   shouldForwardProp: (prop) => prop !== "homeTab",
@@ -15,24 +17,26 @@ const StyledContainer = styled("div", {
     width: "100%",
     backgroundColor: homeTab ? "white" : "transparent",
     padding: 0,
+    marginBottom: props.exportPage ? theme.spacing(15) : 0,
   };
 });
-interface Props {
-  children: any;
-}
 
-const MainLayout = (props: Props) => {
+const MainLayout = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = React.useState("/");
 
   React.useEffect(() => {
     setActiveTab(router.pathname);
   }, [router.pathname]);
+  const nonTabbedLayout = activeTab === "/" || activeTab === "/export";
   return (
-    <StyledContainer homeTab={activeTab === "/"}>
+    <StyledContainer
+      homeTab={nonTabbedLayout}
+      exportPage={activeTab === "/export"}
+    >
       <Container>
         <Navbar activeTab={activeTab} />
-        {activeTab === "/" && (
+        {nonTabbedLayout && (
           <Container maxWidth="sm">
             <Description
               justify="center"
@@ -46,10 +50,15 @@ const MainLayout = (props: Props) => {
           </Container>
         )}
       </Container>
-      <Compact>
-        <Container sx={{ padding: 0 }}>{props.children}</Container>
-      </Compact>
-      {activeTab === "/" || activeTab === "/export" ? <Wave /> : ""}
+      {!nonTabbedLayout && (
+        <Compact>
+          <Container sx={{ padding: 0 }}>
+            <TabBox />
+          </Container>
+        </Compact>
+      )}
+
+      {nonTabbedLayout ? <Wave /> : ""}
     </StyledContainer>
   );
 };

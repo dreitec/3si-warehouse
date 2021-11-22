@@ -17,24 +17,6 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <FullWidth>
-          <Compact>
-            <Description button={true}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              auctor consequat mauris. Vestibulum ornare vel odio ac hendrerit.
-              Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit
-              amet sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum
-              dolor sit amet, consectetur adipiscing elit. Quisque auctor
-              consequat mauris. Vestibulum ornare vel odio ac hendrerit.
-              Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit
-              amet sapien dapibus eleifend. Nunc quis augue nulla.Lorem ipsum
-              dolor sit amet, consectetur adipiscing elit. Quisque auctor
-              consequat mauris. Vestibulum ornare vel odio ac hendrerit.
-              Curabitur lacinia sem id pharetra hendrerit. Nam quis lacus sit
-              amet sapien dapibus eleifend. Nunc quis augue nulla.
-            </Description>
-          </Compact>
-        </FullWidth>
         <Compact>
           <ExportSection />
         </Compact>
