@@ -48,7 +48,7 @@ const index = () => {
             <div
               style={{ width: "100%", height: 300, border: "1px solid black" }}
             ></div>
-            <ArrowLink href="#">Explore more</ArrowLink>
+            <ArrowLink href="/population">Explore more</ArrowLink>
           </SectionGrid>
         </StyledPaddedGrid>
       </Container>
@@ -66,7 +66,7 @@ const index = () => {
             imperdiet. Donec ornare egestas ex eget bibendum. Aliquam
             ullamcorper nisi a magna mattis, at pharetra ligula pulvinar.
           </Description>
-          <ArrowLink href="#" color="white">
+          <ArrowLink href="/population" color="white">
             Explore more
           </ArrowLink>
         </Container>
@@ -90,7 +90,7 @@ const index = () => {
             <div
               style={{ width: "100%", height: 300, border: "1px solid black" }}
             ></div>
-            <ArrowLink href="#">Explore more</ArrowLink>
+            <ArrowLink href="/providers">Explore more</ArrowLink>
           </SectionGrid>
         </StyledPaddedGrid>
       </Container>
