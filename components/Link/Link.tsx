@@ -5,12 +5,14 @@ interface StyledAnchorProps extends React.HTMLAttributes<HTMLAnchorElement> {
   isActive: boolean;
   theme?: Theme;
   color: "text" | "primary";
-  variant: "normal" | "spaced";
+  variant: "normal" | "spaced" | "buttoned";
+  textAlign: string;
 }
+const notAllowed = ["textAlign", "variant", "isActive"];
 const StyledLink = styled("a", {
-  shouldForwardProp: (prop: string) => prop !== "isActive",
+  shouldForwardProp: (prop: string) => !notAllowed.includes(prop),
 })((props: StyledAnchorProps) => {
-  const { isActive, theme, color, variant } = props;
+  const { isActive, theme, color, variant, textAlign } = props;
   if (!theme) {
     return {};
   }
@@ -28,6 +30,11 @@ const StyledLink = styled("a", {
           }`
         : "none",
     };
+  } else if (variant === "buttoned") {
+    specific = {
+      width: "100%",
+      display: "inline-block",
+    };
   } else {
     specific = {
       borderBottom: isActive
@@ -39,13 +46,22 @@ const StyledLink = styled("a", {
         : "none",
     };
   }
+  let hoverBottom: string = "";
+  if (variant === "spaced") {
+    hoverBottom = "1px solid";
+  } else if (variant === "normal") {
+    hoverBottom = "3px solid";
+  } else if (variant === "buttoned") {
+    hoverBottom = "0px solid";
+  }
   return {
     ...specific,
     color: isActive ? theme.palette.primary.main : theme.palette.text.primary,
     paddingBottom: theme.spacing(2),
     textDecoration: "none",
+    textAlign: textAlign,
     ":hover": {
-      borderBottom: `${variant === "spaced" ? 1 : 3}px solid ${
+      borderBottom: `${hoverBottom} solid ${
         color === "primary"
           ? theme.palette.primary.main
           : theme.palette.text.primary
@@ -63,15 +79,28 @@ interface Props {
   children: any;
   active: boolean;
   color?: "text" | "primary" | undefined;
-  variant?: "normal" | "spaced";
+  variant?: "normal" | "spaced" | "buttoned";
+  textAlign?: "left" | "right" | undefined;
 }
 
 const LinkComponent = (props: Props) => {
-  const { href, children, active, color = "text", variant = "normal" } = props;
+  const {
+    href,
+    children,
+    active,
+    color = "text",
+    variant = "normal",
+    textAlign = "left",
+  } = props;
 
   return (
     <Link href={href} passHref>
-      <StyledLink isActive={active} color={color} variant={variant}>
+      <StyledLink
+        isActive={active}
+        color={color}
+        variant={variant}
+        textAlign={textAlign}
+      >
         {children}
       </StyledLink>
     </Link>

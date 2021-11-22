@@ -8,16 +8,16 @@ import {
   BottomNavigation,
 } from "../../components";
 
-import { ServedGeographicalChartSection } from "../../sections";
+import { ProvidersSection } from "../../sections";
 
 const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Service</title>
+        <title>Providers</title>
         <meta
           name="description"
-          content="Charts and data export for served children"
+          content="Charts and data export for providers"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -42,7 +42,7 @@ const Home: NextPage = () => {
           </Compact>
         </FullWidth>
         <Compact>
-          <ServedGeographicalChartSection />
+          <ProvidersSection />
           <BottomNavigation />
         </Compact>
       </main>

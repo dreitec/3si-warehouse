@@ -1,15 +1,20 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Description, FullWidth, Compact } from "../components";
+import {
+  Description,
+  FullWidth,
+  Compact,
+  BottomNavigation,
+} from "../../components";
 
-import { ProvidersSection } from "../sections";
+import { ProvidersSection } from "../../sections";
 
 const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Providers</title>
+        <title>Providers Capacity over time</title>
         <meta
           name="description"
           content="Charts and data export for providers"
@@ -38,6 +43,7 @@ const Home: NextPage = () => {
         </FullWidth>
         <Compact>
           <ProvidersSection />
+          <BottomNavigation />
         </Compact>
       </main>
     </div>
