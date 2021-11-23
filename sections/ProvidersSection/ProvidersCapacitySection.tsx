@@ -3,7 +3,7 @@ import { CSVLink } from "react-csv";
 
 import {
   ChartContainer,
-  LineChart,
+  LineChartForProviders as LineChart,
   FilterSelect,
   Button,
 } from "../../components";
@@ -22,7 +22,7 @@ const headers = [
 const GeographicalELigibility = () => {
   const [capacityData, setCapacityData] = useState();
   const [loading, setLoading] = useState(false);
-
+  const [dataNotation, setDataNotation] = React.useState(false);
   const initialArg: ProvidersCapacityState = {
     siteFilers: SitesStateObject,
   };
@@ -98,7 +98,15 @@ const GeographicalELigibility = () => {
           </CSVLink>
         }
       >
-        <LineChart keyName={"number"} dataFromProps={capacityData} />
+        <LineChart
+          keyName={dataNotation ? "capacity" : "providers"}
+          toggle={{
+            checked: dataNotation,
+            onToggle: setDataNotation,
+            labels: ["Provider Count", "Total Capacity"],
+          }}
+          dataFromProps={capacityData}
+        />
       </ChartContainer>
     </>
   );

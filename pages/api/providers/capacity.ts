@@ -27,11 +27,13 @@ interface DbData {
   MONTH: number;
   YEAR: number;
   CAPACITY: number;
+  PROVIDERS: number;
 }
 
 interface ResponseData {
-  number: number;
+  capacity: number;
   group: string;
+  providers: number;
 }
 
 export default async function handler(
@@ -64,11 +66,13 @@ export default async function handler(
     ];
 
     const SiteConditions = MakeConditions(selectedClauses);
+    console.log(SiteConditions);
     const data: any = await PromisedQuery(
       `select 	DATE(LOAD_DT) as date, 
 			MONTH(date) as month, 
 			YEAR(date) as year,
-            sum(CAPACITY) as capacity 
+            sum(CAPACITY) as capacity, 
+			count(PROVIDER_ID) as providers
             from elds.PROVIDERS
 			${SiteConditions}
             group by month, LOAD_DT
@@ -77,7 +81,8 @@ export default async function handler(
 
     const response: ResponseData = data.map((elem: DbData, index: number) => {
       return {
-        number: elem.CAPACITY,
+        capacity: elem.CAPACITY,
+        providers: elem.PROVIDERS,
         group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
       };
     });

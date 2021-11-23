@@ -40,7 +40,6 @@ const GeographicalELigibility = () => {
   const [graphLoading, setGraphLoading] = useState(false);
   const [tableLoading, setTableLoading] = useState(false);
   const [tableExportLoading, setTableExportLoading] = useState(false);
-
   const [paginationProps, setPaginationProps] = useState({
     rowsPerPage: 10,
     page: 0,

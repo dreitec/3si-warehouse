@@ -9,6 +9,7 @@ export { default as Description } from "./Descriptions/Description";
 export { default as Button } from "./Button/Button";
 export { default as ChartContainer } from "./ChartContainer/ChartContainer";
 export { default as LineChart } from "./Charts/LineChart/LineChart";
+export { default as LineChartForProviders } from "./Charts/LineChart/LineChartForProviders";
 export { default as Choropleth } from "./Charts/Choropleth/Choropleth";
 export { default as Choropleth2D } from "./Charts/Choropleth/Choropleth2D";
 export { default as ScatterPlot } from "./Charts/Scatterplot/ScatterPlot";
