@@ -50,7 +50,7 @@ const MainLayout = () => {
           </Container>
         )}
       </Container>
-      {!nonTabbedLayout && (
+      {activeTab !== "/export" && (
         <Compact>
           <Container sx={{ padding: 0 }}>
             <TabBox />
