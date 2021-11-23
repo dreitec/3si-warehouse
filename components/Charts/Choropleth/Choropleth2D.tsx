@@ -79,7 +79,7 @@ const getSteps = (data: any, property: string) => {
   }
 
   all[0] = Math.floor(all[0]);
-  console.log(all, "all data");
+
   all[all.length - 1] = Math.ceil(all[all.length - 1]);
   const mid = Math.floor((all[0] + all[all.length - 1]) / 2);
   const lowerMid = Math.floor((all[0] + mid) / 2);
