@@ -1,54 +1,49 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 import {
   ChartContainer,
-  LineChart,
+  Choropleth,
   FilterSelect,
   Button,
 } from "../../components";
-import { getUnservedDataOverTime } from "../../src/frontend/api";
-import { ServedReducer } from "../../state";
-import { FiltersBaseState } from "../../src/frontend/Interfaces";
+import { getGeographicalUnServedData } from "../../src/frontend/api";
+import { GeographicalServedReducer } from "../../state";
+import { GeographicalFiltersBaseState } from "../../src/frontend/Interfaces";
 import {
   UPDATE_PROGRAM_FILTERS,
+  UPDATE_BY_TYPE,
   UPDATE_OTHER_FILTERS,
 } from "../../state/types";
 import {
-  ProgramOptionTree,
   ProgramStateObject,
+  ProgramOptionTree,
   AgeStateObject,
   AgeOptionTree,
 } from "../../src/frontend/Constants";
 
-const headers = [
-  {
-    label: "Number",
-    key: "number",
-  },
-  {
-    label: "Percentage",
-    key: "percentage",
-  },
-  {
-    label: "Date",
-    key: "group",
-  },
-];
+const GeographicalELigibility = () => {
+  const [geographicalServedData, setGeographicalServedData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-const EligibilityLineGraphSection = () => {
-  const [servedNotation, setServedNotation] = React.useState(false);
-  const [servedData, setServedData] = React.useState();
-  const [loading, setLoading] = React.useState(false);
-
-  const populateServedData = async () => {
+  const initialArg: GeographicalFiltersBaseState = {
+    programFilters: ProgramStateObject,
+    otherFilters: AgeStateObject,
+    selectedFilterType: "programFilters",
+    selectedOption: "county",
+  };
+  const [state, dispatch] = useReducer(GeographicalServedReducer, initialArg);
+  const populateGeographicalServedData = async () => {
     setLoading(true);
     const keys: string[] = [
       ...getFilters("programFilters"),
       ...getFilters("otherFilters"),
     ];
     try {
-      const response: any = await getUnservedDataOverTime(keys);
-      setServedData(response);
+      const response: any = await getGeographicalUnServedData(
+        state.selectedOption,
+        keys
+      );
+      setGeographicalServedData(response);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -56,16 +51,13 @@ const EligibilityLineGraphSection = () => {
     }
   };
 
-  const initialArg: FiltersBaseState = {
-    programFilters: ProgramStateObject,
-    otherFilters: AgeStateObject,
-    selectedFilterType: "programFilters",
-  };
-
-  const [state, dispatch] = useReducer(ServedReducer, initialArg);
-  React.useEffect(() => {
-    populateServedData();
+  useEffect(() => {
+    populateGeographicalServedData();
   }, []);
+
+  useEffect(() => {
+    populateGeographicalServedData();
+  }, [state.selectedOption]);
 
   const getFilters = (key: "programFilters" | "otherFilters") => {
     const notRequired = ["sp", "all"];
@@ -73,7 +65,6 @@ const EligibilityLineGraphSection = () => {
       (elem: string) => state[key][elem] === true && !notRequired.includes(elem)
     );
   };
-
   const checkboxes = [
     <FilterSelect
       key="filter-program-check"
@@ -102,9 +93,9 @@ const EligibilityLineGraphSection = () => {
   ];
   return (
     <ChartContainer
-      title="Children Served Over Time"
+      title="Children Served by Geography"
       checkboxes={checkboxes}
-      getData={populateServedData}
+      getData={populateGeographicalServedData}
       loading={loading}
       selectedFilters={{ ...state.programFilters, ...state.otherFilters }}
       programDelete={(filterValue: any) =>
@@ -122,10 +113,11 @@ const EligibilityLineGraphSection = () => {
       }
       exportButton={
         <CSVLink
-          data={Array.isArray(servedData) ? servedData : []}
-          filename={"served-line-chart.csv"}
+          data={
+            Array.isArray(geographicalServedData) ? geographicalServedData : []
+          }
+          filename={"served-geographical-chart.csv"}
           target="_blank"
-          headers={headers}
         >
           <Button variant="outlined" color="primary">
             Export
@@ -133,16 +125,17 @@ const EligibilityLineGraphSection = () => {
         </CSVLink>
       }
     >
-      <LineChart
-        keyName={servedNotation ? "number" : "percentage"}
-        dataFromProps={servedData}
-        toggle={{
-          checked: servedNotation,
-          onToggle: setServedNotation,
-          labels: ["Percent", "Number"],
-        }}
+      <Choropleth
+        dataFromProps={geographicalServedData}
+        selectedType={state.selectedOption}
+        selectedRadioOption={state.selectedOption}
+        selectRadioOption={(payload: string) =>
+          dispatch({ type: UPDATE_BY_TYPE, payload })
+        }
+        options={{ name: "% Children Unserved", property: "percentage" }}
       />
     </ChartContainer>
   );
 };
-export default EligibilityLineGraphSection;
+
+export default GeographicalELigibility;

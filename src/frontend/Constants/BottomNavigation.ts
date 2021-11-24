@@ -84,11 +84,19 @@ const data: IData = {
     prevDisabled: false,
   },
   "/gaps/unserved": {
+    nextLink: "/gaps/geographically",
+    nextLabel: "Service Gaps Geographically",
+    nextDisabled: false,
+    prevLink: "/gaps/risk",
+    prevLabel: "BY RISK FACTOR",
+    prevDisabled: false,
+  },
+  "/gaps/geographically": {
     nextLink: "/",
     nextLabel: "",
     nextDisabled: true,
-    prevLink: "/gaps/risk",
-    prevLabel: "BY RISK FACTOR",
+    prevLink: "/gaps/unserved",
+    prevLabel: "Service Gaps Over Time",
     prevDisabled: false,
   },
 };

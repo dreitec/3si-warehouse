@@ -7,7 +7,7 @@ import {
   Choropleth2D as Choropleth,
   Button,
 } from "../../components";
-import { getGeographicalUnservedData } from "../../src/frontend/api";
+import { getUnservedData } from "../../src/frontend/api";
 import { GapsReducer } from "../../state";
 import { GapsState } from "../../src/frontend/Interfaces";
 import { UPDATE_FILTERS } from "../../state/types";
@@ -26,7 +26,7 @@ const UnservedChildrenChoroplethSection = () => {
     setLoading(true);
     const keys: string[] = getFilters() || [];
     try {
-      const response: any = await getGeographicalUnservedData(keys);
+      const response: any = await getUnservedData(keys);
       setGapsData(response);
       setLoading(false);
     } catch (error) {

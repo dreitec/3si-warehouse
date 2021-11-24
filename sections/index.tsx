@@ -7,5 +7,6 @@ export { default as ProvidersSection } from "./ProvidersSection/ProvidersSection
 export { default as UnservedChoropleth } from "./Unserved/UnservedChildrenChoroplethSection";
 export { default as UnservedScatter } from "./Unserved/UnservedChildrenScatterGraphSection";
 export { default as UnservedLineChartSection } from "./Unserved/UnservedLineChartSection";
+export { default as UnservedGeoSection } from "./Unserved/UnservedGeoSection";
 export { default as ExportSection } from "./ExportSection/ExportSection";
 export { default as ProvidersCapacitySection } from "./ProvidersSection/ProvidersCapacitySection";

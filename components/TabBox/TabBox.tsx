@@ -175,6 +175,14 @@ const GetSubMenu = (path: string) => {
         >
           Service Gaps Over Time
         </CommonLink>
+        <CommonLink
+          href="/gaps/geographically"
+          color="primary"
+          active={path === "/gaps/geographically"}
+          variant="spaced"
+        >
+          Service Gaps Geographically
+        </CommonLink>
       </SubLinksContainer>
     );
   }
