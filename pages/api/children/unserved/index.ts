@@ -2,13 +2,16 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import {
   ServedClauses,
   CommonClauses,
-} from "../../../src/backend/data/clauses";
+} from "../../../../src/backend/data/clauses";
 import {
   PromisedQuery,
   MakeConditions,
   MakeQueryArray,
-} from "../../../src/backend/utils";
-import { ErrorResponse, GenericObject } from "../../../src/backend/Interfaces";
+} from "../../../../src/backend/utils";
+import {
+  ErrorResponse,
+  GenericObject,
+} from "../../../../src/backend/Interfaces";
 
 interface ResponseData {
   DATE: string;

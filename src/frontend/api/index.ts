@@ -176,7 +176,7 @@ export const getScatterData = async (keys?: string[]): Promise<any[]> => {
     querystring = `${querystring}`;
   }
   const response = await axios.get<ProvidersData>(
-    `${URL}/api/children/scatterunserved${querystring}`,
+    `${URL}/api/children/unserved/riskfactor${querystring}`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -195,14 +195,11 @@ export const getScatterData = async (keys?: string[]): Promise<any[]> => {
 
 export const getGeographicalUnservedData = async (keys?: string[]) => {
   let querystring = getQueryString(keys);
-  const data = await axios.get(
-    `${URL}/api/children/geounserved${querystring}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const data = await axios.get(`${URL}/api/children/unserved${querystring}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   const geographicalUnservedData: any = data.data;
   const mapped: any = geographicalUnservedData.data.map((elem: any) => ({
     ...elem,
@@ -212,11 +209,14 @@ export const getGeographicalUnservedData = async (keys?: string[]) => {
 };
 export const getUnservedData = async (keys?: string[]) => {
   let querystring = getQueryString(keys);
-  const data = await axios.get(`${URL}/api/children/unserved${querystring}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const data = await axios.get(
+    `${URL}/api/children/unserved/overtime${querystring}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const geographicalUnservedData: any = data.data;
   const mapped: any = geographicalUnservedData.data.map((elem: any) => ({
     ...elem,

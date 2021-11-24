@@ -1,15 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  ServedClauses,
-  CommonClauses,
-} from "../../../src/backend/data/clauses";
+import { CommonClauses } from "../../../../src/backend/data/clauses";
 import {
   PromisedQuery,
   MakeConditions,
   MakeQueryArray,
-} from "../../../src/backend/utils";
-import months from "../../../src/backend/constants/months";
-import { ErrorResponse } from "../../../src/backend/Interfaces";
+} from "../../../../src/backend/utils";
+import months from "../../../../src/backend/constants/months";
+import { ErrorResponse } from "../../../../src/backend/Interfaces";
 
 interface DbData {
   DATE: string;
@@ -47,12 +44,10 @@ export default async function handler(
         `where (month > ${month - 6})  AND ( year = ${currentYear})`
       );
     }
-    const clauses = { ...ServedClauses, ...CommonClauses };
+    const clauses = { ...CommonClauses };
     // make conditions array based on query parameters
-    selectedClauses = [
-      ...selectedClauses,
-      ...MakeQueryArray(req.query, clauses),
-    ];
+    const madeQueries = MakeQueryArray(req.query, clauses);
+    selectedClauses = [...selectedClauses, ...madeQueries];
 
     const conditions = MakeConditions(selectedClauses);
 
@@ -65,7 +60,7 @@ export default async function handler(
 			count(CHILD_ID) as children 
 			from CHILDREN 
 			${conditions}
-            AND PROGRAM_NAME like 'Unserved'
+            AND PROGRAM_NAME  like 'Unserved'
 			group by month, LOAD_DT
 			order by LOAD_DT;`);
 
@@ -91,7 +86,6 @@ export default async function handler(
           (elem.CHILDREN / TotalRecords[index].CHILDREN) *
           100
         ).toFixed(2),
-        number: elem.CHILDREN,
         group: `${months[elem.MONTH - 1]}, ${elem.YEAR}`,
       };
     });
