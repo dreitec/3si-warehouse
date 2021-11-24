@@ -76,11 +76,19 @@ const data: IData = {
     prevDisabled: false,
   },
   "/gaps/risk": {
+    nextLink: "/gaps/unserved",
+    nextLabel: "Service Gaps Over Time",
+    nextDisabled: false,
+    prevLink: "/gaps",
+    prevLabel: "CHILDREN UNSERVED",
+    prevDisabled: false,
+  },
+  "/gaps/unserved": {
     nextLink: "/",
     nextLabel: "",
     nextDisabled: true,
-    prevLink: "/gaps",
-    prevLabel: "CHILDREN UNSERVED",
+    prevLink: "/gaps/risk",
+    prevLabel: "BY RISK FACTOR",
     prevDisabled: false,
   },
 };

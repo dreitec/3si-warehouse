@@ -17,3 +17,4 @@ export {
   SitesStateObject,
   SitesValueToTextObject,
 } from "./SiteChecks";
+export { AgeOptionTree, AgeStateObject, AgeValueText } from "./AgeChecks";

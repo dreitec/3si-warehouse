@@ -167,6 +167,14 @@ const GetSubMenu = (path: string) => {
         >
           Unserved Children by Risk Factor
         </CommonLink>
+        <CommonLink
+          href="/gaps/unserved"
+          color="primary"
+          active={path === "/gaps/unserved"}
+          variant="spaced"
+        >
+          Service Gaps Over Time
+        </CommonLink>
       </SubLinksContainer>
     );
   }

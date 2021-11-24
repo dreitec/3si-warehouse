@@ -210,6 +210,20 @@ export const getGeographicalUnservedData = async (keys?: string[]) => {
   }));
   return mapped;
 };
+export const getUnservedData = async (keys?: string[]) => {
+  let querystring = getQueryString(keys);
+  const data = await axios.get(`${URL}/api/children/unserved${querystring}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const geographicalUnservedData: any = data.data;
+  const mapped: any = geographicalUnservedData.data.map((elem: any) => ({
+    ...elem,
+    percentage: parseFloat(elem.percentage),
+  }));
+  return mapped;
+};
 
 export const getTableData = async (table: string, keys?: string[]) => {
   let querystring = getQueryString(keys);

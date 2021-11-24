@@ -4,7 +4,8 @@ export { default as EligibilityGeographicalChartSection } from "./EligibilityGeo
 export { default as ServedLineChartSection } from "./ServedLineChartSection/ServedLineChartSection";
 export { default as ServedGeographicalChartSection } from "./ServedGeographicalChartSection/ServedGeographicalChartSection";
 export { default as ProvidersSection } from "./ProvidersSection/ProvidersSection";
-export { default as UnservedChoropleth } from "./UnservedChildrenChoroplethSection/UnservedChildrenChoroplethSection";
-export { default as UnservedScatter } from "./UnservedChildrenScatterGraphSection/UnservedChildrenScatterGraphSection";
+export { default as UnservedChoropleth } from "./Unserved/UnservedChildrenChoroplethSection";
+export { default as UnservedScatter } from "./Unserved/UnservedChildrenScatterGraphSection";
+export { default as UnservedLineChartSection } from "./Unserved/UnservedLineChartSection";
 export { default as ExportSection } from "./ExportSection/ExportSection";
 export { default as ProvidersCapacitySection } from "./ProvidersSection/ProvidersCapacitySection";

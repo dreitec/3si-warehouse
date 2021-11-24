@@ -70,3 +70,8 @@ export interface ITableState {
   siteFilters: Filters;
   exporting: boolean;
 }
+
+export interface IUnservedLineState {
+  programFilters: Filters;
+  ageFilters: Filters;
+}
