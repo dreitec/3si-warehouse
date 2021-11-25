@@ -32,7 +32,7 @@ const ScatterChartCustom = (props: Props) => {
       <ScatterChart width={400} height={400}>
         <CartesianGrid />
         <Tooltip />
-        <XAxis type="category" dataKey="group" />
+        <XAxis type="category" dataKey="SVI" />
         <YAxis type="number" dataKey="percentage" />
         <Scatter data={state} shape={CustomizedDot} />
       </ScatterChart>

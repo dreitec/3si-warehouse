@@ -17,7 +17,8 @@ import {
 
 const headers = [
   { label: "Percentage", key: "percentage" },
-  { label: "Date", key: "group" },
+  { label: "SVI", key: "SVI" },
+  { label: "COUNTY", key: "COUNTY" },
 ];
 
 const UnservedChildrenScatterGraphSection = () => {
