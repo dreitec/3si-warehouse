@@ -205,7 +205,7 @@ const GeographicalELigibility = () => {
   return (
     <>
       <ChartContainer
-        title="Service Sites"
+        title="Provider Sites"
         checkboxes={checkboxes}
         getData={loadGraphData}
         loading={graphLoading}
@@ -252,7 +252,7 @@ const GeographicalELigibility = () => {
           selectRadioOption={(payload: string) =>
             dispatch({ type: UPDATE_BY_TYPE, payload })
           }
-          options={{ name: "# Service sites", property: "PROVIDERS" }}
+          options={{ name: "# Provider Sites", property: "PROVIDERS" }}
         />
       </ChartContainer>
 

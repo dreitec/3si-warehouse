@@ -72,7 +72,7 @@ const GeographicalELigibility = () => {
   return (
     <>
       <ChartContainer
-        title="Service Sites"
+        title="Provider Capacity Over Time"
         checkboxes={checkboxes}
         getData={loadCapacityData}
         loading={loading}
