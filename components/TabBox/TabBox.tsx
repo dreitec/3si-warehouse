@@ -206,7 +206,7 @@ const TabBox = () => {
             <StyledDiv isActive={activeTab.includes("/population")}>
               <StyledHeading variant="h6">
                 <GroupsOutlinedIcon />
-                population
+                Population
               </StyledHeading>
             </StyledDiv>
           </StyledLink>
