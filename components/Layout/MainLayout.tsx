@@ -50,13 +50,12 @@ const MainLayout = () => {
           </Container>
         )}
       </Container>
-      {activeTab !== "/export" && (
-        <Compact>
-          <Container sx={{ padding: 0 }}>
-            <TabBox />
-          </Container>
-        </Compact>
-      )}
+
+      <Compact>
+        <Container sx={{ padding: 0 }}>
+          <TabBox />
+        </Container>
+      </Compact>
 
       {nonTabbedLayout ? <Wave /> : ""}
     </StyledContainer>
