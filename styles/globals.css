@@ -1,0 +1,43 @@
+html,
+body {
+  background-color: #f3f5fb !important;
+}
+
+.sidebar {
+  background-color: rgba(35, 55, 75, 0.9);
+  color: #fff;
+  padding: 6px 12px;
+  font-family: monospace;
+  z-index: 1;
+  position: absolute;
+  left: 400px;
+  margin: 12px;
+  border-radius: 4px;
+}
+
+div::-webkit-scrollbar {
+  display: none;
+}
+
+div:hover::-webkit-scrollbar {
+  display: block;
+  padding-left: 10px;
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+div:hover::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+div:hover::-webkit-scrollbar-thumb {
+  background: #376eff;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+div:hover::-webkit-scrollbar-thumb:hover {
+  background: #12214d;
+}
